@@ -1,18 +1,17 @@
-### Java ve C# Programcıları için
-### ECMAScript (Javascript)
+### Java ve C# Programcıları için ECMAScript (Javascript)
 ### Eğitmen: Oğuz KARAN
 
 #### Düzenleyen: Bartu Çankaya
 
->Javascript ilk olarak Netscape firması tarafından geliştirilmiş ve ilk olarak “Livescript” ismi verilmiştir. 1997 yılında Ecma tarafından standartlaştırılmış ve “EcmaScript” ismini almıştır. Ecmascript Ecma-262 dökümanı ile standartlaştırlmıştır. Ecmascript aslında bir programlama dilidir. En çok Web ortamında kullanıldığından birçok browser tarafından neredeyse standart kabul edilen teknolojiler eklenmiştir.
+>Javascript ilk olarak Netscape firması tarafından geliştirilmiş ve ilk olarak “Livescript” ismi verilmiştir. 1997 yılında Ecma tarafından standartlaştırılmış ve **EcmaScript** ismini almıştır. Ecmascript, [Ecma-262](https://ecma-international.org/wp-content/uploads/ECMA-262_15th_edition_june_2024.pdf) dökümanı ile standartlaştırılmıştır. Ecmascript aslında bir programlama dilidir. En çok Web ortamında kullanıldığından birçok browser tarafından neredeyse standart kabul edilen teknolojiler eklenmiştir.
 
 **Ecmascript Programlama Dili**
 
->Ecmascript yorumlayıcı ile çalışan bir dildir. Herhangi bir derleme işlemi olmadığından aşağı seviyeli bir kod üretilmez. Ancak bazı yorumlayıcılar hızlı çalışma açısından ara kodlar üretebilir. Ancak programcı için ES yorumlayıcı ile çalışan bir dildir. Bu durum programcının yaptığı hataların hemen görülememesine sebep olabilir. Ecmascript çıktığından beri en çok web ortamında ön yüzde kullanılmaktadır. Ancak son yıllarda geliştirilen teknolojilerle server tarafta çalışan uygulamalar da ecmascript kullanılarak geliştirilebilmektedir. Javascript ayrıca mobil geliştirmede de oldukça yoğun olarak kullanılmaktadır.
+>Ecmascript (ES) yorumlayıcı (interpreter) ile çalışan bir dildir. Herhangi bir derleme işlemi olmadığından aşağı seviyeli bir kod üretilmez. Ancak bazı yorumlayıcılar hızlı çalışma açısından ara kodlar üretebilir. Ancak programcı için ES yorumlayıcı ile çalışan bir dildir. Bu durum programcının yaptığı hataların hemen görülememesine sebep olabilir. ES çıktığından beri en çok web ortamında ön yüzde kullanılmaktadır. Ancak son yıllarda geliştirilen teknolojilerle server tarafta çalışan uygulamalar da ecmascript kullanılarak geliştirilebilmektedir. Javascript ayrıca mobil geliştirmede de oldukça yoğun olarak kullanılmaktadır.
 
 **Türler:**
 
->Türler şu şekildedir:
+>ES'de temel türler (primitive/built-in/predefined types) şu şekildedir:
 >
 >- number
 >- string
@@ -22,7 +21,7 @@
 >- Symbol
 >- function
 >
-> `number` türü “IEEE 754 double precision” formatına göre sayıların tutulduğu bir türdür. Tamsayı ya da gerçek sayı ayrımı yapılmamıştır. Tüm sayılar bu formatta tutulur.
+> `number` türü `IEEE 754 double precision` formatına göre sayıların tutulduğu bir türdür. Tamsayı ya da gerçek sayı ayrımı yapılmamıştır. Tüm sayılar bu formatta tutulur.
 > 
 > `string` bir değer türü olarak alınmıştır. Tüm dillerde olduğu gibi yazı işlemlerinde kullanılmaktadır.
 > 
@@ -30,7 +29,7 @@
 > 
 > `null` türü özellikle referans türleri için düşünülmüştür ve hiç bir nesneyi göstermeyen adres değeridir.
 > 
-> `undefined` henüz değer almamış bir değişkenin türüdür.
+> `undefined` henüz değer almamış bir değişkenin türüdür. Bununla birlikte, bir değişkene undefined değeri de verilebilir.
 > 
 > `Symbol` türü ES6 ile eklenmiş ve sembol tanımlamakta kullanılan bir türdür.
 > 
@@ -42,7 +41,7 @@
 
 > ECMAScript'de genel olarak 4(dört) yerde değişken bildirimi yapılabilir.
 > 
-> 1. Global olarak dosya içerisinde tüm nesne, sınıf ve fonksiyonların dışında
+> 1. Global olarak dosya içerisinde tüm nesne, sınıf ve fonksiyonların dışında herhangi bir yerde.
 > 2. Yerel değişken olarak bloklar içerisinde
 > 3. Fonksiyonların veya metotların parametre değişkenleri olarak
 > 4. Nesnelerin ve sınıfların veri elemanları olarak
@@ -79,15 +78,13 @@ a = 10 //number
 >Bir değişkenin yerel olması için kesinlikle `var` ya da `let` anahtar sözcükleri ile bildirilmesi gerekir:
 
 ```javascript
-function main()
-{
+function main() {
     var a = "ankara";
 
     foo();
 }
 
-function foo()
-{
+function foo() {
     console.log(a) // error
 }
 
@@ -100,16 +97,14 @@ main()
 
 **`let` ve `var` Anahtar Sözcükleri Arasındaki Farklar**
 
->`let` ile bildirilen yerel değişkenler ile `var` ile bildirilen yerel değişkenler arasındaki fark, `let` yerel değişkenler blok faaliyet alanına sahiptir, `var` değişkenler fonksiyon faaliyet alanına sahiptir. Yani `var` değişkenler bir fonksiyon içerisinde bildirilmişlerse içteki blokta bile olsalar tüm fonksiyon boyunca görülebilirler. `let` değişkenler ise bildirildiği yerden bildirildiği bloğun sonuna kadar görülebilirler:
+>`let` ile bildirilen yerel değişkenler ile `var` ile bildirilen yerel değişkenler arasındaki fark, `let` yerel değişkenler blok faaliyet alanına sahiptir, `var` değişkenler fonksiyon faaliyet alanına sahiptir. Yani `var` değişkenler bir fonksiyon içerisinde bildirilmişlerse içteki blokta bile olsalar bildirildiği yerden itibaren tüm fonksiyon boyunca görülebilirler. `let` değişkenler ise bildirildiği yerden bildirildiği bloğun sonuna kadar görülebilirler:
 
 ```javascript
-function main()
-{
+function main() {
     foo();
 }
 
-function foo()
-{
+function foo() {
     {
         let a = 10
     }
@@ -121,13 +116,11 @@ main()
 ```
  
 ```javascript
-function main()
-{
+function main() {
     foo();
 }
 
-function foo()
-{
+function foo() {
     {
         var a = 10
     }
@@ -143,48 +136,45 @@ main()
 >Aşağıdaki örneği inceleyiniz:
 
 ```javascript
-function main()
-{
-    foo();
-}
-
-function foo()
-{
-    {
-        let a = 20
-        var a = 10 //error
-    }
-
-    console.log(a)
-}
-
+function main() {  
+    foo();  
+}  
+  
+function foo() {  
+    {  
+        let a = 20  
+        var a = 10 //error  
+    }  
+  
+    console.log(a)  
+}  
+  
 main()
 ```
 
 >Yukarıdaki örnekte `let` yerine `var` kullanılsaydı bir error oluşmazdı:
 
 ```javascript
-function main()
-{
-    foo();
-}
-
-function foo()
-{
-    {
-        var a = 20
+function main() {  
+    foo();  
+}  
+  
+function foo() {  
+    {  
+        var a = 20  
         var a = 10
-    }
-
-
-    var a = 30
-    console.log(a)
-}
-
+    }  
+  
+    console.log(a)  
+}  
+  
 main()
 ```
 
 >Peki sizce bu kod ne kadar anlamlı?
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXX
 
 **Değişken İsimlendirme Kuralları**
 
@@ -1052,7 +1042,7 @@ function main()
 main()
 ```
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı tamsayının tersini döndüren `getReverse` isimli fonksiyonu yazınız.
+**_Sınıf Çalışması:_** Parametresi ile aldığı tamsayının tersini döndüren `reversed` isimli fonksiyonu yazınız.
 
 ```javascript
 function writeln(a)
