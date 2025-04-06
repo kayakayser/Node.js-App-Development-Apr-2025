@@ -3,13 +3,12 @@
 
 #### Düzenleyen: Bartu Çankaya
 
->Javascript ilk olarak Netscape firması tarafından geliştirilmiş ve ilk olarak “Livescript” ismi verilmiştir. 1997 yılında Ecma tarafından standartlaştırılmış ve **EcmaScript** ismini almıştır. Ecmascript, [Ecma-262](https://ecma-international.org/wp-content/uploads/ECMA-262_15th_edition_june_2024.pdf) dökümanı ile standartlaştırılmıştır. Ecmascript aslında bir programlama dilidir. En çok Web ortamında kullanıldığından birçok browser tarafından neredeyse standart kabul edilen teknolojiler eklenmiştir.
 
-**Ecmascript Programlama Dili**
+##### Ecmascript Programlama Dili
 
->Ecmascript (ES) yorumlayıcı (interpreter) ile çalışan bir dildir. Herhangi bir derleme işlemi olmadığından aşağı seviyeli bir kod üretilmez. Ancak bazı yorumlayıcılar hızlı çalışma açısından ara kodlar üretebilir. Ancak programcı için ES yorumlayıcı ile çalışan bir dildir. Bu durum programcının yaptığı hataların hemen görülememesine sebep olabilir. ES çıktığından beri en çok web ortamında ön yüzde kullanılmaktadır. Ancak son yıllarda geliştirilen teknolojilerle server tarafta çalışan uygulamalar da ecmascript kullanılarak geliştirilebilmektedir. Javascript ayrıca mobil geliştirmede de oldukça yoğun olarak kullanılmaktadır.
+>Javascript ilk olarak Netscape firması tarafından geliştirilmiş ve ilk olarak “Livescript” ismi verilmiştir. 1997 yılında Ecma tarafından standartlaştırılmış ve **EcmaScript** ismini almıştır. Ecmascript, [Ecma-262](https://ecma-international.org/wp-content/uploads/ECMA-262_15th_edition_june_2024.pdf) dökümanı ile standartlaştırılmıştır. Ecmascript aslında bir programlama dilidir. En çok Web ortamında kullanıldığından birçok browser tarafından neredeyse standart kabul edilen teknolojiler eklenmiştir. Ecmascript (ES) yorumlayıcı (interpreter) ile çalışan bir dildir. Herhangi bir derleme işlemi olmadığından aşağı seviyeli bir kod üretilmez. Ancak bazı yorumlayıcılar hızlı çalışma açısından ara kodlar üretebilir. Ancak programcı için ES yorumlayıcı ile çalışan bir dildir. Bu durum programcının yaptığı hataların hemen görülememesine sebep olabilir. ES çıktığından beri en çok web ortamında ön yüzde kullanılmaktadır. Ancak son yıllarda geliştirilen teknolojilerle server tarafta çalışan uygulamalar da ecmascript kullanılarak geliştirilebilmektedir. Javascript ayrıca mobil geliştirmede de oldukça yoğun olarak kullanılmaktadır.
 
-**Türler:**
+##### Türler
 
 >ES'de temel türler (primitive/built-in/predefined types) şu şekildedir:
 >
@@ -37,7 +36,7 @@
 > 
 > `number`, `string` ve `boolean` türlerini sarmalayan (wrapper) sırasıyla `Number`, `String` ve `Boolean` isimli nesneler (object) bulunmaktadır.
 
-**ECMAScript'de Değişkenler**
+##### ECMAScript'de Değişkenler
 
 > ECMAScript'de genel olarak 4(dört) yerde değişken bildirimi yapılabilir.
 > 
@@ -95,7 +94,7 @@ main()
 >
 >Nesnenin ve sınıfın veri elemanları daha sonra ele alınacaktır.
 
-**`let` ve `var` Anahtar Sözcükleri Arasındaki Farklar**
+##### `let` ve `var` Anahtar Sözcükleri Arasındaki Farklar
 
 >`let` ile bildirilen yerel değişkenler ile `var` ile bildirilen yerel değişkenler arasındaki fark, `let` yerel değişkenler blok faaliyet alanına sahiptir, `var` değişkenler fonksiyon faaliyet alanına sahiptir. Yani `var` değişkenler bir fonksiyon içerisinde bildirilmişlerse içteki blokta bile olsalar bildirildiği yerden itibaren tüm fonksiyon boyunca görülebilirler. `let` değişkenler ise bildirildiği yerden bildirildiği bloğun sonuna kadar görülebilirler:
 
@@ -173,92 +172,115 @@ main()
 
 >Peki sizce bu kod ne kadar anlamlı?
 
+##### Değişken İsimlendirme Kuralları
 
-XXXXXXXXXXXXXXXXXXXXXXXXX
+>ES’ de değişken isimlendirme kuralları Java programlama dili ile aynıdır. Ancak alttire karakterinin Java 9 ile birlikte tek başına değişken ismi olması yasaklanmıştır. Ancak ES'de bu geçerlidir. Bir programlama pratiği olarak değişken isimlendirmede özellikle İngilizce alfabe dışındaki karakterlerin kullanılmaması ve değişkene ilişkin kelimelerin de İngilizce kelimeler olarak seçilmesi tavsiye edilir. Ayrıca yine uluslararası bir convention olarak değişken isimlerinin kolay telaffuz edilebilir, yeterince uzunlukta ve anlamlı olması tavsiye edilir.
 
-**Değişken İsimlendirme Kuralları**
-
->ES’ de değişken isimlendirme kuralları Java programlama dili ile aynıdır.
-
-**_Anahtar Notlar:_** Alttire karakterinin Java 9 ile birlikte tek başına değişken ismi olması yasaklanmıştır. Ancak ES'de bu geçerlidir.
-
-**Global Fonksiyonlar**
+##### Global Fonksiyonlar
 
 >Global fonksiyonlar dosya içerisinde hiç bir nesneye veya sınıfa ait olmayan ve yerel olarak bildirilmeyen fonksiyonlardır. Fonksiyon bildirimleri aynı zamanda tanımlamadır.
 >
 >Global fonksiyonlar `function` anahtar sözcüğü ile bildirilirler.
 
 ```javascript
-function foo()
-{
-    console.log("foo")
-}
+function foo() {  
+    console.log("foo")  
+}  
+  
+function main() {  
+    foo()  
+}  
+  
+main()
 ```
 
->Fonksiyonlar parametrik yapıları nasıl olursa olsun istenildiği kadar argüman ile çağrılabilirler:
+>Fonksiyonlar parametrik yapıları nasıl olursa olsun istenildiği kadar argüman ile çağrılabilirler. Aşağıdaki demo örnekte fonksiyon içerisinde argümanlara ilişkin değerler kullanılmadığı için foo fonksiyonunun 3 çağrısınında birbirinden farkı yoktur
 
 ```javascript
-foo()
-foo(20)
-foo(10, 20, 30)
+function foo() {  
+    console.log("foo")  
+}  
+  
+function main() {  
+    foo()  
+    foo(10, 20, 30)  
+    foo(10, 20)  
+}  
+  
+main()
 ```
 
->Fonksiyonlar geri dönüş değeri olmasa da geri dönüş değeri varmış gibi kullanılabilir. Bu durumda geri dönüş değeri olarak `undefined` değeri elde edilecektir.
+>ES'de fonksiyonun geri dönüş değeri bilgisi yazılmaz. Ancak fonksiyon içerisinde return deyimi kullanılarak fonksiyonun geri dönüş değeri olabilir. Bu durumda bir fonksiyonun geri dönüş değeri olması ya da olmaması tamamen fonksiyonun kodları ile ilgilidir. Örneğin fonksiyon içerisinde akışın her noktasında return deyimi ifade (expression) ile kullanıldında mantıksal olarak geri dönüş değeri vardır denebilir. Bu durumda fonksiyonu kullanacak programcının bu durumu bilmesi gerekir. Bu da fonksiyonun iyi yazılmış bir dokümantasyonu ile mümkün olabilir.
+
+>Fonksiyonlar geri dönüş değeri olmasa da geri dönüş değeri varmış gibi kullanılabilir. Bu durumda geri dönüş değeri olarak `undefined` değeri elde edilecektir. Şüphesiz aşağıdaki çağrı şekli pratikte anlamsızdır
 
 ```javascript
-function foo()
-{
-    console.log("foo")
-}
-
-let a = foo(20)
-
+function foo() {  
+    console.log("foo")  
+}  
+  
+let a = foo(20)  
+  
 console.log(a)
 ```
 
 >Geri dönüş değeri için yine `return` deyimi kullanılır. Return deyiminin tek başına kullanılması durumunda fonksiyondan çıkılır ve değer döndürülmez (aslında `undefined` döndürülmüş olarak düşünülebilir):
 
 ```javascript
-function foo(val)
-{
-    if (val > 0)
-        return
-
-    return val * val
-}
-
-let a = foo(-20)
-
-console.log(a)
+function foo(a) {  
+    if (a > 0)  
+        return  
+  
+    return a * a  
+}  
+  
+let result = foo(-20)  
+  
+console.log(result)  
+result = foo(10)  
+console.log(result)
 ```
 
->Yukarıdaki örnekte fonksiyon akış durumuna göre `undefined` ya da argümanın karesine döner. ES kullanan programcının "her fonksiyonun zaten bir geri dönüş değeri var içeride yazılan koda göre geri dönüş değeri anlamlanacak" bakış açısıyla doğru şekilde düşünerek kodu yazması gerekir. Yani fonksiyonun geri dönüş değeri olacaksa akışın her noktasında geri dönülmesi anlamlıdır. Fonksiyonun geri dönüş değeri olmayacaksa hiç bir şekilde return, ifade ile döndürülmemelidir.
+>Yukarıdaki demo örnek aşağıdaki gibi de yazılabilir
+
+```javascript
+function foo(a) {  
+    if (a <= 0)  
+        return a * a  
+}  
+  
+let result = foo(-20)  
+  
+console.log(result)  
+result = foo(10)  
+console.log(result)
+```
+
+>Yukarıdaki örnekte fonksiyon akış durumuna göre `undefined` ya da argümanın karesine döner. ES kullanan programcının `her fonksiyonun zaten bir geri dönüş değeri var içeride yazılan koda göre geri dönüş değeri anlamlanacak` bakış açısıyla doğru şekilde düşünerek kodu yazması gerekir. Yani fonksiyonun geri dönüş değeri olacaksa akışın her noktasında geri dönülmesi anlamlıdır. Fonksiyonun geri dönüş değeri olmayacaksa hiç bir şekilde return, ifade ile döndürülmemelidir.
 >
 >ES'de bir fonksiyon parametre değişkeni alabilir. Bu durumda parametre değişkenlerinin yalnızca ismi yazılır:
 
 ```javascript
-function square(val)
-{
-    return val * val
+function square(a) {  
+    return a * a  
 }
-
-let res = square(-20)
-
+  
+let res = square(a)  
+  
 console.log(res)
 ```
 
-> Fonksiyonlara bakıldığında parametrelerin türlerinin anlaşılması her zaman mümkün olmayabilir.  Bu durumda iki yaklaşım kullanılabilir:
+> Fonksiyonlara bakıldığında parametrelerin türlerinin anlaşılması her zaman mümkün olmayabilir.  Bu durumda iki yaklaşım genel olarak kullanılabilir:
 > 
 > 1. Fonksiyonlar yazılırken parametreler için herhangi bir tür kontrolü yapılmaz. İyi bir dökümantasyonla kullanan programcıya bilgi verilir. Yanlış argüman geçilmesinden programcı sorumludur. Örneğin:
  
 ```javascript
-function square(val)
-{
-    return val * val
-}
-
-let res = square("ankara")
-
+function square(a) {  
+    return a * a  
+}  
+  
+let res = square("ankara")  
+  
 console.log(res)
 ```
 
@@ -267,17 +289,15 @@ console.log(res)
 > 2. Fonksiyonların parametre değişkenlerinin türleri çağrılma sırasında kontrol edilebilir. Bu yaklaşım sürekli kontrol gerektirdiğinden çalışmayı yavaşlatabilir. Örneğin:
 
 ```javascript
-function square(val)
-{
-    if (typeof(val) != "number")
-        throw Error("unsupported argument")
-
-
-    return val * val
-}
-
-let res = square("ankara")
-
+function square(a) {  
+    if (typeof(a) != "number")  
+        throw new Error("Argument must be a number")  
+  
+    return a * a  
+}  
+  
+let res = square("ankara")  
+  
 console.log(res)
 ```
 
@@ -288,75 +308,68 @@ console.log(res)
 > ES'de function overloading kavramı yoktur. Aynı isimde iki tane fonksiyon yazılırsa yukarıdan aşağıya son yazılanı çağrılırken geçerli kabul eder:
 
 ```javascript
-function foo()
-{
-    console.log("foo1")
-}
-
-foo()
-
-function foo()
-{
-    console.log("foo2")
-}
-
+function foo() {  
+    console.log("foo1")  
+}  
+  
+foo()  
+  
+function foo() {  
+    console.log("foo2")  
+}  
+  
 foo()
 ```
  
 
->Fonksiyonlar parametre sayısı önemli olmaksızın teorik olarak istenildiği sayıda argümanla çağrılabilirler. Bu durumda programcı fonksiyon içerisinde isterse argümanları kontrol edebilir:
+>Fonksiyonlar parametre sayısı önemli olmaksızın istenildiği sayıda argümanla çağrılabilirler. Bu durumda programcı fonksiyon içerisinde isterse argümanları kontrol edebilir:
 
 ```javascript
-function main()
-{
-    let result = sum(10, 20, 30)
-
-    console.log(result)
-
-    result = sum(10, 20)
-
-    console.log(result)
-}
-
-function sum()
-{
-    let result = 0;
-
-    for (let index in arguments)
-        result += arguments[index];
-
-    return result;
-}
-
+function main() {  
+    let result = sum(10, 20, 30)  
+  
+    console.log(result)  
+    result = sum(10, 20)  
+    console.log(result)  
+}  
+  
+function sum() {  
+    let result = 0;  
+  
+    for (let i in arguments)  
+        result += arguments[i];  
+  
+    return result;  
+}  
+  
 main()
 ```
 
->Yukarıda, her metot içerisine iliştirilmiş olan arguments dizisi kullanılmıştır. Bu konu ileride ele alınacaktır.
+>Yukarıda, her fonksiyon içerisine iliştirilmiş olan arguments dizisi kullanılmıştır. Bu konu ileride ele alınacaktır.
 
-**Sabitler**
+##### Sabitler
 
->Program içerisinde doğrudan yazılan değerlere sabit denilmektedir. Sabitler ES içerisinde çeşitli kategorilere ayrılmaktadır. Sabitler sayı biçimindeyse nokta içersin ya da içermesin “number” türündendir. Ayrıca `boolean` türden `true` ve `false` isimli sabitler de bulunmaktadır. Standartlara göre string atomları da sabit (string literal) olarak ele alınmaktadır. Sayısal sabitlerin çeşitli sayı sistemlerinde gösterilişi vardır:
+>Program içerisinde doğrudan yazılan değerlere **sabit** denilmektedir. Sabitler ES içerisinde çeşitli kategorilere ayrılmaktadır. Sabitler sayı biçimindeyse nokta içersin ya da içermesin `number` türündendir. Ayrıca `boolean` türden `true` ve `false` isimli sabitler de bulunmaktadır. Standartlara göre string atomları da sabit (string literal) olarak ele alınmaktadır. Sayısal sabitlerin çeşitli sayı sistemlerinde gösterilişi vardır:
 
 ```javascript
-function main()
-{
-    let a = 0xA
-
-    console.log(a)
-
-    a = 0o12
-
-    console.log(a)
-
-    a = 10
-
-    console.log(a)
-
-    a = 0b1010
-
-    console.log(a)
-}
-
+function main() {  
+    let a = 0xA //hexadecimal  
+  
+    console.log(a)  
+  
+    a = 0o12 //octal  
+  
+    console.log(a)  
+  
+    a = 10 //decimal  
+  
+    console.log(a)  
+  
+    a = 0b1010 //binary  
+  
+    console.log(a)  
+}  
+  
 main()
 ```
 
@@ -365,9 +378,9 @@ main()
 |     |                 |
 | --- | --------------- |
 | \b  | Backspace       |
-| \t  | Tab             |
+| \t  | Horizontal tab  |
 | \n  | Line feed       |
-| \v  | Vertical Tab    |
+| \v  | Vertical tab    |
 | \f  | Form feed       |
 | \r  | Carriage return |
 | \”  | Double quote    |
@@ -375,61 +388,73 @@ main()
 | \\\ | Back slash      |
 | \\` | Backtick        |
 
-**_Anahtar Notlar:_** Aşağıda kullanılan `write` ve `writeln` fonksiyonlarının nasıl yazıldıkları şu an için önemsizdir. write ve `writeln` “standard output (stdout)“’ yazma yapalar ve sırasıyla cursor’ ı son yazılan karakterin sonuna, ve alt satırın başına indirirler (line feed)
+##### Temel Operatörler
 
-**Temel Operatörler**
+>Belirli bir işleme yol açan ve bir değer üreten atomlara **operatör** denir. Operatörler sınıflandırılabilir:
 
->Belirli bir işleme yol açan ve bir değer üreten atomlara operatör denir. Operatörler sınıflandırılabilir:
-
-**Aritmetik Operatörler**
+###### Aritmetik Operatörler
 
 >Aritmetik operatörler klasik 4(dört) işlem operatörleri ile işaret `+` ve `–` operatörleri ve `++` ve `--` operatörleridir. Bu operatörlerin kullanımı genel olarak Java ile aynıdır. Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = 10
-    let b = a++
-    let c = ++a
-
-    writeln(a) //12
-    writeln(b) //10
-    writeln(c) //12
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 10  
+    let b = a++  
+    let c = ++a  
+  
+    writeln(a) //12  
+    writeln(b) //10  
+    writeln(c) //12  
+}  
+  
 main()
 ```
 
-Örneğin:
+>Anımsanacağı gibi `%` mod operatörünün birinci operandının negatif olması durumunda sonuç pozitif olması elde edilen değerin ters işaretlisi (negatifi) olarak elde edilir. İkinci operandının negatif olmasının bir önemi yoktur.
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    writeln(10 % 3)  
+    writeln(10 % -3)  
+    writeln(-10 % 3)  
+    writeln(-10 % -3)  
+}  
+  
+main()
+```
 
-function digitsSum3Digits(val)
-{
-    let a = parseInt(val / 100)
-    let b = parseInt(val / 10) % 10
-    let c = val % 10
+>**Sınıf Çalışması:** Parametresi ile aldığı 3 basamaklı bir sayının basamakları toplamına geri dönen `getDigitsSum` fonksiyonunu yazınız.
+>
+>**Açıklamalar:** Fonksiyon sayının 3 basamaklı olup olmadığını kontrol etmeyecektir.
 
-    return Math.abs(a + b + c)
-}
+>**Çözüm:**
 
-function main()
-{
-    writeln(digitsSum3Digits (123))
-    writeln(digitsSum3Digits (-345))
-    writeln(digitsSum3Digits (-123))
-    writeln(digitsSum3Digits (200))
-}
-
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function getDigitsSum(val) {  
+    let a = parseInt(val / 100)  
+    let b = parseInt(val % 100 / 10)  
+    let c = val % 10  
+  
+    return Math.abs(a + b + c)  
+}  
+  
+function main() {  
+    writeln(getDigitsSum(123))  
+    writeln(getDigitsSum(-123))  
+}  
+  
 main()
 ```
 
@@ -439,156 +464,138 @@ main()
 
 > Temel karşılaştırma operatörleri 8 tanedir: `==`, `!=`, `===`, `!==`, `>`, `<`, `>=`, `<=`
 > 
-> Burada eşitlik testi yapan operatörler birçok programlama dilinden farklıdır.
+> Burada eşitlik testi yapan operatörler bazı programlama dillerinden farklıdır.
 > 
-> `==` ve `!=` operatörleri soyut karşılaştırma (abstract comparison) yaparlar. `==` ve `!=` operatörleri kullanılırken işlem öncesi otomatik tür dönüştürme kuralları uygulanır. Bu kurallar ileride ele alınacaktır.
+> `==` ve `!=` operatörleri **soyut karşılaştırma (abstract comparison)** yaparlar. `==` ve `!=` operatörleri kullanılırken işlem öncesi otomatik tür dönüştürme kuralları uygulanır. Bu kurallar ileride ele alınacaktır.
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = "10";
-    let b = 10;
-
-    writeln(a == b);
-}
-
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = "10"  
+    let b = 10  
+  
+    writeln(a == b);  
+}  
+  
+  
 main()
 ```
 
->Bu operatörler kullanılırken dikkatli olunmalıdır. Tam anlamıyla eşitlik karşılaştırması (strictly equal or strictly not equal) `===` ve `!==` operatörleriyle yapılabilir. Bu operatörler karşılaştırılan türler birbirinden farklıysa kesinlikle false değerini üretirler:
+>Bu operatörler kullanılırken dikkatli olunmalıdır. **Tam anlamıyla eşitlik karşılaştırması (strictly equal or strictly not equal)** `===` ve `!==` operatörleriyle yapılabilir. Bu operatörler karşılaştırılan türler birbirinden farklıysa, kesinlikle farklı değer değerler olarak sonuç üretirler
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = "10";
-    let b = 10;
-
-    writeln(a === b);
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = "10"  
+    let b = 10  
+  
+    writeln(a === b);  
+}  
+  
 main()
 ```
 
->Programcı öncelikle bu operatörleri düşünmeli, soyut eşitlik karşılaştırma operatörleri gerektiğinde kullanılmalıdır. Ancak `===` ve `!==` operatörlerinin fazladan kontrol yaptığı da unutulmamalıdır. Soyut eşitlik karşılaştırma operatörlerinin kullanılması zorunluluğu çok azdır.
+>Programcı öncelikle bu operatörleri düşünmeli, soyut eşitlik karşılaştırma operatörleri gerektiğinde kullanılmalıdır. Soyut eşitlik karşılaştırma operatörleri özel bazı durumlarda gerekebilmektedir.
 
-**Mantıksal Operatörler**
+##### Mantıksal Operatörler
 
->Mantıksal operatörlerden and ve or operatörleri klasik kısa devre davranışına sahiptir. Bu operatörler ifadenin değerini öncelik sırasıyla yapıldığında elde edilecek sonuca ulaşacak şekilde en kısa yoldan hesaplarlar. Örneğin:
+>Mantıksal operatörlerden and ve or operatörleri klasik `kısa devre davranışına (short circuit behavior)` sahiptir. Bu operatörler ifadenin değerini öncelik sırasıyla yapıldığında elde edilecek sonuca ulaşacak şekilde en kısa yoldan hesaplarlar. Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let result = foo() || bar() && tar()
-
-    writeln(result)
-}
-
-function foo()
-{
-    writeln("foo")
-    return true
-}
-
-function bar()
-{
-    writeln("bar")
-    return false
-}
-function tar()
-{
-    writeln("tar")
-    return true
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let result = foo() || bar() && tar() //true  
+  
+    writeln(result)  
+}  
+  
+function foo() {  
+    writeln("foo")  
+    return true  
+}  
+  
+function bar() {  
+    writeln("bar")  
+    return false  
+}  
+  
+function tar() {  
+    writeln("tar")  
+    return true  
+}  
+  
 main()
 ```
 
 Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let result = bar() && foo() || tar()
-
-    writeln(result)
-}
-
-function foo()
-{
-    writeln("foo")
-    return true
-}
-
-function bar()
-{
-    writeln("bar")
-    return false
-}
-
-function tar()
-{
-    writeln("tar")
-    return false
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let result = bar() && foo() || tar()  
+  
+    writeln(result)  
+}  
+  
+function foo() {  
+    writeln("foo")  
+    return true  
+}  
+  
+function bar() {  
+    writeln("bar")  
+    return false  
+}  
+  
+function tar() {  
+    writeln("tar")  
+    return true  
+}  
+  
 main()
 ```
 
 >Bitsel “and” ve “or” operatörleri boolean türü ile işleme sokulduğunda kısa devre özelliği olmayan “and“ ve “or” operatörleri gibi davranırlar:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)   
-}
-
-function main()
-{
-    let result = foo() | bar() & tar()
-
-    writeln(result)
-}
-
-function foo()
-{
-    writeln("foo")
-    return true;
-}
-
-function bar()
-{
-    writeln("bar")
-    return false;
-}
-
-
-function tar()
-{
-    writeln("tar")
-    return true
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let result = foo() | bar() & tar()  
+  
+    writeln(result)  
+}  
+  
+function foo() {  
+    writeln("foo")  
+    return true;  
+}  
+  
+function bar() {  
+    writeln("bar")  
+    return false;  
+}  
+  
+  
+function tar() {  
+    writeln("tar")  
+    return true  
+}  
+  
 main()
 ```
 
@@ -597,23 +604,21 @@ main()
 > Aslında bitsel operatörler numeric türler için bitsel işlemlerde kullanılır. Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = 10
-    let b = 11
-    let c = a & b
-
-    writeln(`c=${c}`)
-
-    c = a | b
-    writeln(`c=${c}`)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 10 //0000 1010  
+    let b = 11 //0000 1011  
+    let c = a & b //0000 1010  
+  
+    writeln(`c = ${c}`)  
+  
+    c = a | b //0000 1011  
+    writeln(`c = ${c}`)  
+}  
+  
 main()
 ```
 
@@ -622,46 +627,41 @@ main()
 >Atama operatörü iki operandlı bir operatördür.  Atama işleminde birinci operandın türü atanan ifadenin türüne göre değişebilmektedir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = 10
-    let b = true
-
-    writeln(typeof(a))
-    writeln(typeof(b))
-
-    a = b
-
-    writeln(typeof(a))
-    writeln(typeof(b))
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 10  
+    let b = true  
+  
+    writeln(typeof(a))  
+    writeln(typeof(b))  
+  
+    a = b  
+  
+    writeln(typeof(a))  
+    writeln(typeof(b))  
+}  
+  
 main()
 ```
 
->ES'de ismine işlemli atama denilen (augmented assignment) bir grup operatör bulunmaktadır:
+>ES'de ismine işlemli atama denilen (compound/augmented assignment) bir grup operatör bulunmaktadır:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = 10;
-    let s = "11"
-
-
-    a += s; // a = a + s
-    writeln(a)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 10  
+    let s = "11"  
+  
+    a += s; // a = a + s  
+    writeln(a)  
+}  
+  
 main()
 ```
 
@@ -692,68 +692,59 @@ main()
 >Bu operatör iki operandlı (binary) araek (infix) durumunda bir operatördür. Virgül operatörüne ilişkin ifadede önce birinci operandına ilişkin ifade, sonra da ikinci operandına ilişkin ifade yapılır. Operatör öncelik tablosunun en sonunda olan operatördür. Ürettiği değer ikinci operandına ilişkin ifadenin değeridir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function foo()
-{
-    writeln("foo")
-
-    return 20
-}
-
-function bar()
-{
-    writeln("bar")
-    return 10
-}
-
-function main()
-{
-    let a = (foo(), bar())
-
-    writeln(a)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function foo() {  
+    writeln("foo")  
+  
+    return 20  
+}  
+  
+function bar() {  
+    writeln("bar")  
+    return 10  
+}  
+  
+function main() {  
+    let a = (foo(), bar())  
+  
+    writeln(a)  
+}  
+  
 main()
 ```
 
 >Virgül operatörü operatör öncelik tablosunun en alt seviyesinde olduğundan yukarıdaki işlemde atama işleminin en son yapılması için parantez zorunludur. Virgül operatörünün önce birinci operandının yapılacağı garanti altındadır. Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function foo()
-{
-    writeln("foo")
-
-    return 20
-}
-
-function bar()
-{
-    writeln("bar")
-    return 10
-}
-
-function tar()
-{
-    writeln("tar")
-    return 12
-}
-
-function main()
-{
-    let a = (foo(), bar(), tar())
-
-    writeln(a)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function foo() {  
+    writeln("foo")  
+  
+    return 20  
+}  
+  
+function bar() {  
+    writeln("bar")  
+    return 10  
+}  
+  
+function tar() {  
+    writeln("tar")  
+    return 12  
+}  
+  
+function main() {  
+    let a = (foo(), bar(), tar())  
+  
+    writeln(a)  
+}  
+  
 main()
 ```
 
@@ -762,27 +753,24 @@ main()
 >Bu operatör operandı olan ifadenin türünü string olarak üretir. Parantezli veya parantezsiz kullanılabilir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = 10
-
-    writeln(typeof a)
-
-    a = "ankara"
-
-    writeln(typeof(a))
-}
-
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 10  
+  
+    writeln(typeof a)  
+    a = "ankara"  
+    writeln(typeof(a))  
+}  
+  
 main()
 ```
 
 >Diğer operatörler ileride ele alınacaktır. 
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 **Otomatik Tür dönüşümleri**
 
