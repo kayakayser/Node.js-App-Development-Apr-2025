@@ -770,179 +770,349 @@ main()
 
 >Diğer operatörler ileride ele alınacaktır. 
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+##### Otomatik Tür dönüşümleri
 
-**Otomatik Tür dönüşümleri**
+>Otomatik tür dönüşümleri (implicit type conversions) ES'de genel olarak üç durumda karşımıza çıkar: **karşılaştırma işlemleri, aritmetik işlemler, boolean türünde dönüşüm olarak**. 
 
-| Değer | Number | String | Boolean |
-| ----- | ------ | ------ | ------- |
-| false | 0 | "false" | false |
-| true | 1 | "true" | true |
-| 0 | 0 | "0" | false |
-| 1 | 1 | "1" | true |
-| "0" | 0 | "0" | true |
-| "000" | 0 | "000" | true |
-| "1" | 1 | "1" | true |
-| NaN | NaN | "NaN" | false |
-| Infinity | Infinity |"Infinity" | true |
-| -Infinity | -Infinity | "-Infinity" | true |
-| "" | 0 | "" | false |
-| "20" | 20 | "20" | true |
-| "twenty" | NaN | "twenty" | true |
-| [ ] | 0 | "" | true |
-| [20] | 20 | "20" | true |
-| [10,20] | NaN | "10,20" | true |
-| ["twenty"] | NaN | "twenty" | true |
-| ["ten","twenty"] | NaN | "ten,twenty" | true |
-| function(){} | NaN | "function(){}" | true |
-| { } | NaN | "[object Object]" | true |
-| null | 0 | "null" | false |
-| undefined | NaN | "undefined" | false |
+###### String, Number ve Boolean Dönüşümleri
+> Bu dönüşümler özetle şu şekilde olabilir:
 
-**Kontrol Deyimleri**
+>- `+` operatörünün operandlarından biri String türündense diğer operanda ilişkin ifadenin değerinin yazı karşılığı elde edilir. Bu işlem aslında `string birleştirmesi (string concatenation)` işlemidir.
 
->Akışın kontrolü için kullanılan deyimlere kontrol deyimleri denir.
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 10  
+    let s = "Sayı:"  
+    let message = s + a  
+  
+    writeln(message)  
+}  
+  
+main()
+```
 
-**if Deyimi**
+###### Number Türüne Dönüşüm
+
+>Toplama işlemi hariç diğer aritmetik işlemlerde Number türüne dönüşüm yapılır. Başka bir deyişle iki operandlı bir operatörün (toplama operatörü hariç) operandlarından biri number türündense genel olarak diğer operand Number türüne dönüştürülür. Toplama işleminde operandlardan birinin String türünden olması bu kuralı değiştirmiş olur.
+
+
+>Aşağıdaki demo örnekte `true` değeri number türünde `1`olarak işleme girecektir
+
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 10  
+    let s = true  
+    let message = a + s  
+  
+    writeln(message) //11  
+}  
+  
+main()
+```
+
+>Aşağıdaki demo örnekte çarpma işlemi dolayısıyla a'nın değerine ilişkin yazı number türünden ifade edilecektir. İşlem number türünden yapılacaktır
+
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = "10"  
+    let s = 3  
+    let message = a * s  
+  
+    writeln(message) //30  
+}  
+  
+main()
+```
+
+>Aşağıdaki demo örnekte a'nın değeri olan `undefined` number türüne `NaN` olarak dönüşeceğinden sonuç `NaN` olarak elde edilir
+
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = undefined  
+    let b = 3  
+    let c = a * b  
+  
+    writeln(c) //NaN  
+}  
+  
+main()
+```
+
+>Özel bir durum olarak iki `undefined`değerin aritmetik işleme sokulması durumunda `NaN` değeri elde edilir
+
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = undefined  
+    let b = undefined  
+    let c = a * b  
+  
+    writeln(c) //NaN  
+}  
+  
+main()
+```
+
+
+>Aşağıdaki demo örnekte çarpma işlemi dolayısıyla her iki operandın değeri number türüne dönüştürülür. Her iki operandın number türünden karşılıkları `NaN` olduğundan sonuç `NaN` olarak elde edilir
+
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = "undefined"  
+    let b = undefined  
+    let c = a * b  
+  
+    writeln(c) //NaN  
+}  
+  
+main()
+```
+
+>Bu örnekte `+` işlemi yapılsaydı sonuç ne olurdu?
+
+###### Boolean Türüne Dönüşüm
+
+>`&&`, `||`, `!`, if deyimi döngü deyimleri gibi koşul gerektiren durumlarda sıfır dışındaki numeric değerler true, sıfır false değerine dönüştürülür. Özel olarak `undefined` değeri false değerine dönüşür. Buna göre `false, 0, '' (""), null, undefined, NaN` değerleri tipik olarak false değerine dönüştürülür. Bunlar dışındaki değerler true değerine dönüştürülür:
+
+```javascript
+if ("ali") -> true
+if ("") -> false
+if (undefined) -> false
+if (NaN) -> false
+if (0) -> false
+if ("0") -> true
+...
+```
+
+Yukarıdaki anlatılan dönüşümlere ilişkin tablo şu şekilde yazılabilir:
+
+| Değer             | Number    | String            | Boolean |
+| ----------------- | --------- | ----------------- | ------- |
+| false             | 0         | "false"           | false   |
+| true              | 1         | "true"            | true    |
+| 0                 | 0         | "0"               | false   |
+| 1                 | 1         | "1"               | true    |
+| "0"               | 0         | "0"               | true    |
+| "000"             | 0         | "000"             | true    |
+| "1"               | 1         | "1"               | true    |
+| NaN               | NaN       | "NaN"             | false   |
+| Infinity          | Infinity  | "Infinity"        | true    |
+| -Infinity         | -Infinity | "-Infinity"       | true    |
+| ""                | 0         | ""                | false   |
+| "20"              | 20        | "20"              | true    |
+| "twenty"          | NaN       | "twenty"          | true    |
+| [ ]               | 0         | ""                | true    |
+| [20]              | 20        | "20"              | true    |
+| [10, 20]          | NaN       | "10, 20"          | true    |
+| ["twenty"]        | NaN       | "twenty"          | true    |
+| ["ten", "twenty"] | NaN       | "ten, twenty"     | true    |
+| function(){}      | NaN       | "function(){}"    | true    |
+| { }               | NaN       | "[object Object]" | true    |
+| null              | 0         | "null"            | false   |
+| undefined         | NaN       | "undefined"       | false   |
+
+##### Kontrol Deyimleri
+
+>Akışın kontrolü için kullanılan deyimlere kontrol deyimleri denir. Örneğin return deyimi bir kontrol deyimidir.
+
+###### if Deyimi
 
 >`if` deyimi parantez içerisindeki ifadenin `true` ya da `false` olmasına göre akışı yönlendiren bir deyimdir. Burada parantez içerisindeki ifade boolean türden olmasa bile otomatik tür dönüşümü kurallarına göre `boolean` türüne dönüştürülür:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = "ankara"
-
-    if (a)
-        writeln("Doğru")
-    else
-        writeln("Yanlış")
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = "ankara"  
+  
+    if (a)  
+        writeln("Doğru")  
+    else  
+        writeln("Yanlış")  
+}  
+  
 main()
 ```
 
 Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let a = 10
-
-    if (a)
-        writeln("Doğru")
-    else
-        writeln("Yanlış")
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let a = 100  
+  
+    if (a)  
+        writeln("Doğru")  
+    else  
+        writeln("Yanlış")  
+}  
+  
 main()
 ```
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı ikinci dereceden denklemin katsayılarına göre köklerini bulup ekrana yazdıran `findRoots` fonksiyonunu yazınız.
-
-**_Açıklama:_** Klavyeden değer okuma NodeJS’ ye özgü olduğundan klavye işlemleri burada ele alınmayacaktır. Karekök alma işlemi için `Math.sqrt` kullanılabilir
+>**_Sınıf Çalışması:_** Parametresi ile aldığı ikinci dereceden denklemin katsayılarına göre köklerini bulup ekrana yazdıran `findRoots` fonksiyonunu yazınız.
+>
+>
+>İkinci dereceden (quadratic) denklem:
+>
+>$$ax^2 + bx + c = 0$$
+>
+>delta ($\Delta$) (discriminant) hesabı:
+>
+>$$\Delta = b^2 - 4ac$$
+>
+>Köklerin hesaplanması:
+>
+>1. if $\Delta > 0$
+>
+>$$x_1 = \frac{-b + \sqrt{\Delta}}{2a}$$
+>
+>$$x_2 = \frac{-b - \sqrt{\Delta}}{2a}$$
+>
+>2.	if $\Delta = 0$
+>
+>$$x_1 = x_2 = \frac{-b}{2a}$$
+>
+>3.	if $\Delta < 0$
+>
+>		Gerçek kök yok!
+>
+>**_Açıklama:_** Klavyeden değer okuma NodeJS’ ye özgü olduğundan klavye işlemleri burada ele alınmayacaktır. Karekök alma işlemi için `Math.sqrt` fonksiyonu kullanılabilir
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function findRoots(a, b, c)
-{
-    let delta = b * b - 4 * a * c
-
-    if (delta > 0) {
-        let sqrtDelta = Math.sqrt(delta)
-
-
-        let x1 = (-b + sqrtDelta) / (2 * a)
-        let x2 = (-b - sqrtDelta) / (2 * a)
-
-        writeln(`x1=${x1}, x2=${x2}`)
-    }
-    else if (delta == 0) {
-        let x = -b / (2  * a)
-
-        writeln(`x1=x2=${x}`)
-    }
-    else
-        writeln("Gerçek kök yok")
-}
-
-function main()
-{
-    findRoots(1, -3, -18)
-    findRoots(1, 1, 1)
-    findRoots(1, 4, 4)
-    findRoots(1.4, -3.5, -1.8)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function calculateDelta(a, b, c) {  
+    return b * b - 4 * a * c  
+}  
+  
+function printDoubleRoots(delta, a, b) {  
+    let sqrtDelta = Math.sqrt(delta)  
+    let x1 = (-b + sqrtDelta) / (2 * a)  
+    let x2 = (-b - sqrtDelta) / (2 * a)  
+  
+    writeln("x1 = " + x1 + ", x2 = " + x2)  
+}  
+  
+function printRoot(a, b) {  
+    writeln("x1 = x2 = " + (-b / (2 * a)))  
+}  
+  
+function printNoRealRoots() {  
+    writeln("No real root")  
+}  
+  
+function findRoots(a, b, c) {  
+    let delta = calculateDelta(a, b, c)  
+  
+    if (delta > 0)  
+        printDoubleRoots(delta, a, b)  
+    else if (delta === 0)  
+        printRoot(a, b)  
+    else  
+        printNoRealRoots()  
+}  
+  
+function main() {  
+    findRoots(1, 3, -18)  
+    findRoots(1, 1, 1)  
+    findRoots(1, 4, 4)  
+    findRoots(1.345, 3.980, -14.567)  
+}  
+  
 main()
 ```
 
-Diğer bir çözüm:
+>Diğer bir çözüm:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function findRoots(a, b, c)
-{
-    let delta = b * b - 4 * a * c
-
-    if (delta >= 0) {
-        let sqrtDelta = Math.sqrt(delta)
-        let x1 = (-b + sqrtDelta) / (2 * a)
-        let x2 = (-b - sqrtDelta) / (2 * a)
-
-        writeln(`x1=${x1}, x2=${x2}`)
-    }
-    else
-        writeln("Gerçek kök yok")
-}
-
-function main()
-{
-    findRoots(1, -3, -18)
-    findRoots(1, 1, 1)
-    findRoots(1, 4, 4)
-    findRoots(1.4, -3.5, -1.8)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function calculateDelta(a, b, c) {  
+    return b * b - 4 * a * c  
+}  
+  
+function printDoubleRoots(delta, a, b) {  
+    let sqrtDelta = Math.sqrt(delta)  
+    let x1 = (-b + sqrtDelta) / (2 * a)  
+    let x2 = (-b - sqrtDelta) / (2 * a)  
+  
+    writeln("x1 = " + x1 + ", x2 = " + x2)  
+}  
+  
+function printNoRealRoots() {  
+    writeln("No real root")  
+}  
+  
+function findRoots(a, b, c) {  
+    let delta = calculateDelta(a, b, c)  
+  
+    if (delta >= 0)  
+        printDoubleRoots(delta, a, b)  
+    else  
+        printNoRealRoots()  
+}  
+  
+function main() {  
+    findRoots(1, 3, -18)  
+    findRoots(1, 1, 1)  
+    findRoots(1, 4, 4)  
+    findRoots(1.345, 3.980, -14.567)  
+}  
+  
 main()
 ```
 
-**Döngü Deyimleri**
+##### Döngü Deyimleri
 
-> ES'de döngü deyimleri genel olarak üçe ayrılır. Ancak ES6 ile birlikte bir döngü deyimi daha eklenmiştir:
+> ES'de döngü deyimleri 4 tanedir:
 > 
 > 1. while döngüleri
 > 2. for döngüsü
 > 3. for-in döngüsü
 > 4. for-of döngüsü
- 
-**while Döngüleri**
+##### while Döngüleri
 
 > while döngü deyimleri iki gruba ayrılır:
 > 
 > - Kontrolün başta yapıldığı while döngü deyimi:
 > - Kontrolün sonda yapıldığı while döngü deyimi:
 > 
-> `while` döngüsü dendiğinde genelde kontrolün başta yapıldığı while döngü deyimi anlaşılır. Kontrolün sonda yapıldığı while döngü deyimi genel olarak "do-while döngü deyimi" biçiminde söylenir.
+> `while` döngüsü dendiğinde genelde kontrolün başta yapıldığı while döngü deyimi anlaşılır. Kontrolün sonda yapıldığı while döngü deyimi genel olarak `do-while döngüsü` biçiminde söylenir.
  
-**Kontrolün başta yapıldığı while döngü deyimi:**
+###### Kontrolün başta yapıldığı while döngü deyimi:
 
 >Bu deyimin genel biçimi şöyledir:
 
@@ -954,114 +1124,125 @@ while (<ifade>)
 >Bu deyimde parantez içerisindeki ifade `true` ise (boolean türü dışında dönüşüm işleminden sonra) döngü yinelenir. `while` döngü deyiminde parantez içerisinde ifadenin doğru olup olmadığına akış `while` döngü deyimine geldiğinde de bakılır. Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-
-function main()
-{
-    let i = 0
-    let n = 10
-
-    while (i < n) {
-        writeln(`i=${i}`)
-        ++i;
-    }
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+  
+function main() {  
+    let i = 0  
+    let n = 10  
+  
+    while (i < n) {  
+        writeln("i = " + i)  
+        ++i  
+    }  
+}  
+  
 main()
 ```
 
->`while` döngü deyimi ile n-kez yinelenen aşağıdaki gibi yazılan bir döngü bazı programcılar tarafından çok sevilir:
+>Aşağıdaki demo örnekte kontrol akış while döngüsüne geldiğinde de yapıldığı için döngüye girilmez
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-function main()
-{
-    let n = 4
+function writeln(a) {  
+    console.log(a)  
+}  
 
+function main() {  
+    let i = 0  
+    let n = 0  
+  
+    while (i < n) {  
+        writeln("i = " + i)  
+        ++i  
+    }  
+}  
+  
+main()
+```
+
+
+>`while` döngü deyimi ile n-kez yinelenen aşağıdaki gibi yazılan bir döngü bazı programcılar tarafından çok sevilir.
+
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let n = 4  
+  
     while (n--) // ~ while (n-- > 0) -> Negatif değerler için aynı anlama gelmez
-        writeln(`n=${n}`)    
-
-    writeln(`after loop:n=${n}`)
-}
+        writeln("n = " + n)  
+  
+    writeln("after loop -> n = " + n)  
+}  
 main()
 ```
 
 >Yukarıdaki döngüde n değerinin döngünün sonunda eski değerinde olmadığına dikkat ediniz.
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı number türden bir sayının basamak sayısını döndüren `digitsCount` fonksiyonunu yazınız.
+>**_Sınıf Çalışması:_** Parametresi ile aldığı number türden bir sayının basamak sayısını döndüren `digitsCount` fonksiyonunu yazınız.
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function digitsCount(val)
-{
-    if (!val)
-        return 1
-
-    let count = 0
-
-    while (val) {
-        ++count
-        val = parseInt(val / 10)
-    }
-
-    return count
-}
-
-function main()
-{
-    writeln(digitsCount(123))
-
-    writeln(digitsCount(-123))
-
-    writeln(digitsCount(0))
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function digitsCount(a) {  
+    if (a === 0)  
+        return 1  
+  
+    let count = 0  
+  
+    while (a) {  
+        ++count  
+        a = Math.trunc(a / 10)  
+    }  
+  
+    return count  
+}  
+  
+function main() {  
+    writeln(digitsCount(1234567890))  
+    writeln(digitsCount(-1234567890))  
+    writeln(digitsCount(0))  
+}  
 main()
 ```
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı tamsayının tersini döndüren `reversed` isimli fonksiyonu yazınız.
+>**_Sınıf Çalışması:_** Parametresi ile aldığı tamsayının tersini döndüren `reverse` isimli fonksiyonu yazınız.
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function reversed(val)
-{
-    let reverse = 0
-
-    while (val) {
-        reverse = reverse * 10 + val % 10
-        val = parseInt(val / 10)
-    }
-    
-    return reverse
-}
-
-function main()
-{
-    writeln(reversed(123))
-    writeln(reversed(-123))
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function reverse(a) {  
+    let result = 0  
+  
+    while (a) {  
+        result = result * 10 + a % 10  
+        a = Math.trunc(a / 10)  
+    }  
+  
+    return result  
+}  
+  
+function main() {  
+    writeln(reverse(123456789))  
+    writeln(reverse(-123456789))  
+    writeln(reverse(1234567890))  
+    writeln(reverse(-1234567890))  
+    writeln(reverse(0))  
+}  
 main()
 ```
 
 >`while` döngü deyimi ile tipik sonsuz döngü kalıpları:
 
-```
+```javascript
 while (true) {
     //...
 }
@@ -1071,7 +1252,8 @@ while (1) {
 }
 ```
 
-**Kontrolün sonda yapıldığı while döngü deyimi (do-while)**
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+###### Kontrolün sonda yapıldığı while döngü deyimi
 
 >Bu deyimin genel biçimi:
 
@@ -1906,6 +2088,8 @@ function write(val)
     write(val);
 }
 ```
+
+
 
 **Object Türü**
 
