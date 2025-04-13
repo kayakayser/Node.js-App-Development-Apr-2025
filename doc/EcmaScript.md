@@ -1183,14 +1183,14 @@ main()
 
 >Yukarıdaki döngüde n değerinin döngünün sonunda eski değerinde olmadığına dikkat ediniz.
 
->**_Sınıf Çalışması:_** Parametresi ile aldığı number türden bir sayının basamak sayısını döndüren `digitsCount` fonksiyonunu yazınız.
+>**_Sınıf Çalışması:_** Parametresi ile aldığı number türden bir sayının basamak sayısını döndüren `countDigits` fonksiyonunu yazınız.
 
 ```javascript
 function writeln(a) {  
     console.log(a)  
 }  
   
-function digitsCount(a) {  
+function countDigits(a) {  
     if (a === 0)  
         return 1  
   
@@ -1205,9 +1205,9 @@ function digitsCount(a) {
 }  
   
 function main() {  
-    writeln(digitsCount(1234567890))  
-    writeln(digitsCount(-1234567890))  
-    writeln(digitsCount(0))  
+    writeln(countDigits(1234567890))  
+    writeln(countDigits(-1234567890))  
+    writeln(countDigits(0))  
 }  
 main()
 ```
@@ -1252,8 +1252,11 @@ while (1) {
 }
 ```
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 ###### Kontrolün sonda yapıldığı while döngü deyimi
+
+>Bu döngü deyiminde akış döngü deyimine geldiğinde koşul kontrolü yapılmaz. Yani döngüye bir kez girileceği ya da başka bir deyişle ilk adımın kesinlikle yapılacağı garanti altındadır. Bu döngü deyiminine `do-while döngüsü` de denilmektedir.  
+
 
 >Bu deyimin genel biçimi:
 
@@ -1266,52 +1269,45 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function digitsCount(val)
-{
-    let count = 0
-
-    do {
-        ++count
-        val = parseInt(val / 10)
-    } while (val !== 0)
-
-    return count
-}
-
-function main()
-{
-    writeln(digitsCount(0))
-    writeln(digitsCount(-345))
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function countDigits(a) {  
+    let count = 0  
+  
+    do {  
+        ++count  
+        a = Math.trunc(a / 10)  
+    } while (a)  
+  
+    return count  
+}  
+  
+function main() {  
+    writeln(countDigits(1234567890))  
+    writeln(countDigits(-1234567890))  
+    writeln(countDigits(0))  
+}  
 main()
 ```
+##### Koşul Operatörü
+>Koşul operatörünün (conditional/ternary operator) kullanımı Java ve C# ile aynıdır.
 
-**_Anahtar Notlar:_** Bir sayının basamak sayısı döngü veya yazı kullanmadan aşağıdaki gibi de bulunabilir. Aşağıdaki örnekte `Math` sınıfının `abs` ve `log10` metotları kullanılmıştır. Bu metotların çalışması Java/C# ile aynıdır. Ayrıca kullanılan koşul operatörü de yine Java/C# ile aynıdır:
+>Bir sayının basamak sayısı döngü veya yazı kullanmadan aşağıdaki gibi de bulunabilir. Aşağıdaki örnekte `Math` sınıfının `abs` ve `log10` metotları kullanılmıştır. Bu metotların çalışması Java/C# ile aynıdır
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function digitsCount(val)
-{
-    return !val ? 1 : parseInt(Math.log10(Math.abs(val))) + 1
-}
-
-function main()
-{
-    writeln(getDigitsCount(0))
-    writeln(getDigitsCount(-345))
-}
-
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+XXXXXXXX
+  
+function main() {  
+    writeln(countDigits(1234567890))  
+    writeln(countDigits(-1234567890))  
+    writeln(countDigits(0))  
+}  
 main()
 ```
 
@@ -1319,7 +1315,7 @@ main()
 
 >`for` döngü deyimi de Java' da olduğu gibi güçlü bir döngü deyimidir. Bu deyimin genel biçimi şöyledir:
 
-```
+```javascript
 for ([1.kısım]; [2.kısım]; [3.kısım])
     <deyim>
 ```
@@ -1327,138 +1323,85 @@ for ([1.kısım]; [2.kısım]; [3.kısım])
 >Bu döngüde kısımlar zorunlu değildir. Kısımlar boş bırakılmış olsa bile iki tane noktalı virgül zorunludur.
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    for (let i = 0; i < 10; ++i)
-        writeln(`i=${i}`)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    for (let i = 0; i < 10; ++i)  
+        writeln("i = " + i)  
+}  
 main()
 ```
 
->Kısımların çalışma mantığı Java’dakine çok benzer. 2. kısmın boş bırakılması yine sonsuz döngü anlamına gelmektedir. Ancak okunabilirlik açısından sonsuz döngü kalıbı tüm kısımların boş bırakılması biçiminde yazılır:
+>Kısımların çalışma mantığı Java’dakine çok benzedir. 2. kısmın boş bırakılması yine sonsuz döngü anlamına gelmektedir. Ancak okunabilirlik açısından sonsuz döngü kalıbı tüm kısımların boş bırakılması biçiminde yazılır:
 
-```
+```javascript
 for (;;) {
-
 	​//...
-
 }
 ```
 
 >`for` döngü deyimi içerisinde virgül operatörü kullanılarak deyim zenginleştirilebilir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    for (let i = 0, k = 10; i < 20 && k >= 0; ++i, k -= 2)
-        writeln(`(${i}, ${k})`);
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    for (let i = 0, k = 10; i < 20 && k >= 0; ++i, k -= 2)  
+        writeln(`(${i}, ${k})`);  
+}  
+  
 main()
 ```
 
-**_Anahtar Notlar:_**  Virgül ile değişken bildirimi yapıldığında ikinci operand olan bildirim birinci operand olan bildirim ile aynı özelliktedir. Aşağıdaki örnekte `i` ve `k` değişkenleri let ile bildirilmiştir. Bu durumda `i` ve `k` fonksiyon faaliyet alanındadır:
-
-```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let i = 20, k = 10
-
-    writeln(`i=${i}`)
-    writeln(`k=${k}`)
-}
-
-main()
-
-writeln(`k=${k}`) //k is not defined
-```
-
->Halbuki virgül kullanılmasaydı `k` global bildirilmiş olacaktı:
-
-```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let i = 20
-    k = 10
-
-    writeln(`i=${i}`)
-    writeln(`k=${k}`)
-}
-
-main()
-
-writeln(`k=${k}`)
-```
+**_Anahtar Notlar:_**  Virgül ile değişken bildirimi yapıldığında ikinci operand olan bildirim birinci operand olan bildirim ile aynı özelliktedir. for döngüsünün birinci kısmında bildirim yapılıyorsa virgül operatörü ile yazılan diğer operandlar da bildirim işlemi olmalıdır.
 
 >`for` döngü deyimi zenginleştirilebilir. Güçlü bir deyimdir. Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    for (let i = 0, k = 10; i < 20 && k >= 0; writeln(`(${i}, ${k})`), ++i, k -= 2)
-        ;
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    for (let i = 0, k = 10; i < 20 && k >= 0; writeln(`(${i}, ${k})`), ++i, k -= 2)  
+        ;  
+}  
+  
 main()
 ```
 
-**_Sınıf Çalışması:_** Parametresi aldığı bir tamsayının asal olup olmadığını test eden `isPrime` fonksiyonunu yazınız (Yavaş version)
+>**_Sınıf Çalışması:_** Parametresi aldığı bir tamsayının asal olup olmadığını test eden `isPrime` fonksiyonunu yazınız (Yavaş version)
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function isPrime(val)
-{
-    if (val <= 1)
-        return false
-
-    let halfVal = parseInt(val / 2)
-
-    for (let i = 2; i <= halfVal; ++i)
-        if (val % i == 0)
-            return false
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function isPrime(a) {  
+    if (a <= 1)  
+        return false  
+  
+    let halfVal = Math.trunc(a / 2)
+  
+    for (let i = 2; i <= halfVal; ++i)  
+        if (a % i === 0)  
+            return false  
+  
     return true
-}
-
-function main()
-{
-    for (let n = -10; n <= 100; ++n)
-        if (isPrime(n))
-            writeln(n)
-
-    writeln(isPrime(1000003) ? "Asal" : "Asal değil")
-}
-
+}  
+  
+function main() {  
+    for (let n = -10; n <= 100; ++n)  
+        if (isPrime(n))  
+            writeln(n)  
+  
+    writeln(isPrime(1_000_003) ? "Asal" : "Asal değil")  
+}  
+  
 main()
 ```
 
@@ -1467,46 +1410,87 @@ main()
 > **Teorem (Eratosten):** Bir sayı karekökünden daha küçük olan asal sayıların hiçbirine bölünemiyorsa asaldır. Aksi durumda asal değildir.
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function isPrime(val)
-{
-    if (val <= 1)
-        return false
-
-    if (val % 2 == 0)
-        return val == 2
-
-    if (val % 3 == 0)
-        return val == 3
-
-    if (val % 5 == 0)
-        return val == 5
-
-    if (val % 7 == 0)
-        return val == 7
-
-    for (let i = 11; i * i <= val; i += 2)
-        if (val % i == 0)
-            return false
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function isPrime(a) {  
+    if (a <= 1)  
+        return false  
+  
+    if (a % 2 === 0)  
+        return a === 2  
+  
+    if (a % 3 === 0)  
+        return a === 3  
+  
+    if (a % 5 === 0)  
+        return a === 5  
+  
+    if (a % 7 === 0)  
+        return a === 7  
+  
+    for (let i = 11; i * i <= a; i += 2)  
+        if (a % i === 0)  
+            return false  
+  
     return true
-}
-
-function main()
-{
-    for (let n = -10; n <= 100; ++n)
-        if (isPrime(n))
-            writeln(n)
-
-    writeln(isPrime(1000003) ? "Asal" : "Asal değil")
-}
-
+}  
+  
+function main() {  
+    for (let n = -10; n <= 100; ++n)  
+        if (isPrime(n))  
+            writeln(n)  
+      
+    writeln(isPrime(1_000_003) ? "Asal" : "Asal değil")  
+}  
+  
 main()
 ```
+
+>Yukarıdaki örnek aşağıdaki gibi de yapılabilir
+
+```javascript
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function isPrime(a) {  
+    if (a <= 1)  
+        return false  
+  
+    if (a % 2 === 0)  
+        return a === 2  
+  
+    if (a % 3 === 0)  
+        return a === 3  
+  
+    if (a % 5 === 0)  
+        return a === 5  
+  
+    if (a % 7 === 0)  
+        return a === 7  
+  
+    let sqrt = Math.trunc(Math.sqrt(a))  
+  
+    for (let i = 11; i <= sqrt; i += 2)  
+        if (a % i === 0)  
+            return false  
+  
+    return true
+}  
+  
+function main() {  
+    for (let n = -10; n <= 100; ++n)  
+        if (isPrime(n))  
+            writeln(n)  
+  
+    writeln(isPrime(1_000_003) ? "Asal" : "Asal değil")  
+}  
+  
+main()
+```
+
 
 **break Deyimi**
 
@@ -1517,79 +1501,72 @@ break [etiket-ismi];
 ```
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    for (let i = 20; i < 40; ++i) {
-        if (i % 12 == 0)
-            break
-
-
-        writeln(i);
-    }
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    for (let i = 20; i < 40; ++i) {  
+        if (i % 12 === 0)  
+            break  
+  
+        writeln(i);  
+    }  
+}  
+  
 main()
 ```
 
 >`break` deyiminin etiketli biçimi kullanılarak iç içe döngülerden çıkış sağlanabilir. Zaten bunun için tasarlanmıştır:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    EXIT_LOOP:
-    for (let i = 20; i < 40; ++i) {
-        for (let k = 21; k < 50; ++i) {
-            if (i % 12 == 0 && k < 25)
-                break EXIT_LOOP
-
-                writeln(`(${i}, ${k})`);
-        }
-    }
-
-    console.log("Tekrar yapıyor musunuz?")
-}
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    EXIT_LOOP:  
+    for (let i = 20; i < 40; ++i) {  
+        for (let k = 21; k < 50; ++i) {  
+            if (i % 12 === 0 && k < 25)  
+                break EXIT_LOOP  
+  
+            writeln(`(${i}, ${k})`);  
+        }  
+    }  
+  
+    writeln("Tekrar yapıyor musunuz?")  
+}  
 main()
 ```
 
 Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    EXIT_LOOP:
-    for (let i = 20; i < 40; ++i) {
-        EXIT_SECOND_LOOP:
-        for (let j = 20; j < 40; ++j) {
-            for (let k = 21; k < 50; ++i) {
-                if (j > 22)
-                    break EXIT_SECOND_LOOP
-
-                if (i % 12 == 0 && k < 25)
-                    break EXIT_LOOP
-
-                writeln(`(${i}, ${j}, ${k})`);
-            }
-        }
-    }
-
-    console.log("Tekrar yapıyor musunuz?")
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    EXIT_LOOP:  
+    for (let i = 20; i < 40; ++i) {  
+        EXIT_SECOND_LOOP:  
+        for (let j = 20; j < 40; ++j) {  
+            for (let k = 21; k < 50; ++i) {  
+                if (j > 22)  
+                    break EXIT_SECOND_LOOP  
+  
+                if (i % 12 === 0 && k < 25)  
+                    break EXIT_LOOP  
+  
+                writeln(`(${i}, ${j}, ${k})`);  
+            }  
+        }  
+    }  
+  
+    writeln("Tekrar yapıyor musunuz?")  
+}  
+  
 main()
 ```
 
@@ -1606,149 +1583,142 @@ continue [etiket ismi];
 Örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let sum = 0
-
-    for (let i = 1; i <= 100; ++i) {
-        if (i % 2 == 0)
-            continue
-
-        sum += i
-    }
-
-    console.log(`Toplam:${sum}`)
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function main() {  
+    let sum = 0  
+  
+    for (let i = 1; i <= 100; ++i) {  
+        if (i % 2 === 0)  
+            continue  
+  
+        sum += i  
+    }  
+  
+    writeln(`Toplam:${sum}`)  
+}  
+  
 main()
 ```
 
->Etiketli continue deyimi ile bir döngünün adımı içerisindeyken onu kapsayan döngüden devam edilmesi sağlanabilir. Etiketli continue deyimi yapısal programlamada dolayısıyla nesne yönelimli programlamada da tercih edilmemektedir.
+>Etiketli continue deyimi ile bir döngünün adımı içerisindeyken onu kapsayan döngüden devam edilmesi sağlanabilir. Etiketli continue deyimi yapısal programlamada, dolayısıyla nesne yönelimli programlamada da tercih edilmemektedir.
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı n sayısına göre n-inci asal sayıyı döndüren `getPrime` fonksiyonunu yazınız.
+>**_Sınıf Çalışması:_** Parametresi ile aldığı n sayısına göre n-inci asal sayıyı döndüren `nthPrime` fonksiyonunu yazınız.
+>
+>**Açıklama:** isPrime fonksiyonun etkinliğine güvenerek yazabilirsiniz.
 
-**Çözüm:**
+>**Çözüm-1:**
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function isPrime(val)
-{
-    if (val <= 1)
-        return false
-
-    if (val % 2 == 0)
-        return val == 2
-
-    if (val % 3 == 0)
-        return val == 3
-
-    if (val % 5 == 0)
-        return val == 5
-
-    if (val % 7 == 0)
-        return val == 7
-
-    for (let i = 11; i * i<= val; i += 2)
-        if (val % i == 0)
-            return false
-
-    return true
-}
-
-function getPrime(n)
-{
-    let count = 0
-    let i = 2
-
-    for (; count < n; ++i)
-        if (isPrime(i))
-            ++count
-
-    return i - 1
-}
-
-function main()
-{
-    writeln(getPrime(1))
-    writeln(getPrime(2))
-    writeln(getPrime(3))
-    writeln(getPrime(20))
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function isPrime(a) {  
+    if (a <= 1)  
+        return false  
+  
+    if (a % 2 === 0)  
+        return a === 2  
+  
+    if (a % 3 === 0)  
+        return a === 3  
+  
+    if (a % 5 === 0)  
+        return a === 5  
+  
+    if (a % 7 === 0)  
+        return a === 7  
+  
+    for (let i = 11; i * i <= a; i += 2)  
+        if (a % i === 0)  
+            return false  
+  
+    return true}  
+  
+  
+function nthPrime(n) {  
+    let count = 0  
+    let i = 2  
+  
+    for (; count < n; ++i)  
+        if (isPrime(i))  
+            ++count  
+    return i - 1  
+}  
+  
+function main() {  
+    writeln(nthPrime(1))  
+    writeln(nthPrime(2))  
+    writeln(nthPrime(3))  
+    writeln(nthPrime(4))  
+    writeln(nthPrime(20))  
+}  
+  
 main()
 ```
 
-**Diğer bir çözüm:**
+>**Çözüm-2:**
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function isPrime(val)
-{
-    if (val <= 1)
-        return false
-
-    if (val % 2 == 0)
-        return val == 2
-
-    if (val % 3 == 0)
-        return val == 3
-
-    if (val % 5 == 0)
-        return val == 5
-
-    if (val % 7 == 0)
-        return val == 7
-
-    for (let i = 11; i * i<= val; i += 2)
-        if (val % i == 0)
-            return false
-
-    return true
-}
-
-function getPrime(n)
-{
-    let count = 0
-    let val = 2
-
-    for (;;) {
-        if (isPrime(val))
-            ++count
-
-        if (count == n)
-            return val
-
-        ++val
-    }
-}
-
-function main()
-{
-    writeln(getPrime(1))
-    writeln(getPrime(2))
-    writeln(getPrime(3))
-    writeln(getPrime(20))
-}
-
+function writeln(a) {  
+    console.log(a)  
+}  
+  
+function isPrime(a) {  
+    if (a <= 1)  
+        return false  
+  
+    if (a % 2 === 0)  
+        return a === 2  
+  
+    if (a % 3 === 0)  
+        return a === 3  
+  
+    if (a % 5 === 0)  
+        return a === 5  
+  
+    if (a % 7 === 0)  
+        return a === 7  
+  
+    for (let i = 11; i * i <= a; i += 2)  
+        if (a % i === 0)  
+            return false  
+  
+    return true}  
+  
+  
+function nthPrime(n) {  
+    let count = 0  
+    let i = 2  
+  
+    for (;;) {  
+        if (isPrime(i))  
+            ++count  
+  
+        if (count === n)  
+            return i  
+  
+        ++i  
+    }  
+}  
+  
+function main() {  
+    writeln(nthPrime(1))  
+    writeln(nthPrime(2))  
+    writeln(nthPrime(3))  
+    writeln(nthPrime(4))  
+    writeln(nthPrime(20))  
+}  
+  
 main()
-``` 
+```
  
 > **_Sınıf Çalışması:_** Parametresi ile aldığı bir sayının Armstrong sayısı olup olmadığını test eden `isArmstrong` fonksiyonunu yazınız.
 > 
-> **Tanım:** Bir sayının basamaklarının basamak sayıncı kuvvetleri toplamı kendisine eşitse sayı bu sayıya Armstrong sayısı denir:
+> **Tanım:** Negatif olmayan bir sayının basamaklarının basamak sayıncı kuvvetleri toplamı kendisine eşitse bu sayıya Armstrong sayısı denir:
 > 
 > Örneğin:
 > 
@@ -1757,148 +1727,57 @@ main()
 **Çözüm:**
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function digitsPowSum(val)
-{
-    let n = digitsCount(val)
-    let sum = 0;
-
-    while (val) {
-        sum += parseInt(Math.pow(val % 10, n))
-        val = parseInt(val / 10)
-    }
-
-    return sum
-}
-
-function digitsCount(val)
-{
-    return val ? parseInt(Math.log10(Math.abs(val))) + 1 : 1
-}
-
-function isArmstrong(val)
-{
-    return val >= 0 && digitsPowSum(val) === val
-}
-
-function main()
-{
-    for (let n = -10; n <= 999999; ++n)
-        if (isArmstrong(n))
-            write(`${n} `)
-    writeln()
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function countDigits(a) {  
+    return !a ? 1 : Math.trunc(Math.log10(Math.abs(a))) + 1  
+}  
+  
+function digitsPowSum(a) {  
+    let n = countDigits(a)  
+    let total = 0  
+  
+    while (a) {  
+        total += Math.pow(a % 10, n)  
+        a = Math.trunc(a / 10)  
+    }  
+  
+    return total  
+}  
+  
+function isArmstrong(a) {  
+    return a >= 0 && a === digitsPowSum(a)  
+}  
+  
+function main() {  
+    for (let n = 0; n <= 999_999; ++n)  
+        if (isArmstrong(n))  
+            writeLine(n)  
+}  
+  
 main()
 ```
 
-> **_Sınıf Çalışması:_** Parametresi ile aldığı bir n değeri için n-inci Fibonacci sayısını döndüren `getFibonacciNumber` isimli fonksiyonu yazınız.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+> **_Sınıf Çalışması:_** Parametresi ile aldığı bir n değeri için n-inci Fibonacci sayısını döndüren `fibonacciNumber` isimli fonksiyonu yazınız.
 > 
 > Fibonacci Sayıları: 0 1 1 2 3 5 8 13 21 …
 
 **Çözüm:**
 
-```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function getFibonacciNumber(n)
-{
-    if (n <= 2)
-        return n - 1
-
-    let prev1 = 1, prev2 = 0, val = 0
-
-    for (let i = 2; i < n; ++i) {
-        val = prev1 + prev2
-        prev2 = prev1
-        prev1 = val
-    }
-
-    return val
-}
-
-function main()
-{
-    writeln(getFibonacciNumber(1))
-    writeln(getFibonacciNumber(2))
-    writeln(getFibonacciNumber(3))
-    writeln(getFibonacciNumber(7))
-    writeln(getFibonacciNumber(20))
-}
-
-main()
-```
-
-> **_Sınıf Çalışması:_** Parametresi ile aldığı bir sayıdan büyük en küçük Fibonacci sayısını döndüren `getNextFibonacciNumber` fonksiyonunu yazınız.
+> **_Sınıf Çalışması:_** Parametresi ile aldığı bir sayıdan büyük en küçük Fibonacci sayısını döndüren `nextFibonacciNumber` fonksiyonunu yazınız.
 > 
 > Örneğin: sayı 12 ise 13 dönecektir, sayı 13 ise 21 dönecektir
 
 **Çözüm:**
 
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function getNextFibonacciNumber(val)
-{
-    if (val < 0)
-        return 0
-
-    let prev1 = 1, prev2 = 0, result = 0
-
-    for (;;) {
-        result = prev1 + prev2
-        if (result > val)
-            return result
-        prev2 = prev1
-        prev1 = result
-    }
-}
-
-function main()
-{
-    writeln(getNextFibonacciNumber(-11))
-    writeln(getNextFibonacciNumber(0))
-    writeln(getNextFibonacciNumber(1))
-    writeln(getNextFibonacciNumber(2))
-    writeln(getNextFibonacciNumber(8))
-    writeln(getNextFibonacciNumber(9))
-    writeln(getNextFibonacciNumber(13))
-    writeln(getNextFibonacciNumber(1000000))
-    writeln(getNextFibonacciNumber(1346269))
-}
-
-main()
-```
 
 **switch Deyimi**
 
