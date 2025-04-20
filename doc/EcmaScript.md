@@ -1301,7 +1301,9 @@ function writeln(a) {
     console.log(a)  
 }  
   
-XXXXXXXX
+function countDigits(a) {
+	return !val ? 1 : Math.trunc(Math.log10(Math.abs(val))) + 1
+}
   
 function main() {  
     writeln(countDigits(1234567890))  
@@ -1765,18 +1767,96 @@ main()
 ```
 
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 > **_Sınıf Çalışması:_** Parametresi ile aldığı bir n değeri için n-inci Fibonacci sayısını döndüren `fibonacciNumber` isimli fonksiyonu yazınız.
 > 
 > Fibonacci Sayıları: 0 1 1 2 3 5 8 13 21 …
 
 **Çözüm:**
 
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function fibonacciNumber(n) {  
+    if (n <= 2)  
+        return n - 1  
+  
+    let prev1 = 1, prev2 = 1, val = 1  
+  
+    for (let i = 3; i < n; ++i) {  
+        val = prev1 + prev2  
+  
+        prev2 = prev1  
+        prev1 = val  
+    }  
+  
+    return val  
+}  
+  
+function main() {  
+    writeLine(fibonacciNumber(1))  
+    writeLine(fibonacciNumber(2))  
+    writeLine(fibonacciNumber(3))  
+    writeLine(fibonacciNumber(4))  
+    writeLine(fibonacciNumber(5))  
+    writeLine(fibonacciNumber(6))  
+    writeLine(fibonacciNumber(7))  
+    writeLine(fibonacciNumber(8))  
+    writeLine(fibonacciNumber(9))  
+    writeLine(fibonacciNumber(10))  
+}  
+  
+main()
+```
+
 > **_Sınıf Çalışması:_** Parametresi ile aldığı bir sayıdan büyük en küçük Fibonacci sayısını döndüren `nextFibonacciNumber` fonksiyonunu yazınız.
 > 
 > Örneğin: sayı 12 ise 13 dönecektir, sayı 13 ise 21 dönecektir
 
 **Çözüm:**
+
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function nextFibonacciNumber(a) {  
+    if (a < 0)  
+        return 0  
+  
+    let prev1 = 1, prev2 = 0, val  
+  
+    for (;;) {  
+        val = prev1 + prev2  
+  
+        if (val > a)  
+            return val  
+  
+        prev2 = prev1  
+        prev1 = val  
+    }  
+}  
+  
+function main() {  
+    writeLine(nextFibonacciNumber(-1) === 0)  
+    writeLine(nextFibonacciNumber(0) === 1)  
+    writeLine(nextFibonacciNumber(1) === 2)  
+    writeLine(nextFibonacciNumber(5) === 8)  
+    writeLine(nextFibonacciNumber(12) === 13)  
+    writeLine(nextFibonacciNumber(13) === 21)  
+}  
+  
+main()
+```
 
 
 **switch Deyimi**
@@ -1786,196 +1866,180 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 > `switch` deyiminin aşağı düşme (fall through) özelliği vardır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let code = 216
-
-    switch (code) {
-        case 212:
-            write("Avrupa ")
-        case 216:
-            writeln("İstanbul")
-            break
-        case 312:
-            writeln("Ankara")
-            break;
-        case 372:
-            writeln("Zonguldak")
-            break
-        default:
-            writeln("Geçersiz telefon kodu")
-    }
-
-    writeln("Tekrar yapıyor musun?")
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let code = 212  
+  
+    switch (code) {  
+        case 212:  
+            write("Avrupa ")  
+        case 216:  
+            writeLine("İstanbul")  
+            break  
+        case 312:  
+            writeLine("Ankara")  
+            break;  
+        case 372:  
+            writeLine("Zonguldak")  
+            break  
+        default:  
+            writeLine("Geçersiz telefon kodu")  
+    }  
+  
+    writeLine("Tekrar yapıyor musun?")  
+}  
+  
 main()
 ```
 
 >`switch` deyimi number türü için yani noktalı sayılar için de kullanılabilir. Ancak eşitlik karşılaştırması yaptığı için dikkatli olunmalıdır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let a = 0.1
-    let b = 0.2
-    let val = a + b
-
-    switch (val) {
-        case 0.3:
-            writeln("Bir")
-            break
-        case 2.5:
-            writeln("İki")
-            break
-        case 3:
-            writeln("Üç")
-            break
-        default:
-            writeln("Geçersiz değer")
-    }
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let a = 0.1  
+    let b = 0.2  
+    let val = a + b  
+    writeLine("val:" + val)  
+    switch (val) {  
+        case 0.3:  
+            writeLine("Bir")  
+            break  
+        case 2.5:  
+            writeLine("İki")  
+            break  
+        case 3:  
+            writeLine("Üç")  
+            break  
+        default:  
+            writeLine("Geçersiz değer")  
+    }  
+}  
+  
 main()
 ```
 
 **_Anahtar Notlar:_** Gerçek sayılar için doğrudan eşitlik karşılaştırmasında yuvarlama hataları olabileceğinden her zaman doğru sonuç elde edilmez. Eşitlik karşılaştırma işlemi için çeşitli yöntemler kullanılabilir. Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let val = 0.1 + 0.2
-    let a = 0.3
-    let delta = 0.00001
-
-    writeln(`val=${val}`)
-
-    if (Math.abs(val - a) < delta)
-        writeln("Eşit")
-    else
-        writeln("Eşit değil")
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let val = 0.1 + 0.2  
+    let a = 0.3  
+    let delta = 0.00001  
+  
+    writeLine(`val = ${val}`)  
+  
+    if (Math.abs(val - a) < delta)  
+        writeLine("Eşit")  
+    else  
+        writeLine("Eşit değil")  
+}  
+  
 main()
 ```
 
 >`switch` deyiminin case bölümlerinin sabit ifadesi olması gerekmez:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let val = 1
-    let a = 1
-
-    switch (val) {
-        case a:
-            writeln("Bir")
-            break
-        case 2:
-            writeln("Iki")
-            break
-        case 3:
-            writeln("Uc")
-            break;
-        default:
-            writeln("default")
-    }
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let val = 1  
+    let a = 1  
+  
+    switch (val) {  
+        case a:  
+            writeLine("Bir")  
+            break  
+        case 2:  
+            writeLine("Iki")  
+            break  
+        case 3:  
+            writeLine("Uc")  
+            break;  
+        default:  
+            writeLine("default")  
+    }  
+}  
+  
 main()
 ```
 
->Örnek bir menu programı. Program bir html içerisinde çalışabilecek şekilde tasarlanmıştır:
+>Örnek bir menu programı. Program bir html içerisinde çalışabilecek şekilde tasarlanmıştır. Detaylar şu durumda önemsizdir
 
 ```javascript
-function main()
-{
-    EXIT_LOOP:
-        for (;;) {
-            var result = myprompt();
-
-            switch (result) {
-                case "1":
-                    writeln("Ekle");
-                    break;
-                case "4":
-                    break EXIT_LOOP;
-                default:
-                    writeln("Hala secmediniz");
-                    break;
-            }
-        }
-}
-
-function myprompt()
-{
-    var msg = "1.Ekle\n";
-    msg += "2.Guncelle\n";
-    msg += "3.Sil\n";
-    msg += "4.Cikis\n";
-    msg += "Secenek:";
-
-    return prompt(msg);
-}
-function writeln(val)
-{
-    document.write(val + "</br>");
-}
-
-function write(val)
-{
-    write(val);
+function main() {  
+    EXIT_LOOP:  
+    for (;;) {  
+        var result = promptMessage();  
+  
+        switch (result) {  
+            case "1":  
+                writeln("Ekle");  
+                break;  
+            case "4":  
+                break EXIT_LOOP;  
+            default:  
+                writeln("Hala secmediniz");  
+                break;  
+        }  
+    }  
+}  
+  
+function promptMessage() {  
+    var msg = "1.Ekle\n";  
+    msg += "2.Guncelle\n";  
+    msg += "3.Sil\n";  
+    msg += "4.Cikis\n";  
+    msg += "Secenek:";  
+  
+    return prompt(msg);  
+}  
+  
+function writeln(val) {  
+    document.write(val + "</br>");  
+}  
+  
+function write(val) {  
+    write(val);  
 }
 ```
 
 
-
-**Object Türü**
+##### Object Türü
 
 > Object, ES' de bir referans türünü temsil eden en temel türdür. Bir object tanımlamak ve yaratmak yaratmak için:
 > 
 > - new operatörü kullanılabilir.
-> - Küme parantezi kullanılabilir. Buna ilkdeğer verme sentaksı da denebilir. JSON formatı tamamen buna dayanır. Zaten JSON “Javascript Object Notation” demektir.
+> - Küme parantezi kullanılabilir. Buna ilk değer verme (initialization) sentaksı da denebilir. JSON formatı tamamen buna dayanır. Zaten JSON `Javascript Object Notation` demektir.
 > - ES6 ile birlikte belirli koşullar altında new operatörsüz de nesne yaratılabilir. Ancak, nesnenin buna uygun olarak bildirilmiş olması gerekir. Bu yöntem çok tercih edilmez.
 > 
 > Bir Object referansı ve nokta operatörü ile bir isim yazıldığında bu isim bir property anlamına gelir. Bu isim daha sonra kullanılmak üzere Object’de bildirilmiş olur:
@@ -1983,1112 +2047,1099 @@ function write(val)
 > Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let device = new Object()
-
-    device.id = 1
-    device.name = "test"
-    device.port = 1234
-    device.ip = "192.168.2.234"
-
-    displayDevice(device)
-}
-
-function displayDevice(dev)
-{
-    writeln(`Device Id:${dev.id}`)
-    writeln(`Device name:${dev.name}`)
-    writeln(`Device port:${dev.port}`)
-    writeln(`Device IP:${dev.ip}`)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function printSensor(s) {  
+    writeLine(`${s.name}, ${s.host}, ${s.port}`)  
+}  
+  
+function main() {  
+    let s = new Object()  
+  
+    s.name = "Rain Sensor"  
+    s.host = "192.168.23.130"  
+    s.port = 4545  
+  
+    printSensor(s)  
+}  
+  
 main()
 ```
 
 >Object daha basit olarak sadece `{}` ile de elde edilebilir. Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let device = {}
-
-    device.id = 1
-    device.name = "test"
-    device.port = 1234
-    device.ip = "192.168.2.234"
-
-    displayDevice(device)
-}
-
-function displayDevice(dev)
-{
-    writeln(`Device Id:${dev.id}`)
-    writeln(`Device name:${dev.name}`)
-    writeln(`Device port:${dev.port}`)
-    writeln(`Device IP:${dev.ip}`)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function printSensor(s) {  
+    writeLine(`${s.name}, ${s.host}, ${s.port}`)  
+}  
+  
+function main() {  
+    let s = {}  
+  
+    s.name = "Rain Sensor"  
+    s.host = "192.168.23.130"  
+    s.port = 4545  
+  
+    printSensor(s)  
+}  
+  
 main()
 ```
 
 >Bir Object’in property elemanları küme parantezi içerisinde de yazılabilir. Bu durumda property elemanlarına değerle küme parantezi içerisinde verilebilir. Burada mutlaka değer verilmesi gerekir. Bu sentaksta değer vermek için `=` kullanılmaz. `:` atomu kullanılmalıdır.
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let device = {
-        id: 1,
-        name: "test",
-        port: 1234,
-        ip: "192.168.2.234"
-    }
-
-    displayDevice(device)
-
-    device.port = 5765
-
-    displayDevice(device)
-}
-
-function displayDevice(dev)
-{
-    writeln(`Device Id:${dev.id}`)
-    writeln(`Device name:${dev.name}`)
-    writeln(`Device port:${dev.port}`)
-    writeln(`Device IP:${dev.ip}`)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function printSensor(s) {  
+    writeLine(`${s.name}, ${s.host}, ${s.port}`)  
+}  
+  
+function main() {  
+    let s = {  
+        name: "Rain Sensor",  
+        host: "192.168.23.130",  
+        port: 4545  
+    }  
+  
+    printSensor(s)  
+}  
+  
 main()
 ```
 
 >Property elamanları tek tırnak veya çift tırnaklar arasında yazılabilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function printSensor(s) {  
+    writeLine(`${s.name}, ${s.host}, ${s.port}`)  
+}  
+  
+function main() {  
+    let s = {  
+        "name": "Rain Sensor",  
+        "host": "192.168.23.130",  
+        "port": 4545  
+    }  
+  
+    printSensor(s)  
+}  
+  
+main()
+```
 
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
- 
-function main()
-{
-    let device = {
-        "id": 1,
-        'name': "test",
-        'port': 1234,
-        'ip': "192.168.2.234"
-
-    }
-
-    displayDevice(device)
-}
-
-function displayDevice(dev)
-{
-    writeln(`Device Id:${dev.id}`)
-    writeln(`Device name:${dev.name}`)
-    writeln(`Device port:${dev.port}`)
-    writeln(`Device IP:${dev.ip}`)
-}
-
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function printSensor(s) {  
+    writeLine(`${s.name}, ${s.host}, ${s.port}`)  
+}  
+  
+function main() {  
+    let s = {  
+        'name': "Rain Sensor",  
+        'host': "192.168.23.130",  
+        'port': 4545  
+    }  
+  
+    printSensor(s)  
+}  
+  
 main()
 ```
 
 >Bir object içerisinde fonksiyon tanımlaması yapılabilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let device = {
-        id: 1,
-        name: "test",
-        port: 1234,
-        ip: "192.168.2.234",
-        display: function ()
-        {
-            writeln(`Device Id:${this.id}`)
-            writeln(`Device name:${this.name}`)
-            writeln(`Device port:${this.port}`)
-            writeln(`Device IP:${this.ip}`)
-        }
-    }
-
-    device.display()
-    device.port = 5765
-    device.display()
-
-    displayDevice(device)
-}
-
-function displayDevice(dev)
-{
-    writeln(`Device Id:${dev.id}`)
-    writeln(`Device name:${dev.name}`)
-    writeln(`Device port:${dev.port}`)
-    writeln(`Device IP:${dev.ip}`)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function printSensor(s) {  
+    s.print()  
+}  
+  
+function main() {  
+    let s = {  
+        name: "Rain Sensor",  
+        host: "192.168.23.130",  
+        port: 4545,  
+        print: function() {  
+            writeLine(`${this.name}, ${this.host}, ${this.port}`)  
+        }  
+    }  
+  
+    printSensor(s)  
+}  
+  
 main()
 ```
 
-> Burada display property elemanı aslında function türündendir. function türü olduğundan artık fonksiyon çağırma operatörü ile kullanılabilmektedir.
+> Burada `print` property elemanı aslında function türündendir. function türü olduğundan artık fonksiyon çağırma operatörü ile kullanılabilmektedir.
 > 
 > Object'in bir property elemanına global bir fonksiyonun da ismi verilebilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function displayDevice()
-{
-    writeln(`Device Id:${this.id}`)
-    writeln(`Device name:${this.name}`)
-    writeln(`Device port:${this.port}`)
-    writeln(`Device IP:${this.ip}`)
-}
-
-
-function main()
-{
-    let device = {
-        id: 1,
-        name: "test",
-        port: 1234,
-        ip: "192.168.2.234",
-        display: displayDevice
-    }
-
-    device.display()
-    device.port = 5765
-    device.display()
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function printSensor() {  
+    writeLine(`${this.name}, ${this.host}, ${this.port}`)  
+}  
+  
+function main() {  
+    let s = {  
+        name: "Rain Sensor",  
+        host: "192.168.23.130",  
+        port: 4545,  
+        print: printSensor  
+    }  
+  
+    printSensor()  
+    s.print()  
+}  
+  
 main()
 ```
 
-> Burada `displayDevice` fonksiyonu içerisinde `this` referansı kullanıldığına dikkat ediniz.
+> Burada `printSensor` fonksiyonu içerisinde `this` referansı kullanıldığına dikkat ediniz.
 > 
 > Aslında herhangi bir değişken de fonksiyon türünde olabilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function display(val)
-{
-    let isEven = function() {
-        return val % 2 === 0
-    }
-
-    writeln(isEven() ? "Çift" : "Tek")
-}
-
-function main()
-{
-    display(10)
-    display(11)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function display(val) {  
+    let isEven = function () {  
+        return val % 2 === 0  
+    }  
+  
+    writeLine(isEven() ? "Çift" : "Tek")  
+}  
+  
+function main() {  
+    display(10)  
+    display(11)  
+}  
+  
 main()
 ```
 
-> Burada `isEven` değişkeni function türündendir. Yukarıdaki örnekte adeta bir yerel fonksiyon tanımlanmıştır. `isEven` fonksiyonunun `display` fonksiyonun parameter değişkenini kullanabildiğine (capture) dikkat ediniz.
+> Burada `isEven` değişkeni function türündendir. Yukarıdaki örnekte adeta bir `yerel fonksiyon (local function)` tanımlanmıştır. `isEven` fonksiyonunun `display` fonksiyonun parametre değişkenini kullanabildiğine (capture) dikkat ediniz. Capture kavramına ilişkin detaylar ileride ele alınacaktır.
 > 
 > Yukarıdaki örnekte `isEven` fonksiyonu aşağıdaki gibi de tanımlanabilirdi:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function display(val)
-{
-    function isEven() {
-        return val % 2 === 0
-    }
-
-    writeln(isEven() ? "Çift" : "Tek")
-}
-
-function main()
-{
-    display(10)
-    display(11)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function display(val) {  
+    function isEven() {  
+        return val % 2 === 0  
+    }  
+  
+    writeLine(isEven() ? "Çift" : "Tek")  
+}  
+  
+function main() {  
+    display(10)  
+    display(11)  
+}  
+  
 main()
-``` 
+```
 
-**Diziler**
+##### Diziler
 
-> ES’ de diziler daha fazla yeteneğe sahip olacak biçimde tasarlanmıştır. Yani ES’ de diziler yalın olarak düşünülmemelidir.
+> ES’ de diziler, klasik dizilere göre daha fazla yeteneğe sahip olacak biçimde tasarlanmıştır. Yani ES’ de diziler, yalnızca dizi özelliklerini gerçekleyen bir veri yapısı olarak düşünülmemelidir.
 > 
-> Dizilere ilk değer verilmesi aşağıdaki gibi yapılabilir:
+> Dizilere ilk değer verilmesi (initialization) aşağıdaki gibi `[]` ile yapılabilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-
-function main()
-{
-    let names = ["ali", "veli", "selami"];
-
-    writeln(names)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let names = ["ali", "veli", "selami"]  
+  
+    writeLine(names)  
+}  
+  
 main()
 ```
 
 > Bir dizi, Array türü ile new operatörü kullanılarak yaratılabilir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-
-function main()
-{
-    let names = new Array()
-
-    writeln(names)
-}
-
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let names = new Array()  
+  
+    writeLine(names)  
+}  
+  
 main()
 ```
+
+>Yukarıdaki örnekte bulunan boş dizi aşağıdaki gibi de yaratılabilir
+
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let names = []  
+  
+    writeLine(names)  
+}  
+  
+main()
+```
+
 
 > Bir diziye ekleme `[]` operatörü ile yapılabilir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-
-function main()
-{
-    let names = []
-
-    names[0] = "ali"
-    names[1] = "veli"
-
-    writeln(names)
-}
-
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let names = []  
+  
+    names[0] = "Alican"  
+    names[1] = "Ayberk"  
+    names[2] = "Ayhan"  
+  
+    writeLine(names)  
+}  
+  
 main()
 ```
 
 > Array nesnesi için aralara da yer ayrılabilir. Yani aşağıdaki örnekte değer atanmamış indeksteki elemanlar `undefined` değerinde olurlar:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-
-function main()
-{
-    let names = []
-
-    names[0] = "ali"
-    names[3] = "veli"
-
-    writeln(names[1])
-    writeln(`Length:${names.length}`)
-}
-
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let names = []  
+  
+    names[0] = "Alican"  
+    writeLine(`Length:${names.length}`)  
+    names[3] = "Ayberk"  
+    writeLine(`Length:${names.length}`)  
+    names[5] = "Ayhan"  
+    writeLine(`Length:${names.length}`)  
+    writeLine(names)  
+}  
+  
 main()
 ```
 
 > Array nesnesi için başlangıçta yer ayrılabilir. Bu durumda tüm elemanlar `undefined` değerinde olacaktır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-
-function main()
-{
-    let names = new Array(10)
-
-    writeln(names[1])
-    writeln(`Length:${names.length}`)
-}
-
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let names = new Array(20)  
+  
+    writeLine(`Length:${names.length}`)  
+    writeLine(names)  
+}  
+  
 main()
 ```
 
 > Array nesnesi `for` döngüsü ile dolaşılabilir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4]
-
-    for (let i = 0; i < numbers.length; ++i)
-        writeln(numbers[i])
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let cities = ["Ankara", "Istanbul", "Izmir", "Bursa", "Antalya"]  
+      
+    for (let i = 0; i < cities.length; ++i)  
+        writeLine(cities[i])  
+}  
+  
 main()
 ```
 
-**for-in döngü deyimi**
+##### for-in döngü deyimi
 
 > Bu döngü deyimi ile bir dizi baştan itibaren sonuna kadar dolaşılabilir. Bu döngü deyiminde her adımda index numarası verilmektedir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4];
-
-    for (let i in numbers)
-        write(`${numbers[i]} `)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let cities = ["Ankara", "Istanbul", "Izmir", "Bursa", "Antalya"]  
+  
+    for (let i in cities)  
+        writeLine(cities[i])  
+}  
+  
 main()
 ```
 
 > for-in döngü deyimi ile object’in property elemanlarının isimleri elde edilebilir. Buna göre aşağıdaki örnekte property ismi indeks yapılarak değerine erişilmiştir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let person = {name: 'Deniz', familyName: 'Karan', birthDate: '2021-09-06'}
-
-    for (let pn in person)
-        writeln(`'${pn}': ${person[pn]}`)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let sensor = {name: "Rain sensor", host: "192.168.2.130", port: 2345, data:34.5, print: function() { writeLine(this.data) }}  
+  
+    for (let fn in sensor)  
+        writeLine(`${fn}: ${sensor[fn]}`)  
+  
+    sensor["print"]()  
+}  
+  
 main()
 ```
 
-> for-in döngü deyimi ile aslında dizinin diğer elemanları da gezilebilmektedir:
+> Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4];
-
-    numbers.number = 90
-    numbers.name = "ali"
-
-    for (let i in numbers)
-        writeln(`${i}->${ numbers[i]}`)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let a = [1, 4, 6, 9, -79]  
+  
+    a.description = "Array of integral numbers"  
+    a.maxLength = 20  
+  
+    for (let i in a)  
+        writeLine(`a[${i}] = ${a[i]}`)  
+}  
+  
 main()
 ```
 
-> Dikkat edilirse for-in döngü deyimi ile elde edilen dizi nesnesinin property elemanları index olarak kullanıldığında property elemanlarının değerleri elde edilmektedir.
+> Dikkat edilirse for-in döngü deyimi ile elde edilen dizi nesnesinin veya herhangi bir nesnenin property elemanları, `[]` operatörüne indeks olarak verildiğinde, property elemanlarının değerleri elde edilmektedir.
 
 **for-of döngü deyimi**
 
 > ES6 ile birlikte for-of denilen bir döngü deyimi de eklenmiştir. Bu döngü deyiminde her adımda döngü değişkenine dizinin elemanı atanır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4];
-
-    for (let val of numbers)
-        write(`${val} `)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let a = [1, 4, 6, 9, -79]  
+  
+    for (let e of a)  
+        write(`${e} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
 
 > for-of döngü deyimi ile yalnızca dizinin elemanları elde edilebilir. Dizi nesnesine ilişkin elemanlar ve değerleri elde edilemez:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4];
-
-    numbers.x = 10
-    numbers.y = "ankara"
-
-    writeln(`Length: ${numbers.length}`)
-
-    for (let val of numbers)
-        write(`${val} `)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let a = [1, 4, 6, 9, -79]  
+  
+    a.description = "Array of integral numbers"  
+    a.maxLength = 20  
+    for (let e of a)  
+        write(`${e} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
+
+>Aşağıdaki demo örnekte sensor dolaşılabilir (iterable) bir nesne olmadığından döngü deyiminde hata oluşur
+
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let sensor = {name: "Rain sensor", host: "192.168.2.130", port: 2345, data:34.5, print: function() { writeLine(this.data) }}  
+  
+    for (let e of sensor)  
+        write(`${e} `)  
+  
+    writeLine()  
+}  
+  
+main()
+```
+
 
 **_Sınıf Çalışması:_**  Parametresi ile aldığı bir diziyi tersyüz eden `reverse` isimli global bir fonksiyon yazınız ve test ediniz. Fonksiyon içerisinde ikinci bir dizi kullanmayınız.
+**Açıklama:** Bu işlem için ileride göreceğimiz dizilere özgü built-in fonksiyonlar kullanılmayacaktır.
 
-**Çözüm:**
-
-Ya da örneğin:
+**Çözüm 1:**
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function swapElems(a, i, k)
-{
-    let temp = a[i]
-
-    a[i] = a[k]
-    a[k] = temp
-}
-
-function reverseArray(a)
-{
-    let halfLen = a.length / 2
-
-    for (let i = 0; i < halfLen; ++i)
-        swapElems(a, i, a.length - 1 - i)
-}
-
-function main()
-{
-    let a = [1, 2, 3, 4, 5, 6]
-
-    reverseArray(a)
-
-    writeln(a)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function swap(a, i, j) {  
+    let temp = a[i]  
+  
+    a[i] = a[j]  
+    a[j] = temp  
+}  
+  
+function reverse(a) {  
+    for (let i = 0; i < a.length / 2; ++i)  
+        swap(a, i, a.length - 1 - i);  
+}  
+  
+function main() {  
+    let a = [1, 2, 3, 4]  
+    let b = ["İstanbul", "Ankara", "İzmir"]  
+  
+    reverse(a)  
+    reverse(b)  
+    writeLine(a)  
+    writeLine(b)  
+}  
+  
 main()
 ```
 
-Ya da örneğin:
+**Çözüm 2:**
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function swapElems(a, i, k)
-{
-    let temp = a[i]
-
-    a[i] = a[k]
-    a[k] = temp
-}
-
-function reverseArray(a)
-{
-    let first = 0
-    let last = a.length - 1
-
-    while (first < last)
-        swapElems(a, first++, last--)
-}
-
-function main()
-{
-    let a = [1, 2, 3, 4, 5]
-
-    reverseArray(a)
-
-    writeln(a)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function swap(a, i, j) {  
+    let temp = a[i]  
+  
+    a[i] = a[j]  
+    a[j] = temp  
+}  
+  
+function reverse(a) {  
+    let left = 0  
+    let right = a.length - 1  
+  
+    while (left < right)  
+        swap(a, left++, right--);  
+}  
+  
+function main() {  
+    let a = [1, 2, 3, 4]  
+    let b = ["İstanbul", "Ankara", "İzmir"]  
+  
+    reverse(a)  
+    reverse(b)  
+    writeLine(a)  
+    writeLine(b)  
+}  
+  
 main()
 ```
 
-> Her fonksiyonun içerisinde argümanların bulunduğu `arguments` isimli bir dizi referansı kullanılabilir. Böylece değişken sayıda argüman alan fonksiyonlarda kolay (ama dikkatli) olarak yazılabilir:
+> Her fonksiyonun içerisinde argümanların bulunduğu `arguments` isimli bir dizi referansı built-in olarak kullanılabilir. Böylece değişken sayıda argüman alan fonksiyonlar da kolay (ama dikkatli) olarak yazılabilir:
+
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
 
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function writeLine()
-{
-    for (let arg of arguments)
-        writeln(`${arg}`)
-}
-
-function sum()
-{
-    let total = 0
-
-    for (let val of arguments)
-        total += val
-
-    return total
-}
-
-function main()
-{
-    writeLine(10, 20, 30)
-    writeLine(10)
-    writeln(sum(10, 20, 30))
-    writeln(sum(10))
-    writeln(sum())
-}
-
+function sum() {  
+    let total = 0  
+  
+    for (let v of arguments)  
+        total += v  
+  
+    return total  
+}  
+  
+function main() {  
+    writeLine(sum())  
+    writeLine(sum(1, 2, 4, 8))  
+    writeLine(sum(1))  
+}  
+  
 main()
 ```
 
-**İsimsiz fonksiyonlar ve Lambda ifadeleri**
-
-> Bilindiği gibi ES’de fonksiyonlar `function` anahtar sözcüğü ile bildirilir. function anahtar sözcüğünden sonra isim yazılmazsa bu tarz fonksiyonlara isimsiz fonksiyonlar (anonymous functions) denir.
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    function add(a, b)
-    {
-        return a + b
-    }
-
-    writeln(typeof add)
-    writeln(add(10, 20))
-}
-
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function print(sep, end) {  
+    for (let i = 2; i < arguments.length; ++i)  
+        write(`${arguments[i]}${sep}`)  
+  
+    write(end)  
+}    
+  
+function main() {  
+    print(" ", "\n", 1, 3, 5, 7, 9)  
+    print("\n", "\n", "Ankara", "İstanbul", "İzmir", "Bursa")  
+}  
+  
 main()
 ```
 
-> İsimsiz fonksiyonlar bir değişkene atanabilir. Bu durumda bu atanan değişkenin türü function olur.
-> 
+##### İsimsiz fonksiyonlar
+
+> Bilindiği gibi ES’de fonksiyonlar `function` anahtar sözcüğü ile bildirilir. function anahtar sözcüğünden sonra isim yazılmazsa bu tarz fonksiyonlara **isimsiz fonksiyonlar (anonymous functions)** denir.
+
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    function add(a, b) {  
+        return a + b  
+    }  
+  
+    writeLine(typeof add)  
+    writeLine(add(10, 20))  
+}  
+  
+main()
+```
+
+> İsimsiz fonksiyonlar bir değişkene atanabilir. Bu durumda bu atanan değişkenin türü `function` olur.
+
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function main() {  
+    let add = function(a, b) {  
+        return a + b  
+    }  
+  
+    writeLine(typeof add)  
+    writeLine(add(10, 20))  
+}  
+  
+main()
+```
+
+
 > İsimsiz fonksiyonlar arka planda çağrılacak (callback) fonksiyonlar biçiminde başka bir fonksiyona argüman olarak geçilebilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function forEach(array, fn)
-{
-    for (let elem of array)
-        fn(elem)
-}
-
-function main()
-{
-    let a = [1, 2, 3, -6]
-
-    forEach(a, function (elem) {
-        writeln(`${elem * elem}`)
-    })
-
-    writeln("******************")
-    forEach(a, function (elem) {
-        writeln(elem)
-    })
-
-    writeln("******************")
-
-    forEach(a, writeln)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function forEach(a, f) {  
+    for (let e of a)  
+        f(e)  
+}  
+  
+function main() {  
+    forEach([1, 3, 5, 7], function (e) {write(`${e} `)})  
+    writeLine()  
+    forEach([1, 3, 5, 7], function (e) {writeLine(e)})  
+}  
+  
 main()
 ```
+
 
 Ya da örneğin:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function forEach(array, fn)
-{
-    for (let elem of array)
-        fn(elem)
-}
-
-function main()
-{
-    let a = [1, 2, 3, -6]
-
-    let displaySquare = function (elem) {
-        writeln(`${elem * elem}`)
-    }
-
-    forEach(a, displaySquare)
-
-    writeln("******************")
-
-    let display = function (elem) {
-        writeln(elem)
-    }
-    forEach(a, display)
-}
-
-main()
-```
-
-Ya da örneğin:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function transform(a, b, cb)
-{
-    let length = a.length
-
-    for (let i = 0; i < length; ++i)
-        b[i] = cb(a[i])
-}
-
-function main()
-{
-    let a = [1, 2, 3, 4]
-    let b = []
-
-    transform(a, b, function (val) {return val * val})
-
-    for (let val of b)
-        write(`${val} `)
-
-    writeln()
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function forEach(a, c, f) {  
+    for (let i = 0; i < c; ++i)  
+        f(a[i])  
+}  
+  
+function transform(a, b, f) {  
+    for (let i in a)  
+        b[i] = f(a[i])  
+}  
+  
+function copyIf(a, b, f) {  
+    let index = 0  
+  
+    for (let i in a)  
+        if (f(a[i]))  
+            b[index++] = a[i]  
+  
+    return index  
+}  
+  
+function main() {  
+    let a = [1, 2, 3, 4, 5]  
+    let b = []  
+  
+    transform(a, b, function(v) {return v * v})  
+    forEach(b, b.length, function(v) {write(`${v} `)})  
+    writeLine()  
+    b = []  
+    let c = copyIf(a, b, function(v) {return v % 2 === 0})  
+  
+    forEach(b, c, function(v) {write(`${v} `)})  
+    writeLine()  
+}  
+  
 main()
 ```
 
 > Fonksiyonlar Object oluşturmak için de kullanılabilir. Yani ES’ de bir Object function anahtar sözcüğü ile de oluşturulabilmektedir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let WeatherInfo = function (id, place, country, lat, lng, description) {
-    this.id = id
-    this.place = place
-    this.country = country
-    this.lat = lat
-    this.lng = lng
-    this.description = description
-    this.toString = function () {
-        return `${this.country}:${this.place}:${this.lat};${this.lng}, ${this.description}`
-    }
-}
-
-function main()
-{
-    let wi1 = new WeatherInfo(1, "Mecidiyeköy", "TR", 23.456, 41.234, "Bulutlu")
-    let wi2 = new WeatherInfo(2, "Riva", "TR", 23.567, 41.678, "Yağmurlu")
-
-    writeln(wi1.toString())
-    writeln(wi2.toString())
-}
-
-main()
-
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function forEach(a, c, f) {  
+    for (let i = 0; i < c; ++i)  
+        f(a[i])  
+}  
+  
+function transform(a, b, f) {  
+    for (let i in a)  
+        b[i] = f(a[i])  
+}  
+  
+function copyIf(a, b, f) {  
+    let index = 0  
+  
+    for (let i in a)  
+        if (f(a[i]))  
+            b[index++] = a[i]  
+  
+    return index  
+}  
+  
+let WeatherInfo = function (id, place, country, lat, lng, description) {  
+    this.id = id  
+    this.place = place  
+    this.country = country  
+    this.lat = lat  
+    this.lng = lng  
+    this.description = description  
+    this.toString = function () {  
+        return `${this.country}:${this.place}:${this.lat};${this.lng}, ${this.description}`  
+    }  
+}  
+  
+function main() {  
+    let wi1 = new WeatherInfo(1, "Mecidiyeköy", "TR", 23.456, 41.234, "Bulutlu")  
+    let wi2 = new WeatherInfo(2, "Riva", "TR", 23.567, 41.678, "Yağmurlu")  
+  
+    writeLine(wi1.toString())  
+    writeLine(wi2.toString())  
+}  
+  
 main()
 ```
 
 Ya da örneğin:
  
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let Product = function (name, price, stock)
-{
-    this.name = name
-    this.price = price
-    this.stock = stock
-    this.getTotal =  function () {return this.stock * this.price }
-}
-
-function main()
-{
-    let p1 = new Product("laptop", 4000, 34)
-    let p2 = new Product("mouse", 40, 349)
-
-    writeln(`Total:${p1.getTotal()}`)
-    writeln(`Total:${p2.getTotal()}`)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function forEach(a, c, f) {  
+    for (let i = 0; i < c; ++i)  
+        f(a[i])  
+}  
+  
+function transform(a, b, f) {  
+    for (let i in a)  
+        b[i] = f(a[i])  
+}  
+  
+function copyIf(a, b, f) {  
+    let index = 0  
+  
+    for (let i in a)  
+        if (f(a[i]))  
+            b[index++] = a[i]  
+  
+    return index  
+}  
+  
+let Product = function (name, price, stock) {  
+    this.name = name  
+    this.price = price  
+    this.stock = stock  
+    this.getTotal =  function () {return this.stock * this.price }  
+}  
+  
+function main() {  
+    let p1 = new Product("laptop", 4000, 34)  
+    let p2 = new Product("mouse", 40, 349)  
+  
+    writeLine(`Total:${p1.getTotal()}`)  
+    writeLine(`Total:${p2.getTotal()}`)  
+}  
+  
 main()
 ```
 
-> Yukarıdaki kodlarda aslında bir Object için constructor (ctor) yazılmıştır. Bu fonksiyonlar new operatörü ile nesne yaratılırken çağrılır.
-
-**_Anahtar Notlar:_** ES’ de de türler kategori olarak değer türleri ve referans türleri şeklinde iki gruba ayrılabilir. Referans türleri içerisinde adresler tutulur. Ancak bu durum mantıksaldır. Detayları ileride ele alınacaktır. Object türleri referans türleridir. Örneğin:
+>Ya da örneğin
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let Product = function (name, price, stock)
-{
-    this.name = name
-    this.price = price
-    this.stock = stock
-    this.getTotal =  function () {return this.stock * this.price }
-
-    this.toString = function () {
-        return `${this.name}:${this.stock} * ${this.price}=${this.getTotal()}`
-    }
-}
-
-function addStock(p, value)
-{
-    p.stock += value
-}
-
-function main()
-{
-    let p = new Product("laptop", 4000, 34)
-
-    writeln(p.toString())
-
-    addStock(p, 100)
-
-    writeln(p.toString())
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+  
+let Sensor = function Sensor(name, host, port) {  
+    this.name = name  
+    this.host = host  
+    this.port = port  
+    this.print = function () {  
+        writeLine(`${this.name}, ${this.host}, ${this.port}`)  
+    }  
+  
+    return this  
+}  
+  
+function main() {  
+    let s1 = new Sensor("Rain Sensor", "192.168.23.130", 4545) //SenserInt(adress, name, host, port)  
+    let s2 = new Sensor("Rain Sensor", "192.168.23.130", 4545)  
+  
+    s1.print()  
+    s2.print()  
+}  
+  
 main()
 ```
 
-**_Anahtar Notlar:_** Aslında referans türleri ES terminolojisinde “mutable type” olarak geçer. Yani aslında her şeyin adresi tutulur. Yalnızca tutulan adresin türü değişikliğe izin vermiyorsa `immutable`, veriyorsa `mutable` type olarak ele alınır. Yani aslında yukarıda ”referans türleri içerisinde adresler tutulur” cümlesi basitleştirmek için yazılmıştır. Temel türler `immutable`, Object türleri ise `mutable` type olarak ele alınır.
+> Yukarıdaki demo örneklerde aslında bir Object için constructor (ctor) yazılmıştır. Bu fonksiyonlar `new` operatörü ile nesne yaratılırken çağrılır.
+
+**_Anahtar Notlar:_** ES’ de de türler kategori olarak değer türleri ve referans türleri şeklinde iki gruba ayrılabilir. Referans türleri içerisinde adresler tutulur. Ancak bu durum mantıksaldır. Detayları ileride ele alınacaktır. Object türleri referans türleridir.
+
+**_Anahtar Notlar:_** Aslında referans türleri ES terminolojisinde **mutable type** olarak geçer. Yani aslında her şeyin adresi tutulur. Yalnızca tutulan adresin türü değişikliğe izin vermiyorsa **immutable**, veriyorsa **mutable** type olarak ele alınır. Yani aslında yukarıda `referans türleri içerisinde adresler tutulur` cümlesi basitleştirmek için yazılmıştır. Temel türler `immutable`, Object türleri ise `mutable` type olarak ele alınır.
+
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+let Sensor = function(name, host, port) {  
+    this.name = name  
+    this.host = host  
+    this.port = port  
+}  
+  
+function changePort(s, port) {  
+    s.port = port  
+}  
+  
+function foo(a) {  
+    ++a  
+    writeLine(`a = ${a}`)  
+}  
+
+function main() {  
+    let x = 10  
+  
+    foo(x)  
+  
+    writeLine(`x = ${x}`) //x = 10
+  
+    let s = new Sensor("sensor1", "localhost", 8080)  
+  
+    changePort(s, 4545)  
+  
+    writeLine(s.port) //4545
+}  
+  
+main()
+```
 
 > Fonksiyonlar kendilerinden önce bildirilen değişkenlerin hepsini yakalayabilirler (capture):
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function foo(b)
-{
-    let a = 10
-
-    let f = function ()
-    {
-        writeln(`a=${a}`)
-        writeln(`b=${b}`)
-    }
-
-    f()
-}
-
-function main()
-{
-    foo(20)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function displayStatus(a) {  
+    let isEven = function () {return a % 2 === 0}  
+  
+    writeLine(isEven() ? "Çift" : "Tek")  
+}  
+  
+function main() {  
+    displayStatus(10)  
+    displayStatus(11)  
+}  
+  
 main()
 ```
  
-Örneğin:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-
-function displayStatus(a)
-{
-    let isEven = function () {return a % 2 === 0}
-
-    writeln(isEven() ? "Çift" : "Tek")
-}
-
-function main()
-{
-    displayStatus(10)
-    displayStatus(11)
-}
-
-main()
-```
 
 > Yukarıdaki örnek aşağıdaki gibi de yapılabilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-function displayStatus(a)
-{
-    function isEven() {return a % 2 === 0}
-
-    writeln(isEven() ? "Çift" : "Tek")
-}
-
-function main()
-{
-    displayStatus(10)
-    displayStatus(11)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function displayStatus(a) {  
+    function isEven() {return a % 2 === 0}  
+  
+    writeLine(isEven() ? "Çift" : "Tek")  
+}  
+  
+function main() {  
+    displayStatus(10)  
+    displayStatus(11)  
+}  
+  
 main()
 ```
 
 > Fonksiyonlar yakaladıkları değişkenleri değiştirebilirler:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function foo(b)
-{
-    let a = 10
-
-    let f = function () {
-        writeln(`a=${a}`)
-        a *= 2
-        writeln(`b=${b}`)
-        b -= 3
-    }
-
-    f()
-    f()
-}
-
-function main()
-{
-    foo(20)
-}
-
+function write(a) {  
+    process.stdout.write(a)  
+}  
+  
+function writeLine(a) {  
+    write(a === undefined ? '\n' : `${a}\n`)  
+}  
+  
+function foo(b)  
+{  
+    let a = 10  
+  
+    let f = function (x) {  
+        writeLine(`a = ${a}`)  
+        a *= 2  
+        writeLine(`b = ${b}`)  
+        b -= 3  
+  
+        return a + b + x  
+    }  
+  
+    writeLine(f(10))  
+    writeLine(f(10))  
+    writeLine(`a = ${a}`)  
+    writeLine(`b = ${b}`)  
+}  
+  
+function main() {  
+    foo(30)  
+}  
+  
 main()
 ```
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 **Lambda İfadeleri**
 

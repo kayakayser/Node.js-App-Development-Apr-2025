@@ -6,30 +6,27 @@ function writeLine(a) {
     write(a === undefined ? '\n' : `${a}\n`)
 }
 
-function countDigits(a) {
-    return !a ? 1 : Math.trunc(Math.log10(Math.abs(a))) + 1
-}
+function foo(b)
+{
+    let a = 10
 
-function digitsPowSum(a) {
-    let n = countDigits(a)
-    let total = 0
+    let f = function (x) {
+        writeLine(`a = ${a}`)
+        a *= 2
+        writeLine(`b = ${b}`)
+        b -= 3
 
-    while (a) {
-        total += Math.pow(a % 10, n)
-        a = Math.trunc(a / 10)
+        return a + b + x
     }
 
-    return total
-}
-
-function isArmstrong(a) {
-    return a >= 0 && a === digitsPowSum(a)
+    writeLine(f(10))
+    writeLine(f(10))
+    writeLine(`a = ${a}`)
+    writeLine(`b = ${b}`)
 }
 
 function main() {
-    for (let n = 0; n <= 999_999; ++n)
-        if (isArmstrong(n))
-            writeLine(n)
+    foo(30)
 }
 
 main()
