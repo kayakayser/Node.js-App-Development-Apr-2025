@@ -3138,12 +3138,9 @@ function main() {
 main()
 ```
 
+##### Lambda İfadeleri
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-**Lambda İfadeleri**
-
-> Lambda ifadeleri fonksiyonel programlama tekniği ile kod yazımı için matematikten programlamaya aktarılmıştır. Lambda ifadeleri anonim fonksiyonların gelişmiş biçimi gibi düşünülebilir. Lambda ifadeleri ile çok karmaşık kodlar yazılabilir. Ancak biz kullanılan genel biçimlerini ele alacağız. Lambda ifadelerinin genel biçimleri:
+> Lambda ifadeleri fonksiyonel programlama tekniği ile kod yazımı için matematikten programlamaya aktarılmıştır. Lambda ifadeleri anonim fonksiyonların gelişmiş biçimi olarak düşünülebilir. Lambda ifadeleri çok daha karmaşık biçimlerde kullanılabilmektedir. Ancak biz kullanılan genel biçimlerini ele alacağız. Lambda ifadelerinin genel biçimleri:
 > 
 > 1. (<değişken listesi>) => ifade
 > 2. (<değişken listesi>) => {..}
@@ -3155,222 +3152,252 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 > Lambda ifadeleri function türündendir. Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let add = (a, b) => a + b
-
-    writeln(add(10, 20))
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)
+let main = () => {  
+    let add = (a, b) => a + b  
+      
+    writeLine(add(10, 20))  
+}  
+  
 main()
 ```
 
-> Lambda ifadelerinde kullanılan parametre değişkenler yalnızca o ifade içerisinde görülebilirdir:
+> Lambda ifadelerinde kullanılan parametre değişkenleri yalnızca o ifade içerisinde görülebilirdir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let add = (a, b) => a + b
-
-    writeln(add(10, 20))
-    writeln(`a = ${a}`) //error
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`) 
+let main = () => {  
+    let add = (a, b) => a + b  
+  
+    writeLine(add(10, 20))  
+    writeLine(`a = ${a}`) //error: a is not defined  
+}  
+  
 main()
 ```
 
-> Lambda ifadeleri kendisinden önce bildirilen değişkenlerin hepsini yakalabilirler:
+> Lambda ifadeleri kendisinden önce bildirilen değişkenlerin hepsini yakalayabilirler (capture):
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-
-function sumWith(c)
-{
-    let add = (a, b) => a + b + c
-
-    return add(10, 20)
-}
-
-function main()
-{
-    writeln(sumWith(20))
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)
+let sumWith = (c) => {  
+    let add = (a, b) => a + b + c  
+  
+    writeLine(add(10, 20))  
+}  
+  
+let main = () => {  
+    sumWith(30)  
+}  
+  
 main()
 ```
 
 > Lambda ifadeleri içerisinde yakalanan değişkenler değiştirilebilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function foo(c)
-{
-    let f = (a, b) => a + b + c++
-
-    writeln(f(10, 20))
-    writeln(f(10, 20))
-}
-
-function main()
-{
-    foo(3)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let sumWith = (c) => {  
+    let add = (a, b) => a + b + c++  
+  
+    writeLine(add(10, 20))  
+    writeLine(add(10, 20))  
+}  
+  
+let main = () => {  
+    sumWith(30)  
+}  
+  
 main()
 ```
 
-**_Anahtar Notlar:_** ES’de lambda ifadelerine “oklu fonksiyonlar (arrow functions)” da denilmektedir.
+**_Anahtar Notlar:_** ES’de lambda ifadelerine **arrow functions** ya da **lambda functions** da denilmektedir.
 
-> Aşağıdaki örnekte generate fonksiyonu iki tane fonksiyon (callback) almaktadır:
+> Aşağıdaki demo örnekte `generate` ve `each` fonksiyonları callback'ler lambda ifadeleri olarak verilmektedir
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function generate(n, supplier)
-{
-    let result = []
-
-    for (let i = 0; i < n; ++i)
-        result[i] = supplier()
-
-    return result
-}
-
-function forEach(a, consumer)
-{
-    for (let e of a)
-        consumer(e)
-}
-
-function main()
-{
-    let numbers = generate(10, () => randomInt(10, 20))
-
-    forEach(numbers, val => write(`${val} `))
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)    
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+let randomNumber = (min, bound) => Math.random() * (bound - min)  
+  
+let generate = (n, supplier) => {  
+    let result = []  
+  
+    for (let i = 0; i < n; ++i)  
+        result[i] = supplier()  
+  
+    return result  
+}  
+  
+let each = (a, consumer) =>  {  
+    for (let e of a)  
+        consumer(e)  
+}  
+  
+let main = () => {  
+    let a = generate(10, () => randomInt(0, 100))  
+  
+    each(a, e => write(`${e} `))  
+  
+    writeLine()  
+}  
+  
 main()
 ```
 
-**_Anahtar Notlar:_** ES’ de genel olarak global olarak yazılan alt programlara fonksiyon, sınıflar (object ’ler) içerisinde yazılan alt programlara ise metot denir. Metotlara da fonksiyon denmesi yanlış değildir. Ancak bir fonksiyona metot denmesi yanlış anlaşılabilir.
+**_Anahtar Notlar:_** ES’ de genel olarak global olarak yazılan alt programlara fonksiyon, sınıflar (object ’ler) içerisinde yazılan alt programlara ise metot denir. Metotlara da fonksiyon denmesi yanlış değildir ancak bir sınıfa ya da object'e ait olmayan fonksiyona metot denmesi teknik olarak doğru değildir.
 
-**Array Nesnesine Ait Yararlı Metotlar**
+##### Array Nesnesine Ait Yararlı Metotlar
 
-> `Array` türüne ait birçok yararlı metot bulunmaktadır. Bu metotların bir kısmı fonksiyonel programlama tekniği ile de uyumlu olarak kullanılabilmektedir. Array türü ile birçok veri yapısına yönelik işlem yapılabilmektedir. Yani `Array` sınıfına ait fonksiyonlar yardımıyla Array nesnesi birçok veri yapısına uygun olarak çalışabilmektedir.
+> `Array` türüne ait birçok yararlı metot bulunmaktadır. Bu metotların bir kısmı fonksiyonel programlama tekniği ile de uyumlu olarak kullanılabilmektedir. Yani callback parametreleri bulunur. Array türü ile birçok veri yapısına yönelik işlem yapılabilmektedir. Yani `Array` sınıfına ait fonksiyonlar yardımıyla Array nesnesi birçok veri yapısına uygun olarak çalışabilmektedir.
 > 
 > `Array` türü istenirse stack (LIFO) gibi kullanılabilir. Array türüne ait `push` ve `pop` isimli fonksiyonlar bulunmaktadır.
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-
-function main()
-{
-    let stack = []
-
-    for (let i = 0; i < 10; ++i)
-        stack.push(randomInt(0, 99))
-
-    writeln(stack)
-
-    while (stack.length !== 0)
-        write(`${stack.pop()} `)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let main = () => {  
+    let stack = []  
+  
+    for (let i = 0; i < 10; ++i) {  
+        let v = randomInt(0, 100)  
+  
+        write(`${v} `)  
+        stack.push(v)  
+    }  
+  
+    writeLine()  
+  
+    for (let e of stack)  
+        write(`${e} `)  
+  
+    writeLine()  
+  
+    while (stack.length !== 0)  
+        write(`${stack.pop()} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
+
+>Array veri yapısı stack olarak kullanıldığında elemanlar aşağıdaki gibi de pop edilebilir. Ancak bu durumda array (stack) içerisinde `undefined` değeri tutuluyorsa tüm elemanlar pop edilemez.
+
+```javascript
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let main = () => {  
+    let stack = []  
+  
+    for (let i = 0; i < 10; ++i) {  
+        let v = randomInt(0, 100)  
+  
+        write(`${v} `)  
+        stack.push(v)  
+    }  
+  
+    writeLine()  
+  
+    for (let e of stack)  
+        write(`${e} `)  
+  
+    writeLine()  
+  
+    let v;  
+    while ((v = stack.pop()) !== undefined) {  
+        write(`${v} `)  
+    }  
+  
+    writeLine()  
+}  
+  
+main()
+```
+
+
+>Aşağıdaki demo örnekte çok basit bir stack veri yapısı object olarak tanımlanmış ve kullanılmıştır
+
+```javascript
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let Stack = function () {  
+    this.items = []  
+    this.push = (e) => this.items.push(e)  
+    this.pop = () => this.items.pop()  
+    this.length = () => this.items.length  
+  
+}  
+  
+let main = () => {  
+    let stack = new Stack()  
+  
+    for (let i = 0; i < 10; ++i) {  
+        let v = randomInt(0, 100)  
+  
+        write(`${v} `)  
+        stack.push(v)  
+    }  
+  
+    writeLine()  
+  
+    while (stack.length() !== 0)  
+        write(`${stack.pop()} `)  
+  
+    writeLine()  
+}  
+  
+main()
+```
+
 
 > `Array` türünün `sort` fonksiyonu ile sıralama yapılabilmektedir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let a = [-3, 9, -7, 10, 8, 6, 5]
-
-    a.sort()
-    
-    writeln(a)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let a = [-3, 9, -7, 10, 8, 6, 5]  
+  
+    a.sort()  
+    writeLine(a)  
+}  
+  
 main()
 ```
 
-> **_Sort fonksiyonunun argüman geçilmeden kullanımı değerleri yazıya çevirerek sıralama yapar._** Sıralama doğal sıralamadır. Doğal sıralama artan sırada (ascending) sıralamak anlamına gelmektedir. sort sıralamanın nasıl yapılacağına ilişkin bir fonksiyon (callback) alabilmektedir. Bu konu ileride ele alınacaktır.
-> 
+> **_Sort fonksiyonunun argüman geçilmeden kullanımı değerleri yazıya çevirerek sıralama yapar._** Sıralama doğal sıralamadır (natural sort order). Doğal sıralama artan sırada (ascending) sıralamak anlamına gelmektedir. sort, sıralamanın nasıl yapılacağına ilişkin bir fonksiyon (callback) alabilmektedir.
+
+>Aşağıdaki demo örneği inceleyiniz. sort fonksiyonuna gönderilen callback'in detayları ileride ele alınacaktır
+
+```javascript
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let a = [-3, 9, -7, 10, 8, 6, 5]  
+  
+    a.sort((a, b) => a - b)  
+    writeLine(a)  
+}  
+  
+main()
+```
+
+XXXXXXXXXXXXXXXXXXXXXXX
+
 > Array nesnesinin `unshift` ve `shift` metotları ile eleman eklemek ve çıkarmak mümkündür. `unshift` metodu başa ekleme yapar, `shift` metodu baştaki elemanı döndürür ve siler:
 
 ```javascript
