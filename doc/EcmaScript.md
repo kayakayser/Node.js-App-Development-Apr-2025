@@ -3396,331 +3396,122 @@ let main = () => {
 main()
 ```
 
-XXXXXXXXXXXXXXXXXXXXXXX
 
 > Array nesnesinin `unshift` ve `shift` metotları ile eleman eklemek ve çıkarmak mümkündür. `unshift` metodu başa ekleme yapar, `shift` metodu baştaki elemanı döndürür ve siler:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function main()
-{
-    let a = []
-
-    for (let i = 0; i < 10; ++i) {
-        let val = randomInt(0, 99)
-        write(`${val} `)
-        a.unshift(val)
-    }
-
-    writeln()
-    writeln(a)
-
-    while (a.length !== 0)
-        write(`${a.shift()} `)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let main = () => {  
+    let a = []  
+  
+    for (let i = 0; i < 10; ++i) {  
+        let val = randomInt(0, 99)  
+        write(`${val} `)  
+        a.unshift(val)  
+    }  
+  
+    writeLine()  
+    writeLine(a)  
+  
+    while (a.length !== 0)  
+        write(`${a.shift()} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
 
-> Dikkat edilirse `unshift` ve `shift` fonksiyonları da elemanın eklendiği yer dışında stack gibi kullanılabilir. Aşağıdaki kodda bir Array `push` ve `shift` kullanarak boşaltılmış ve her adımda elemanı elde edilmiştir. Bir FIFO (First In First Out) kuyruk sistemi oluşturulmuştur:
+>Bu fonksiyonların Array'in implementasyonuna göre kaydırma yapabileceğini dolayısıyla bazı durumlarda `O(N)` karmaşıklığın maliyetli olabileceği unutulmamalıdır. Dikkat edilirse `unshift` ve `shift` fonksiyonları da elemanın eklendiği yer dışında stack gibi kullanılabilir. Aşağıdaki kodda bir Array `push` ve `shift` kullanarak oluşturulmuş ve her adımda elemanı elde edilmiştir. Bir FIFO (First In First Out) kuyruk sistemi oluşturulmuştur:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function main()
-{
-    let queue = []
-
-    for (let i = 0; i < 10; ++i) {
-        let val = randomInt(0, 99)
-        write(`${val} `)
-        queue.push(val)
-    }
-
-    writeln()
-    writeln(queue)
-
-    while (queue.length !== 0)
-        write(`${queue.shift()} `)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let main = () => {  
+    let queue = []  
+  
+    for (let i = 0; i < 10; ++i) {  
+        let val = randomInt(0, 99)  
+        write(`${val} `)  
+        queue.push(val)  
+    }  
+  
+    writeLine()  
+    writeLine(queue)  
+  
+    while (queue.length !== 0)  
+        write(`${queue.shift()} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
 
-> Bir Object türünden dizi de yaratılabilir ve for-in ya da for-of döngüsü ile dolaşılabilir:
+> `sort` metoduna callback verilerek, sıralama işlemi istenildiği şekilde yapılabilir. sort metodu parametresi ile aldığı fonksiyonun geri dönüş değerine göre artan sırada (ascending) sıralama yapar. sort fonksiyonunun callback olarak aldığı fonksiyona **karşılaştırma fonksiyonu (comparison function)** denir. Fonksiyonun geri dönüş değeri negatif ise birinci parametresi ikinci parametresinden küçük kabul edilir, pozitif ise birinci parametre ikinci parametreden büyük kabul edilir, sıfır ise eşit kabul edilir. Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function toString()
-{
-    return `${this.name}:${this.stock * this.price}`
-}
-
-function main()
-{
-    let products = [
-        { name: "laptop", stock: 6, price: 4345, toString: toString },
-        { name: "mouse", stock: 40, price: 70, toString: toString },
-        { name: "motherboard", stock: 5, price: 500, toString: toString },
-    ]
-
-    for (let index in products)
-        writeln(products[index].toString())
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let a = [-3, 9, -7, 10, 8, 6, 5]  
+  
+    a.sort((a, b) => a - b)  
+    writeLine(a)  
+}  
+  
 main()
 ```
 
-> for-of döngüsü ile aşağıdaki gibi de yazılabilir:
+> Sıralama kriteri callback olarak belirlendiğinden programcı büyükten küçüğe (descending) sıralama da yaptırtabilir. Buna göre aşağıdaki örnekte büyükten küçüğe sıralama yaptırılmaktadır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function toString()
-{
-    return `${this.name}:${this.stock * this.price}`
-}
-
-function main()
-{
-    let products = [
-        { name: "laptop", stock: 6, price: 4345, toString: toString },
-        { name: "mouse", stock: 40, price: 70, toString: toString },
-        { name: "motherboard", stock: 5, price: 500, toString: toString },
-    ]
-
-    for (let p of products)
-        writeln(p.toString())
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let a = [-3, 9, -7, 10, 8, 6, 5]  
+  
+    a.sort((a, b) => b - a)  
+    writeLine(a)  
+}  
+  
 main()
 ```
-
-> `sort` metoduna callback verilerek, sıralama işlemi istenildiği şekilde yapılabilir. sort metodu parametresi ile aldığı fonksiyonun geri dönüş değerine göre artan sırada (ascending) sıralama yapar. Bu fonksiyona karşılaştırma fonksiyonu (comparison function) denir. Fonksiyonun geri dönüş değeri negatif ise birinci parametresi ikinci parametresinden küçük kabul edilir, pozitif ise birinci parametre ikinci parametreden büyük kabul edilir, sıfır ise eşit kabul edilir. Örneğin:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function toString()
-{
-    return `${this.name}:${this.stock * this.price}`
-}
-
-function main()
-{
-    let a = []
-
-    for (let i = 0; i < 10; ++i)
-        a[i] = randomInt(-99, 99)
-
-    writeln(a)
-
-    a.sort((e1, e2) => e1 - e2)
-
-    writeln(a)
-}
-
-main()
-```
-
-> Sıralama kriteri callback olarak belirlendiğinden programcı büyükte küçüğe sıralama da yaptırtabilir. Buna göre aşağıdaki örnekte büyükten küçüğe sıralama yaptırılmaktadır:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function toString()
-{
-    return `${this.name}:${this.stock * this.price}`
-}
-
-function main()
-{
-    let a = []
-
-    for (let i = 0; i < 10; ++i)
-        a[i] = randomInt(-99, 99)
-
-    writeln(a)
-
-    a.sort((e1, e2) => e1 - e2)
-
-    writeln(a)
-}
-
-main()
-```
-
-**_Anahtar Notlar:_** Algoritmalar terminolojisinde artan sırada (ascending) sıralamaya doğal sıralama (natural sort order) denir.
 
 > Aşağıdaki örnekte ürünler birim fiyata göre ucuz olandan pahalı olana doğru sıralanmıştır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function displayProducts(products)
-{
-    products.forEach(p => writeln(p.toString()))
-}
-
-function getProducts()
-{
-    function toString()
-    {
-        return `${this.name}:${this.price} * ${this.stock} = ${this.stock * this.price}`
-    }
-
-    return  [
-        { name: "motherboard", stock: 5, price: 500, toString: toString },
-        { name: "laptop", stock: 6, price: 4345, toString: toString },
-        { name: "mouse", stock: 40, price: 70, toString: toString }
-    ]
-}
-
-function main()
-{
-    let products = getProducts()
-
-    displayProducts(products)
-    writeln("--------------------------------------------")
-    products.sort(function (p1, p2){return p1.price - p2.price})
-
-    displayProducts(products)
-}
-
-main()
-```
-
-> Örnekte `sort` fonksiyonuna callback olarak anonim fonksiyon verilmiştir. Örnek lambda ifadesi kullanılarak da yapılabilir:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function displayProducts(products)
-{
-    products.forEach(p => writeln(p.toString()))
-}
-
-function getProducts()
-{
-    function toString()
-    {
-        return `${this.name}:${this.price} * ${this.stock} = ${this.stock * this.price}`
-    }
-
-    return  [
-        { name: "motherboard", stock: 5, price: 500, toString: toString },
-        { name: "laptop", stock: 6, price: 4345, toString: toString },
-        { name: "mouse", stock: 40, price: 70, toString: toString }
-    ]
-}
-
-function main()
-{
-    let products = getProducts()
-
-    displayProducts(products)
-    writeln("--------------------------------------------")
-    products.sort((p1, p2)=> p1.price - p2.price)
-
-    displayProducts(products)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let getProducts = () => {  
+    let toString = function (){ return `${this.name}:${this.price} * ${this.stock} = ${this.stock * this.price}`}  
+  
+    return  [  
+        { name: "motherboard", stock: 5, price: 500, toString: toString },  
+        { name: "laptop", stock: 6, price: 4345, toString: toString },  
+        { name: "mouse", stock: 40, price: 70, toString: toString }  
+    ]  
+}  
+  
+let printProducts = products => products.forEach(p => writeLine(p.toString()))  
+  
+let main = () => {  
+    let products = getProducts()  
+  
+    printProducts(products)  
+    writeLine("--------------------------------------------")  
+    products.sort((p1, p2) =>  p1.price - p2.price)  
+  
+    printProducts(products)  
+}  
+  
 main()
 ```
 
@@ -3729,678 +3520,311 @@ main()
 > Aşağıdaki örnekte ürünler birim fiyatına göre azalan sırada (descending) sıraya sokulmuştur.
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function displayProducts(products)
-{
-    products.forEach(p => writeln(p.toString()))
-}
-
-function getProducts()
-{
-    function toString()
-    {
-        return `${this.name}:${this.price} * ${this.stock} = ${this.stock * this.price}`
-    }
-
-    return  [
-        { name: "motherboard", stock: 5, price: 500, toString: toString },
-        { name: "laptop", stock: 6, price: 4345, toString: toString },
-        { name: "mouse", stock: 40, price: 70, toString: toString }
-    ]
-}
-
-function main()
-{
-    let products = getProducts()
-
-    displayProducts(products)
-    writeln("--------------------------------------------")
-    products.sort((p1, p2)=> p2.price – p1.price)
-
-    displayProducts(products)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let getProducts = () => {  
+let toString = function (){ return `${this.name}:${this.price} * ${this.stock} = ${this.stock * this.price}`}  
+  
+    return  [  
+        { name: "motherboard", stock: 5, price: 500, toString: toString },  
+        { name: "laptop", stock: 6, price: 4345, toString: toString },  
+        { name: "mouse", stock: 40, price: 70, toString: toString }  
+    ]  
+}  
+  
+let printProducts = products => products.forEach(p => writeLine(p.toString()))  
+  
+let main = () => {  
+    let products = getProducts()  
+  
+    printProducts(products)  
+    writeLine("--------------------------------------------")  
+    products.sort((p1, p2) =>  p2.price - p1.price)  
+  
+    printProducts(products)  
+}  
+  
 main()
 ```
 
-> Aşağıdaki örnekte ürünler total’e göre pahalıdan ucuza doğru sıralanmıştır:
+> Aşağıdaki örnekte ürünler total'e göre pahalıdan ucuza doğru sıralanmıştır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function displayProducts(products)
-{
-    products.forEach(p => writeln(p.toString()))
-}
-
-let Product = function (name, stock, price, toString) {
-    this.name = name
-    this.stock = stock
-    this.price = price
-    this.toString = function () {
-        return `${this.name}: ${this.price} * ${this.stock} = ${this.stock * this.price}`
-    }
-    this.getTotal = function () {
-        return this.price * this.stock
-    }
-}
-
-function getProducts()
-{
-    return  [
-        new Product("motherboard", 5, 500),
-        new Product("laptop", 6, 4345),
-        new Product("mouse", 40, 70)
-    ]
-}
-
-function main()
-{
-    let products = getProducts()
-
-    displayProducts(products)
-    writeln("--------------------------------------------")
-    products.sort((p1, p2) => p2.getTotal() - p1.getTotal())
-
-    displayProducts(products)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let getProducts = () => {  
+    let toString = function (){ return `${this.name}:${this.price} * ${this.stock} = ${this.stock * this.price}`}  
+  
+    return  [  
+        { name: "motherboard", stock: 100, price: 500, toString: toString },  
+        { name: "laptop", stock: 6, price: 4345, toString: toString },  
+        { name: "mouse", stock: 40, price: 70, toString: toString }  
+    ]  
+}  
+  
+let printProducts = products => products.forEach(p => writeLine(p.toString()))  
+  
+let main = () => {  
+    let products = getProducts()  
+  
+    printProducts(products)  
+    writeLine("--------------------------------------------")  
+    products.sort((p1, p2) =>  p2.price * p2.stock - p1.price * p1.stock)  
+  
+    printProducts(products)  
+}  
+  
 main()
 ```
 
 > Array nesnesinin `slice` fonksiyonu ile dizinin belirli bir aralığındaki elemanlar yine Array olarak alınabilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [-10, -2, 30, -4, 5]
-    let sliced = numbers.slice(2, 4) //[2, 4)
-
-    writeln(sliced)
-}
-
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [-10, -2, 30, -4, 5]  
+    let sliced = numbers.slice(2, 4) //[2, 4)  
+  
+    writeLine(sliced)  
+}  
+  
 main()
 ```
 
 > `slice` fonksiyonuna negatif index numaraları verilebilir. Bu durumda index numaralarını son elemana göre almaktadır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [-10, -2, 30, -4, 5]
-    let sliced = numbers.slice(-3, -1) //[2, 4)
-
-    writeln(sliced)
-}
-
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [-10, -2, 30, -4, 5]  
+    let sliced = numbers.slice(-3, -1) //[2, 4)  
+  
+    writeLine(sliced)  
+}  
+  
 main()
 ```
 
 > Aslında negatif indeks değerleri için dizinin uzunluğu ile toplandığında elde edilen aralıktaki değerler verilmiş olur.
-> 
-> `slice` fonksiyonu alt bir dizi elde edilemezse boş bir dizi döndürür:
+
+> `slice` fonksiyonu alt bir dizi elde edilemezse boş bir dizi döndürür
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [-10, -2, 30, -4, 5]
-    let sliced = numbers.slice(27, 7)
-
-
-    writeln(`Length: ${sliced.length}`)
-}
-
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [-10, -2, 30, -4, 5]  
+    let sliced = numbers.slice(27, 7)  
+      
+    writeLine(`Length: ${sliced.length}`)  
+}  
+  
 main()
 ```
- 
+
+> `slice` fonksiyonu alt bir dizi elde edilemezse boş bir dizi döndürür
+```javascript
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [-10, -2, 30, -4, 5]  
+    let sliced = numbers.slice(10, 20)  
+  
+    writeLine(`Length: ${sliced.length}`)  
+}  
+  
+main()
+```
+
+
 > Array nesnesinin `indexOf` metodu ile aranacak elemanın index numarası elde edilebilir. Eğer bulunamazsa -1 değerine döner:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4, 5]
-    let index = numbers.indexOf(3)
-
-    writeln(index)
-
-    index = numbers.indexOf(67)
-
-    writeln(index)
-
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [1, 2, 3, 4, 5]  
+    let index = numbers.indexOf(3)  
+  
+    writeLine(index)  
+    index = numbers.indexOf(67)  
+    writeLine(index)  
+}  
+  
 main()
 ```
 
 > `indexOf` metodunun ikinci parametresi aramaya başlanacak indeks numarası olarak verilebilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4, -5, 4, 9, 3]
-    let index = numbers.indexOf(3, 3)
-
-    writeln(index)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [1, 2, 4, 3, -5, 4, 9, 3]  
+    let index = numbers.indexOf(4, 3)  
+  
+    writeLine(index)  
+}  
+  
 main()
 ```
  
-**_Sınıf Çalışması:_** Parametresi ile aldığı bir dizi ve dizi içerisindeki eleman için, o elemanın dizide kaç tane olduğunu döndüren `countValue` isimli fonksiyonu yazınız ve test ediniz. Test için ilk değer verilmiş bir dizi kullanabilirsiniz.
+>**_Sınıf Çalışması:_** Parametresi ile aldığı bir dizi ve dizi içerisindeki eleman için, o elemanın dizide kaç tane olduğunu döndüren `countValue` isimli fonksiyonu yazınız ve test ediniz. Test için ilk değer verilmiş bir dizi kullanabilirsiniz.
+>
+**_Açıklamalar_:** Fonksiyonu döngü kullanarak ve döngü kullanmadan iki biçimde de yazınız
 
-**Çözüm:**
+**Çözüm (Döngü ile)**
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function countValue(array, value)
-{
-    let idx = -1
-    let count = 0;
-
-    while ((idx = array.indexOf(value, idx + 1)) !== -1)
-        ++count
-
-    return count
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(40, -10, 10)
-
-    let count = countValue(a, 0)
-
-    writeln(a)
-
-    writeln(`Count:${count}`)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+  
+let countValue = (a, v) => {  
+    let count = 0  
+  
+    for (let e of a)  
+        if (e === v)  
+            ++count  
+  
+    return count  
+}  
+  
+let main = () => {  
+    let a = [1, 2, 4, 3, -5, 4, 9, 3]  
+  
+    writeLine(countValue(a, 4))  
+    writeLine(countValue(a, 67))  
+}  
+  
 main()
 ```
 
-Ya da örneğin:
+**Çözüm (Döngüsüz)**
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function countValue(array, value)
-{
-    let idx = 0
-    let count = 0;
-
-    while ((idx = array.indexOf(value, idx)) !== -1)
-        ++count, ++idx
-
-    return count
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(40, -10, 10)
-
-    let count = countValue(a, 0)
-
-    writeln(a)
-
-    writeln(`Count:${count}`)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let countValue = (a, v) => {  
+    let count = 0  
+  
+    a.forEach(e => {if (e === v) ++count})  
+  
+    return count  
+}  
+  
+let main = () => {  
+    let a = [1, 2, 4, 3, -5, 4, 9, 3]  
+  
+    writeLine(countValue(a, 4))  
+    writeLine(countValue(a, 67))  
+}  
+  
 main()
 ```
 
-Ya da örneğin:
 
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function countValue(array, value)
-{
-    let count = 0;
-
-    for (let i = -1; (i = array.indexOf(value, i + 1)) !== -1; ++count)
-        ;
-
-    return count
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(40, -10, 10)
-
-    let count = countValue(a, 0)
-
-    writeln(a)
-
-    writeln(`Count:${count}`)
-}
-
-main()
-```
-
-> Fonksiyon `indexOf` kullanmadan aşağidaki gibi de yazılabilir:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function countValue(array, value)
-{
-    let count = 0
-
-    for (let elem of array)
-        if (elem === value)
-            ++count
-
-    return count
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(40, -10, 10)
-
-    let count = countValue(a, 0)
-
-    writeln(a)
-
-    writeln(`Count:${count}`)
-}
-
-main()
-```
-
-> Ya da daha fonksiyonel olarak:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function countValue(array, value)
-{
-    let count = 0
-
-    array.forEach(e => {if (e === value) ++count})
-
-    return count
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(40, -10, 10)
-
-    let count = countValue(a, 0)
-
-    writeln(a)
-
-    writeln(`Count:${count}`)
-}
-
-main()
-```
-
-**_Anahtar Notlar:_** Yukarıdaki fonksiyonlardan `indexOf` kullanılmayan son versiyonlar göreceli daha etkindir. Ancak yine de `indexOf` kullanılan versiyonlar da Kabul edilebilir.
-
-**Fonksiyon ile Nesne Tanımlamanın ve Yaratmanın Detayları**
+##### Fonksiyon ile Nesne Tanımlamanın ve Yaratmanın Detayları
 
 > Bir object’ in bir fonksiyonu içerisinde o fonksiyonu çağıran referansa erişmek gerekebilir. Bu durumda this anahtar sözcüğü o fonksiyon içerisinde kullanılabilir. Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let Device = function (name, host, port) {
-    this.name = name
-    this.host = host
-    this.port = port
-    this.toString = function () {
-        return `[${this.name}] ${this.host}:${this.port}`
-    }
-}
-
-function main()
-{
-    let dev = new Device("test", "192.168.1.23", 50000)
-
-    writeln(dev.toString())
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let Device = function (name, host, port) {  
+    this.name = name  
+    this.host = host  
+    this.port = port  
+    this.toString = function () {  
+        return `[${this.name}] ${this.host}:${this.port}`  
+    }  
+}  
+  
+let main = () => {  
+    let dev = new Device("test", "192.168.1.23", 50000)  
+  
+    writeLine(dev.toString())  
+}  
+  
 main()
 ```
 
 > Burada nesne tanımlanırken çağrılan fonksiyon içerisinde (buna ctor denebilir) `this` referansı kullanılmış böylelikle yaratılacak nesneye ilişkin veri elemanları elde edilmiştir. Burada Java/C# bakış açısıyla veri elamanları non-static olarak bildirilmiştir. Bu bildirim biçiminde doğrudan static veri elemanı bildirimi yoktur. `this` referansı bir nesneye ilişkin fonksiyonları zincir olarak çağırmakta da (fluent) kullanılır. Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let IntValue = function(val) {
-    this.val = parseInt(val)
-    this.add = function (val) {
-        this.val += val
-
-        return this
-    }
-
-    this.multiply = function (val) {
-        this.val *= val
-
-        return this
-    }
-
-    this.subtract = function (val) {
-        return this.add(-val)
-    }
-}
-
-function main()
-{
-    let intVal = new IntValue(10)
-
-    intVal.add(20).multiply(2).subtract(7)
-    writeln(intVal.val)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let IntValue = function(val) {  
+    this.val = Math.trunc(val)  
+    this.add = function (val) {  
+        this.val += val  
+  
+        return this  
+    }  
+  
+    this.multiply = function (val) {  
+        this.val *= val  
+  
+        return this  
+    }  
+  
+    this.subtract = function (val) {  
+        return this.add(-val)  
+    }  
+}  
+  
+  
+let main = () => {  
+    let intVal = new IntValue(10)  
+  
+    intVal.add(20).multiply(2).subtract(7)  
+    writeLine(intVal.val)  
+}  
+  
 main()
 ```
  
-**_Anahtar Notlar:_** Geri dönüş değeri mantıksal bir bilgiyi test eden (yani doğru ya da yanlış) fonksiyonlara “predicate” terimi kullanılır. Şüphesiz ES’de bu tarz fonksiyonların geri dönüş değerinin `boolean` türden olması daha anlamlıdır. Özellikle “callback” alan fonksiyonlar predicate aldıklarını belirtirler. Bu durumda programcı bu fonksiyona verilecek fonksiyonun geri dönüş değerini boolean olacak şekilde yazar. Callback alan fonksiyon da yaptığı işlemde bu fonksiyonun geri dönüş değerinin `Boolean` olacağı fikriyle çağırır. Örneğin:
+**_Anahtar Notlar:_** Geri dönüş değeri mantıksal bir bilgiyi test eden (yani doğru ya da yanlış) fonksiyonlar için `predicate` terimi kullanılır. Şüphesiz ES’de bu tarz fonksiyonların geri dönüş değerinin `boolean` türden olması daha anlamlıdır. Özellikle “callback” alan fonksiyonlar predicate aldıklarını belirtirler. Bu durumda programcı bu fonksiyona verilecek fonksiyonun geri dönüş değerini boolean olacak şekilde yazar. Callback alan fonksiyon da yaptığı işlemde bu fonksiyonun geri dönüş değerinin `Boolean` olacağı fikriyle çağırır. Örneğin:
  
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function countValue(array, predicate)
-{
-    let count = 0
-
-    array.forEach(e => {if (predicate(e)) ++count})
-
-    return count
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(10, -10, 10)
-
-    let count = countValue(a, val => val % 2 === 0)
-
-    writeln(a)
-
-    writeln(`Count:${count}`)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let countValue = (a, pred) => {  
+    let count = 0  
+  
+    a.forEach(e => {if (pred(e)) ++count})  
+  
+    return count  
+}  
+  
+let main = () => {  
+    let a = [1, 2, 4, 3, -5, 4, 9, 3]  
+  
+    writeLine(countValue(a, v => v % 2 === 0))  
+    writeLine(countValue(a, v => v === 4))  
+    writeLine(countValue(a, v => v === 67))  
+}  
+  
 main()
 ```
 
 > Burada `countValue` fonksiyonu “predicate” almaktadır.
 >
->Örneğin:
 
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
+XXXXXXXXXXXX
 
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function countValue(array, predicate)
-{
-    let count = 0
-
-    array.forEach(e => {if (predicate(e)) ++count})
-
-    return count
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(40, -10, 10)
-    let value = 0
-    let count = countValue(a, val => val === value)
-
-    writeln(a)
-    writeln(`Count:${count}`)
-}
-
-main()
-```
 
 > Array nesnesinin `find` fonksiyonu ile belirli koşula uygun olan ilk eleman bulunabilir. Fonklsiyon koşula eleman bulunmadığında ‘undefined’ değerine geri döner:
 
