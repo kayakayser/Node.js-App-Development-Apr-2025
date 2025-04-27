@@ -3823,529 +3823,404 @@ main()
 > Burada `countValue` fonksiyonu “predicate” almaktadır.
 >
 
-XXXXXXXXXXXX
-
-
-> Array nesnesinin `find` fonksiyonu ile belirli koşula uygun olan ilk eleman bulunabilir. Fonklsiyon koşula eleman bulunmadığında ‘undefined’ değerine geri döner:
+> Array nesnesinin `find` fonksiyonu ile belirli koşula uygun olan ilk eleman bulunabilir. Fonksiyon koşula uyan eleman bulunmadığında `undefined` değerine geri döner:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(30, -10, 10)
-    let result = a.find(val => val % 2 === 0)
-
-    writeln(a)
-    if (result !== undefined)
-        writeln(`Result:${result}`)
-    else
-        writeln("Not found")
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let generateRandomArray = (count, min, bound) => {  
+    let array = []  
+  
+    for (let i = 0; i < count; ++i)  
+        array[i] = randomInt(min, bound)  
+  
+    return array  
+}  
+  
+let main = () => {  
+    let a = generateRandomArray(30, 10, 20)  
+    let result = a.find(val => val % 2 === 0)  
+  
+    writeLine(a)  
+    if (result !== undefined)  
+        writeLine(`Result:${result}`)  
+    else  
+        writeLine("Not found")  
+}  
+  
 main()
 ```
 
-> `find` fonksiyonu aşağıdaki gibi de kullanılabilir:
+>`find` metodunun callback fonksiyonunun ikinci parametresi elemanın dizi içerisinde konumuna ilişkin indeks değeridir
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4, 5]
-    let result = numbers.find((val, index) => val % 2 === 0 && index > 2)
-
-    writeln(result)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let generateRandomArray = (count, min, bound) => {  
+    let array = []  
+  
+    for (let i = 0; i < count; ++i)  
+        array[i] = randomInt(min, bound)  
+  
+    return array  
+}  
+  
+let main = () => {  
+    let numbers = [1, 2, 3, 4, 5]  
+    let result = numbers.find((e, i) => e % 2 === 0 && i > 2)  
+  
+    writeLine(result)  
+}  
+  
 main()
 ```
 
-> Bu kullanımda callback fonksiyonun ikinci parametresi elemanın dizi içerisinde konumuna ilişkin indeks değeridir.
-> 
-> Aşağıdaki gibi bir `find` global fonksiyonu da yazılabilir:
+ 
+> Aşağıda `Array` sınıfına eklenen `csdFind`fonksiyonunu inceleyiniz. Fonksiyon fikir vermek amaçlı yazılmıştır
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function myfind(a, pred)
-{
-    for (let i in a)
-        if (pred(a[i], i, a))
-            return a[i]
-
-    return undefined
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4, 5]
-    let result = myfind(numbers, (val, index)=> val % 2 === 0 && index > 2)
-
-    writeln(result)
-}
-
-main()
-```
-
-> `myFind` fonksiyonu nesneye de eklenebilir:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function myFind(pred)
-{
-    for (let i in this)
-        if (pred(this[i], i, this))
-            return this[i]
-
-    return undefined
-}
-
-function main()
-{
-    let numbers = [1, 2, 3, 4, 5]
-    numbers.myFind = myFind
-
-    let result = numbers.myFind((val, index)=> val % 2 === 0 && index > 2)
-
-    writeln(result)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let generateRandomArray = (count, min, bound) => {  
+    let array = []  
+  
+    for (let i = 0; i < count; ++i)  
+        array[i] = randomInt(min, bound)  
+  
+    return array  
+}  
+  
+Array.prototype.csdFind = function (pred)  {  
+    for (let i in this)  
+        if (pred(this[i], i, this))  
+            return this[i]  
+  
+    return undefined  
+}  
+  
+let main = () => {  
+    let numbers = generateRandomArray(20, -10, 10)  
+  
+    writeLine(numbers)  
+    let result = numbers.csdFind(((e, i) => e % 2 === 0 && i > 2))  
+  
+    writeLine(result)  
+}  
+  
 main()
 ```
 
 > Array nesnesinin `findIndex` fonksiyonu ile belirli bir koşula uyan ilk elemanın index numarası elde edilebilir. Eğer koşula uyan eleman bulunamazsa -1 döner:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function generateRandomArray(count, min, max)
-{
-    let array = []
-
-    for (let i = 0; i < count; ++i)
-        array[i] = randomInt(min, max)
-
-    return array
-}
-
-function main()
-{
-    let a = generateRandomArray(30, -10, 10)
-    let index = a.findIndex(val => val % 2 === 0)
-
-    writeln(a)
-    if (index !== -1)
-        writeln(`Result:${a[index]}`)
-    else
-        writeln("Not found")
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let generateRandomArray = (count, min, bound) => {  
+    let array = []  
+  
+    for (let i = 0; i < count; ++i)  
+        array[i] = randomInt(min, bound)  
+  
+    return array  
+}  
+  
+let main = () => {  
+    let numbers = generateRandomArray(20, -10, 10)  
+  
+    writeLine(numbers)  
+    let idx = numbers.findIndex(((e, i) => e % 2 === 0 && i > 2))  
+  
+    if (idx !== -1)  
+        writeLine(`${numbers[idx]} found at ${idx}`)  
+    else  
+        writeLine(`Not found`)  
+}  
+  
 main()
 ```
 
 Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let Person = function (id, name) {
-    this.id = id
-    this.name = name
-    this.toString = function () {
-        return this.name
-    }
-}
-
-function main()
-{
-    let people = [new Person(1, "oğuz"), new Person(2, "muhammed"), new Person(3, "oğuzhan")]
-    let index = people.findIndex(per => per.id === 2)
-
-    writeln(index !== -1 ? `${index} numaralı indekste ${people[index].toString()} bulundu` : "Bulunamadı")
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let Person = function (id, name) {  
+    this.id = id  
+    this.name = name  
+    this.toString = function () {  
+        return this.name  
+    }  
+}  
+  
+let main = () => {  
+    let people = [new Person(1, "oğuz"), new Person(2, "muhammed"), new Person(3, "oğuzhan")]  
+    let index = people.findIndex(p => p.id === 2)  
+  
+    writeLine(index !== -1 ? `${index} numaralı indekste ${people[index].toString()} bulundu` : "Bulunamadı")  
+}  
+  
 main()
 ```
 
 Örneğin:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let WeatherInfo = function (place, latitude, longitude, status, degree) {
-    this.place = place
-    this.latitude = latitude
-    this.longitude = longitude
-    this.status = status
-    this.degree = degree
-}
-
-function main()
-{
-    let weatherInfos = [
-        new WeatherInfo("Beykoz", 25.67, 45.78, "Yağmurlu", 20),
-        new WeatherInfo("Şile", 25.67, 45.78, "Güneşli", 33),
-        new WeatherInfo("Şişli", 25.67, 45.78, "Bulutlu", 18)
-    ]
-
-    let degree = 34
-
-    let index = weatherInfos.findIndex(wi => wi.degree > degree)
-
-    if (index !== -1) {
-        let wi = weatherInfos[index]
-        writeln(`${wi.place}, ${wi.status}`)
-    }
-    else
-        writeln("Koşula uygun hava durumu bulunamadı")
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+  
+let WeatherInfo = function (place, latitude, longitude, status, degree) {  
+    this.place = place  
+    this.latitude = latitude  
+    this.longitude = longitude  
+    this.status = status  
+    this.degree = degree  
+}  
+  
+let main = () => {  
+    let weatherInfos = [  
+        new WeatherInfo("Beykoz", 25.67, 45.78, "Yağmurlu", 20),  
+        new WeatherInfo("Şile", 25.67, 45.78, "Güneşli", 33),  
+        new WeatherInfo("Şişli", 25.67, 45.78, "Bulutlu", 18)  
+    ]  
+  
+    let degree = 21  
+    let index = weatherInfos.findIndex(wi => wi.degree > degree)  
+  
+    if (index !== -1) {  
+        let wi = weatherInfos[index]  
+        writeLine(`${wi.place}, ${wi.status}`)  
+    }  
+    else  
+        writeLine("Koşula uygun hava durumu bulunamadı")  
+}  
+  
 main()
 ```
 
 > Array nesnesinin `every` metodu dizinin tüm elemanları belirli koşula uyarsa `true` bir tane bile uymayan eleman varsa `false` değeri ile döner:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let numbers = [10, 20, 30, 4, 58]
-
-    if (numbers.every(val => val % 2 === 0))
-        writeln("Tüm sayılar çift")
-    else
-        writeln("en az bir tane çift olmayan sayı var")
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [10, 20, 30, 41, 58]  
+  
+    if (numbers.every(val => val % 2 === 0))  
+        writeLine("Tüm sayılar çift")  
+    else  
+        writeLine("en az bir tane çift olmayan sayı var")  
+}  
+  
 main()
 ```
 
-Örneğin:
+
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let SeatInfo = function (number) {
-    this.number = number
-    this.isEmpty = true
-}
-
-function main()
-{
-    let seats = [new SeatInfo(1), new SeatInfo(2), new SeatInfo(3)]
-
-    if (seats.every(s => !s.isEmpty))
-        writeln("Uçak dolu")
-    else
-        writeln("Boş koltuk var")
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let SeatInfo = function (number, reserved) {  
+    this.number = number  
+    this.reserved = reserved  
+}  
+  
+let main = () => {  
+    let seats = [new SeatInfo(1, true), new SeatInfo(2, true), new SeatInfo(3, true)]  
+  
+    if (seats.every(s => s.reserved))  
+        writeLine("Uçak dolu")  
+    else  
+        writeLine("Boş koltuk var")  
+}  
+  
 main()
 ```
 
 > Array nesnesinin `some` fonksiyonu belirlenen koşula uyan hiç eleman yoksa `false` değerini döndürür. Koşula uyan en az bir tane eleman varsa `true` döner:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [1, 21, 30, 41, 5]  
+  
+    if (numbers.some(val => val % 2 === 0))  
+        writeLine("En az bir tane çift sayı var")  
+    else  
+        writeLine("Hiç çift yok")  
+}  
+  
+main()
+```
 
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
+>Aşağıdaki demo örneği inceleyiniz
 
-function main()
-{
-    let numbers = [1, 21, 30, 41, 5]
-
-    if (numbers.some(val => val % 2 === 0))
-        writeln("En az bir tane çift sayı var")
-    else
-        writeln("Hiç çift yok")}
-
+```javascript
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let SeatInfo = function (number, reserved) {  
+    this.number = number  
+    this.reserved = reserved  
+}  
+  
+let main = () => {  
+    let seats = [new SeatInfo(1, true), new SeatInfo(2, true), new SeatInfo(3, true)]  
+  
+    if (seats.some(s => !s.reserved))  
+        writeLine("Boş koltuk var")  
+    else  
+        writeLine("Uçak dolu")  
+}  
+  
 main()
 ```
 
 > Aşağıdaki örnekte bitmiş ürün olup olmadığı sorgulanmaktadır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let Product = function (name, price, stock)
-{
-    this.name = name
-    this.price = price
-    this.stock = stock
-    this.getTotal =  function () {return this.stock * this.price }
-}
-
-function main()
-{
-    let products = []
-
-    products.push(new Product("laptop", 4000, 34))
-    products.push(new Product("mouse", 40, 349))
-    products.push(new Product("klavye", 30, 0))
-    products.push(new Product("kalem", 40, 34))
-
-    writeln(products.some(p => p.stock <= 0) ? "Stokta bitmiş ürün var" : "Tüm ürünler mevcut")
-}
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let Product = function (name, price, stock) {  
+    this.name = name  
+    this.price = price  
+    this.stock = stock  
+    this.getTotal =  function () {return this.stock * this.price }  
+}  
+  
+let main = () => {  
+    let products = []  
+  
+    products.push(new Product("laptop", 4000, 34))  
+    products.push(new Product("mouse", 40, 349))  
+    products.push(new Product("klavye", 30, 0))  
+    products.push(new Product("kalem", 40, 34))  
+  
+    writeLine(products.some(p => p.stock <= 0) ? "Stokta bitmiş ürün var" : "Tüm ürünler mevcut")  
+}  
+  
 main()
 ```
 
 > Aşağıdaki örnekte ilk bitmiş ürün aranmaktadır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let Product = function (name, price, stock)
-{
-    this.name = name
-    this.price = price
-    this.stock = stock
-    this.getTotal =  function () {return (this.stock > 0 ? this.stock : 0) * this.price }
-    this.toString = function (){return `${this.name}:${this.getTotal()}`}
-}
-
-
-function main()
-{
-    let products = []
-
-    products.push(new Product("laptop", 4000, 34))
-    products.push(new Product("mouse", 40, 349))
-    products.push(new Product("klavye", 30, -6))
-    products.push(new Product("kalem", 40, 34))
-
-    let index = products.findIndex(p => p.stock <= 0)
-
-    if (index !== -1)
-        writeln(`${products[index].toString()} ürünü stokta yok`)
-    else
-        writeln("Tüm ürünler mevcut")
-}
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let Product = function (name, price, stock) {  
+    this.name = name  
+    this.price = price  
+    this.stock = stock  
+    this.getTotal =  function () {return this.stock * this.price }  
+    this.toString = function () {return this.name}  
+}  
+  
+let main = () => {  
+    let products = []  
+  
+    products.push(new Product("laptop", 4000, 34))  
+    products.push(new Product("mouse", 40, 349))  
+    products.push(new Product("klavye", 30, -6))  
+    products.push(new Product("kalem", 40, -34))  
+  
+    let idx = products.findIndex(p => p.stock <= 0)  
+  
+    if (idx !== -1)  
+        writeLine(`${products[idx].toString()} ürünü stokta yok`)  
+    else  
+        writeLine("Tüm ürünler mevcut")  
+}  
+  
 main()
 ```
 
 > Aşağıdaki örnekte stokta olmayan tüm ürünler başka bir diziye atılarak listelenmektedir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-let Product = function (name, price, stock)
-{
-    this.name = name
-    this.price = price
-    this.stock = stock
-    this.getTotal =  function () {return this.stock * this.price }
-}
-
-function main()
-{
-    let products = []
-
-    products.push(new Product("laptop", 4000, 0))
-    products.push(new Product("mouse", 40, 349))
-    products.push(new Product("klavye", 30, 0))
-    products.push(new Product("kalem", 40, 34))
-
-    let productsNotInStock = new Array(products.length)
-
-    let index = -1
-
-    while (true) {
-        index = products.findIndex((p, i) => i >= index + 1 && p.stock <= 0)
-
-        if (index === -1)
-            break
-
-        productsNotInStock.push(products[index])
-    }
-
-    productsNotInStock.forEach(p => writeln(p.name))
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let Product = function (name, price, stock) {  
+    this.name = name  
+    this.price = price  
+    this.stock = stock  
+    this.getTotal =  function () {return this.stock * this.price }  
+    this.toString = function () {return this.name}  
+}  
+  
+let main = () => {  
+    let products = []  
+  
+    products.push(new Product("laptop", 4000, 0))  
+    products.push(new Product("mouse", 40, 349))  
+    products.push(new Product("klavye", 30, 0))  
+    products.push(new Product("kalem", 40, 34))  
+  
+    let productsNotInStock = []  
+  
+    let idx = -1  
+  
+    while (true) {  
+        idx = products.findIndex((p, i) => i >= idx + 1 && p.stock <= 0)  
+  
+        if (idx === -1)  
+            break  
+  
+        productsNotInStock.push(products[idx])  
+    }  
+  
+    productsNotInStock.forEach(p => writeLine(p.name))  
+}  
+  
 main()
 ```
 
 > Array nesnesinin `reduce` metodu ile dizinin elemanları kullanılarak bir işlem yapılabilmektedir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function main()
-{
-    let numbers = [2, 4, 6, 8]
-    let result = numbers.reduce((sum, val) => sum + val)
-
-    writeln(result)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [2, 4, 6, 8]  
+    let result = numbers.reduce((r, e) => r + e)  
+  
+    writeLine(result)  
+}  
+  
 main()
 ```
 
-> `reduce` fonksiyonunun ikinci parametresi biriktirilecek değerin ilk başlayacağı değeri alan parametredir:
+> `reduce` fonksiyonunun ikinci parametresi biriktirilecek değerin ilk başlayacağı değeri (initial value) alan parametredir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function getRandomArray(n, min, max)
-{
-    let result = []
-
-    while (n--)
-        result.push(randomInt(min, max))
-
-    return result
-}
-
-function main()
-{
-    let numbers = getRandomArray(10, 0, 99)
-    let result = numbers.reduce((r, a) => r + a)
-
-    writeln(numbers)
-    writeln(`Toplam:${result}`)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let numbers = [2, 4, 6, 8]  
+    let result = numbers.reduce((r, e) => r + e, 10)  
+  
+    writeLine(result)  
+}  
+  
 main()
 ```
 
@@ -4388,245 +4263,170 @@ function main()
 main()
 ```
 
-> Aşağıdaki örnekte dizi içerisindeki yazılar birleştirilmiştir:
+>Aşağıdaki demo örnekte fikir vermesi açısından `csdReduce` fonksiyonu yazılmıştır
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function randomText(n, text)
-{
-    let str = ""
-    let len = text.length;
-
-    for (let i = 0; i < n; ++i)
-        str += text.charAt(randomInt(0, len))
-
-    return str
-}
-
-function randomTextTR(n)
-{
-    return randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")
-}
-
-
-function randomTextsTR(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextTR(randomInt(min, max)))
-
-    return result
-}
-
-
-function randomTextEN(n)
-{
-    return randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")
-}
-
-function randomTextsEN(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextEN(randomInt(min, max)))
-
-    return result
-}
-
-
-function main()
-{
-    let texts = randomTextsTR(10, 10, 15)
-
-    texts.forEach(writeln)
-
-    writeln("--------------------")
-    writeln(texts.reduce((r, s) => r + '-' + s))
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+Array.prototype.csdReduce = function (cb, iv) {  
+    let result = iv === undefined ? this[0] : iv  
+  
+    for (let i = iv === undefined ? 1 : 0; i < this.length; ++i)  
+        result = cb(result, this[i], i, this)  
+  
+    return result  
+}  
+  
+let main = () => {  
+    let numbers = [2, 4, 6, 8]  
+    let result = numbers.csdReduce((r, e) => r * e)  
+    let a = []  
+  
+    writeLine(result)  
+}  
+  
 main()
 ```
 
-> Basit bir `myReduce` fonksiyonu aşağıdaki gibi yazılabilir:
+
+> Aşağıdaki örnekte dizi içerisindeki yazılar birleştirilmiştir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
+let randomText = (n, text) => {  
+    let str = ""  
+    let len = text.length;  
+  
+    for (let i = 0; i < n; ++i)  
+        str += text.charAt(randomInt(0, len))  
+  
+    return str  
+}  
+let randomTextTR = (n) => randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")  
+  
+let randomTextsTR = (n, min, bound) => {  
+    let result = [];  
+  
+    while (n--)  
+        result.push(randomTextTR(randomInt(min, bound)))  
+  
+    return result  
+}  
 
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function randomText(n, text)
-{
-    let str = ""
-    let len = text.length;
-
-    for (let i = 0; i < n; ++i)
-        str += text.charAt(randomInt(0, len))
-
-    return str
-}
-
-function randomTextTR(n)
-{
-    return randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")
-}
-
-
-function randomTextsTR(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextTR(randomInt(min, max)))
-
-    return result
-}
-
-
-function randomTextEN(n)
-{
-    return randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")
-}
-
-function randomTextsEN(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextEN(randomInt(min, max)))
-
-    return result
-}
-
-function myReduce(f, val)
-{
-    let result = arguments.length >= 2 ? val : this[0];
-
-    for (let i = arguments.length >= 2 ? 0 : 1; i < this.length; ++i)
-        result = f(result, this[i], i, this)
-
-    return result
-}
-
-function main()
-{
-    let texts = randomTextsTR(10, 10, 15)
-
-    texts.myReduce = myReduce;
-
-    texts.forEach(writeln)
-
-    writeln("--------------------")
-    writeln(texts.myReduce((r, s) => r + '-' + s))
-}
-
+let randomTextEN = (n) => randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")  
+  
+let randomTextsEN = (n, min, bound) => {  
+    let result = [];  
+  
+    while (n--)  
+        result.push(randomTextEN(randomInt(min, bound)))  
+  
+    return result  
+}  
+  
+  
+let main = () => {  
+    let texts = randomTextsTR(10, 10, 15)  
+  
+    texts.forEach(writeLine)  
+    writeLine("--------------------")  
+    writeLine(texts.reduce((r, s) => r + '-' + s))  
+}  
+  
 main()
 ```
 
 > `filter` metodu parametresi ile aldığı koşula uyan elemanlardan oluşan diziyi verir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
+let randomText = (n, text) => {  
+    let str = ""  
+    let len = text.length;  
+  
+    for (let i = 0; i < n; ++i)  
+        str += text.charAt(randomInt(0, len))  
+  
+    return str  
+}  
+let randomTextTR = (n) => randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")  
+  
+let randomTextsTR = (n, min, bound) => {  
+    let result = [];  
+  
+    while (n--)  
+        result.push(randomTextTR(randomInt(min, bound)))  
+  
+    return result  
+}  
 
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min)) + min + 1
-}
-
-function randomText(n, text)
-{
-    let str = ""
-    let len = text.length;
-
-    for (let i = 0; i < n; ++i)
-        str += text.charAt(randomInt(0, len))
-
-    return str
-}
-
-function randomTextTR(n)
-{
-    return randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")
-}
-
-
-function randomTextsTR(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextTR(randomInt(min, max)))
-
-    return result
-}
-
-
-function randomTextEN(n)
-{
-    return randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")
-}
-
-function randomTextsEN(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextEN(randomInt(min, max)))
-
-    return result
-}
-
-function main()
-{
-    let texts = randomTextsTR(10, 5, 15)
-    let len = randomInt(5, 15)
-    writeln(`Length:${len}`)
-
-    writeln(texts.reduce((r, s) => r + '-' + s))
-
-    let result = texts.filter(s => s.length > len)
-
-    writeln(`Result:${result}`)
-}
-
+let randomTextEN = (n) =>  randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz") 
+  
+let randomTextsEN = (n, min, bound) => {  
+    let result = [];  
+  
+    while (n--)  
+        result.push(randomTextEN(randomInt(min, bound)))  
+  
+    return result  
+}  
+  
+  
+let main = () => {  
+    let texts = randomTextsTR(10, 5, 15)  
+    let len = randomInt(5, 15)  
+  
+    writeLine(`Length:${len}`)  
+    writeLine(texts.reduce((r, s) => r + '-' + s))  
+  
+    let result = texts.filter(s => s.length > len)  
+  
+    writeLine(`Result:${result}`)  
+}  
+  
 main()
 ```
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı sayı kadar aşağıdaki özellilklere sahip ürünler üreten `createRandomProducts` isimli global fonksiyonu yazınız:
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let Product = function (name, price, stock) {  
+    this.name = name  
+    this.price = price  
+    this.stock = stock  
+    this.getTotal =  function () {return this.stock * this.price }  
+    this.toString = function () {return this.name}  
+}  
+  
+let main = () => {  
+    let products = []  
+  
+    products.push(new Product("laptop", 4000, 0))  
+    products.push(new Product("mouse", 40, 349))  
+    products.push(new Product("klavye", 30, 0))  
+    products.push(new Product("kalem", 40, 34))  
+  
+    let productsNotInStock = products.filter(p => p.stock <= 0)  
+      
+    productsNotInStock.forEach(p => writeLine(p.name))  
+}  
+  
+main()
+```
+
+SSSSSSSSSSSSSSSSSSSSSSSSSS
+
+**_Sınıf Çalışması:_** Parametresi ile aldığı sayı kadar aşağıdaki özelliklere sahip ürünler üreten `createRandomProducts` isimli global fonksiyonu yazınız:
 
 > Product
 > - Id
@@ -4637,500 +4437,161 @@ main()
 > 
 > Buna göre aşağıdaki işlemleri yapan kodları yazınız:
 > 
-> 1. Stokta bulunan ürünleri maaliyet fiyatına göre pahalıdan ucuza doğru sıralayınız
+> 1. Stokta bulunan ürünleri maliyet fiyatına göre pahalıdan ucuza doğru sıralayınız
 > 2. Stokta bulunmayan ürünleri total miktarına göre sıralayınız
 
 **Çözüm:**
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
+let randomText = (n, text) => {  
+    let str = ""  
+    let len = text.length;  
+  
+    for (let i = 0; i < n; ++i)  
+        str += text.charAt(randomInt(0, len))  
+  
+    return str  
+}  
+let randomTextTR = (n) => randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")  
+  
+let randomTextsTR = (n, min, bound) => {  
+    let result = [];  
+  
+    while (n--)  
+        result.push(randomTextTR(randomInt(min, bound)))  
+  
+    return result  
+}  
+  
+let randomTextEN = (n) =>  randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")  
+  
+let randomTextsEN = (n, min, bound) => {  
+    let result = [];  
+  
+    while (n--)  
+        result.push(randomTextEN(randomInt(min, bound)))  
+  
+    return result  
+}  
+  
+let Product = function (id, name, stock, cost, price) {  
+    this.id = id;  
+    this.name = name;  
+    this.stock = stock;  
+    this.cost = cost;  
+    this.price = price;  
+    this.getTotal =  function () {return this.stock * this.price }  
+    this.toString = function () {return this.name}  
+}  
+  
+let createRandomProducts = (count) =>  {  
+    //TODO:  
+}  
 
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min) + min + 1)
-}
-
-function randomDouble(min, max)
-{
-    return Math.random() * (max - min) + min
-}
-
-function randomText(n, text)
-{
-    let str = ""
-    let len = text.length;
-
-    for (let i = 0; i < n; ++i)
-        str += text.charAt(randomInt(0, len))
-
-    return str
-}
-
-function randomTextTR(n)
-{
-    return randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")
-}
-
-
-function randomTextsTR(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextTR(randomInt(min, max)))
-
-    return result
-}
-
-
-function randomTextEN(n)
-{
-    return randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")
-}
-
-function randomTextsEN(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextEN(randomInt(min, max)))
-
-    return result
-}
-
-let Product = function (id, name, stock, cost, price) {
-    this.id = id
-    this.name = name;
-    this.stock = stock
-    this.cost = cost
-    this.price = price
-    this.getTotal = function () {return this.stock * this.price}
-    this.getTotalCost = function () {return this.stock * this.cost}
-    this.toString = function () {
-        return JSON.stringify(this)
-    }
-}
-
-function createRandomProduct(id)
-{
-    let name = randomTextTR(randomInt(5, 15))
-    let stock = randomInt(-100, 100)
-    let cost = randomDouble(34.7, 109.45)
-    let price = randomDouble(34.7, 109.45)
-
-    return new Product(id, name, stock, cost, price)
-}
-
-function createRandomProducts(n)
-{
-    let products = []
-
-    for (let i = 1; i <= n; ++i)
-        products.push(createRandomProduct(i))
-
-    return products
-}
-
-function main()
-{
-    let products = createRandomProducts(10)
-
-    products.forEach(writeln)
-    writeln("-------------------------")
-    products.filter(p => p.stock > 0).sort((p1, p2) => p2.price - p1.price).forEach(writeln)
-    writeln("-------------------------")
-    products.filter(p => p.stock < 0).sort((p1, p2) => p1.getTotal()- p2.getTotal()).forEach(writeln)
-}
-
+let main = () => {  
+  
+}  
+  
 main()
 ```
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı bir dizinin, yine parametresi aldığı predicate callback fonksiyon için koşula uyan elemanlarını sola, koşula uymayanlarını ise sağa atan ve ilk koşula uymayan elemanın indeks numarasını döndüren `partition` isimli global fonksiyonu yazınız.
+**_Sınıf Çalışması:_** Array prototipine parametresi aldığı predicate callback fonksiyon için koşula uyan elemanlarını sola, koşula uymayanlarını ise sağa atan ve ilk koşula uymayan elemanın indeks numarasını döndüren `partition` isimli global fonksiyonu ekleyiniz.
+**Çözüm:**
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-
-function getRandomIntArray(n, min, max) //[min, max)
-{
-    let a = new Array(n)
-
-    for (let i = 0; i < n; ++i)
-        a[i] = parseInt(Math.random() * (max - min) + min)
-
-    return a
-}
-
-function gswap(a, i, k)
-{
-    let temp = a[i]
-
-    a[i] = a[k]
-    a[k] = temp
-}
-
-function partition(a, pred)
-{
-    let partitionIndex = 0
-
-    while (partitionIndex < a.length && pred(a[partitionIndex]))
-        ++partitionIndex;
-
-    if (partitionIndex === a.length)
-        return partitionIndex
-
-    for (let i = partitionIndex + 1; i < a.length; ++i)
-        if (pred(a[i]))
-            gswap(a, i, partitionIndex++)
-
-    return partitionIndex
-}
-
-function main()
-{
-    let a = getRandomIntArray(10, 1, 100)
-
-    writeln(a)
-
-    let partitionPoint = partition(a, val => val % 2 === 0)
-
-    writeln(a)
-
-    writeln(`Partition Point:${partitionPoint}`)
-}
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
+  
+Array.prototype.partition = function(pred) {  
+    //TODO  
+}  
+  
+let main = () => {  
+    let a = [2, 0, 7, 3, 4, 5]  
+  
+    let partitionIndex = a.partition(x => x % 2 === 0)  
+  
+    writeLine(partitionIndex)  
+}  
+  
 main()
 ```
 
-> `partition` fonksiyonunda dizinin ilk koşula uymayan elemanına erişim için `findIndex` fonksiyonu da kullanılabilir:
-
-```javascript
-function partition(a, pred)
-{
-    let partitionIndex = 0
-
-    partitionIndex = a.findIndex(val => !pred(val))
-
-    if (partitionIndex === -1)
-        return a.length
-
-    for (let i = partitionIndex + 1; i < a.length; ++i)
-        if (pred(a[i]))
-            gswap(a, i, partitionIndex++)
-
-    return partitionIndex
-}
-```
-
->Aşağıdaki örnekte dizi içerisinde ürünlerden stokta bulunanlar dizinin solunda stokta bulunmayanlar ise dizinin sağında olacak şekilde bölümlenmiştir:
-
-```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min) + min + 1)
-}
-
-function randomDouble(min, max)
-{
-    return Math.random() * (max - min) + min
-}
-
-function randomText(n, text)
-{
-    let str = ""
-    let len = text.length;
-
-    for (let i = 0; i < n; ++i)
-        str += text.charAt(randomInt(0, len))
-
-    return str
-}
-
-function randomTextTR(n)
-{
-    return randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")
-}
-
-
-function randomTextsTR(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextTR(randomInt(min, max)))
-
-    return result
-}
-
-
-function randomTextEN(n)
-{
-    return randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")
-}
-
-function randomTextsEN(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextEN(randomInt(min, max)))
-
-    return result
-}
-
-let Product = function (id, name, stock, cost, price) {
-    this.id = id
-    this.name = name;
-    this.stock = stock
-    this.cost = cost
-    this.price = price
-    this.getTotal = function () {return this.stock * this.price}
-    this.getTotalCost = function () {return this.stock * this.cost}
-    this.toString = function () {
-        return JSON.stringify(this)
-    }
-}
-
-function createRandomProduct(id)
-{
-    let name = randomTextTR(randomInt(5, 15))
-    let stock = randomInt(-100, 100)
-    let cost = randomDouble(34.7, 109.45)
-    let price = randomDouble(34.7, 109.45)
-
-    return new Product(id, name, stock, cost, price)
-}
-
-function createRandomProducts(n)
-{
-    let products = []
-
-    for (let i = 1; i <= n; ++i)
-        products.push(createRandomProduct(i))
-
-    return products
-}
-
-function gswap(a, i, k)
-{
-    let temp = a[i]
-
-    a[i] = a[k]
-    a[k] = temp
-}
-
-function partition(a, pred)
-{
-    let partitionIndex = 0
-
-    partitionIndex = a.findIndex(val => !pred(val))
-
-    if (partitionIndex === -1)
-        return a.length
-
-    for (let i = partitionIndex + 1; i < a.length; ++i)
-        if (pred(a[i]))
-            gswap(a, i, partitionIndex++)
-
-    return partitionIndex
-}
-
-
-function main()
-{
-    let products = createRandomProducts(10)
-
-    products.forEach(writeln)
-    writeln("---------------------------------")
-
-    let pi = partition(products, p => p.stock > 0)
-
-    products.forEach(writeln)
-    writeln("---------------------------------")
-
-    writeln(`Partition index:${pi}`)
-}
-
-main()
-```
 
 > `map` metodu dizinin her bir elemanını callback olarak aldığı fonksiyona vererek fonksiyonun callback geri dönüş değerine ilişkin türden bir dizi elde etmekte kullanılır:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function randomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min) + min + 1)
-}
-
-function randomDouble(min, max)
-{
-    return Math.random() * (max - min) + min
-}
-
-function randomText(n, text)
-{
-    let str = ""
-    let len = text.length;
-
-    for (let i = 0; i < n; ++i)
-        str += text.charAt(randomInt(0, len))
-
-    return str
-}
-
-function randomTextTR(n)
-{
-    return randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")
-}
-
-
-function randomTextsTR(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextTR(randomInt(min, max)))
-
-    return result
-}
-
-
-function randomTextEN(n)
-{
-    return randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")
-}
-
-function randomTextsEN(n, min, max)
-{
-    let result = [];
-
-    while (n--)
-        result.push(randomTextEN(randomInt(min, max)))
-
-    return result
-}
-
-let Product = function (id, name, stock, cost, price) {
-    this.id = id
-    this.name = name;
-    this.stock = stock
-    this.cost = cost
-    this.price = price
-    this.getTotal = function () {return this.stock * this.price}
-    this.getTotalCost = function () {return this.stock * this.cost}
-    this.toString = function () {
-        return JSON.stringify(this)
-    }
-}
-
-function createRandomProduct(id)
-{
-    let name = randomTextTR(randomInt(5, 15))
-    let stock = randomInt(-100, 100)
-    let cost = randomDouble(34.7, 109.45)
-    let price = randomDouble(34.7, 109.45)
-
-    return new Product(id, name, stock, cost, price)
-}
-
-function createRandomProducts(n)
-{
-    let products = []
-
-    for (let i = 1; i <= n; ++i)
-        products.push(createRandomProduct(i))
-
-    return products
-}
-
-function gswap(a, i, k)
-{
-    let temp = a[i]
-
-    a[i] = a[k]
-    a[k] = temp
-}
-
-function partition(a, pred)
-{
-    let partitionIndex = 0
-
-    partitionIndex = a.findIndex(val => !pred(val))
-
-    if (partitionIndex === -1)
-        return a.length
-
-    for (let i = partitionIndex + 1; i < a.length; ++i)
-        if (pred(a[i]))
-            gswap(a, i, partitionIndex++)
-
-    return partitionIndex
-}
-
-let ProductDTO = function (id, name, total) {
-    this.id = id
-    this.name = name
-    this.total = total
-}
-
-function main()
-{
-    let products = createRandomProducts(10)
-    products.forEach(writeln)
-    writeln("----------------------------------------------------")
-    products.map((p, i) => new ProductDTO(i + 1, p.name, p.getTotal())).map(JSON.stringify).forEach(writeln)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let Product = function (name, price, stock) {  
+    this.name = name  
+    this.price = price  
+    this.stock = stock  
+    this.getTotal =  function () {return this.stock * this.price }  
+    this.toString = function () {return this.name}  
+}  
+  
+let main = () => {  
+    let products = []  
+  
+    products.push(new Product("laptop", 4000, 0))  
+    products.push(new Product("mouse", 40, 349))  
+    products.push(new Product("klavye", 30, 0))  
+    products.push(new Product("kalem", 40, 34))  
+  
+    let names = products.filter(p => p.stock <= 0).map(p => p.name)  
+  
+    names.forEach(n => writeLine(n))  
+}  
+  
 main()
 ```
 
-**Ellipsis Parametreli Fonksiyonlar**
-
-> Bilindiği gibi üç tane noktanın yan yana gelmesinden oluşan atoma `...` “ellipsis” denir. ES6 ile birlikte ellipsis fonksiyon parametresi olarak kullanılmaktadır:
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-function foo(...args)
-{
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let Product = function (name, price, stock) {  
+    this.name = name  
+    this.price = price  
+    this.stock = stock  
+    this.getTotal =  function () {return this.stock * this.price }  
+    this.toString = function () {return this.name}  
+}  
+  
+let main = () => {  
+    let products = []  
+  
+    products.push(new Product("laptop", 4000, 0))  
+    products.push(new Product("mouse", 40, 349))  
+    products.push(new Product("klavye", 30, 0))  
+    products.push(new Product("kalem", 40, 34))  
+  
+    let names = products.filter(p => p.stock <= 0).map(p => {return {"name": p.name, "price": p.price}})  
+  
+    names.forEach(p => writeLine(`${p.name}, ${p.price}`))  
+}  
+  
+main()
+```
+
+##### Ellipsis Parametreli Fonksiyonlar
+
+> Bilindiği gibi üç tane noktanın yan yana gelmesinden oluşan atoma `...` `ellipsis` denir. ES6 ile birlikte ellipsis fonksiyon parametresi olarak kullanılmaktadır:
+
+```javascript
+function foo(...args) {
  
 }
 
-function bar(a, b, ...args)
-{
+function bar(a, b, ...args) {
 
 }
 ```
@@ -5138,8 +4599,7 @@ function bar(a, b, ...args)
 > Ellipsis parametresi fonksiyonun son parametresi olmak zorundadır:
 
 ```javascript
-function tar(...args, a, b) //error
-{
+function tar(...args, a, b) { //error
 
 }
 ```
@@ -5147,8 +4607,7 @@ function tar(...args, a, b) //error
 > Bu sebeple bir fonksiyonun birden fazla ellipsis parametresi olamaz:
 
 ```javascript
-function tar(...a, ...b) //error
-{
+function tar(...a, ...b) { //error
 
 }
 ```
@@ -5156,35 +4615,60 @@ function tar(...a, ...b) //error
 > Ellipsis parameter bir Array referansı gibi düşünülebilir. Fonksiyonun ellipsis parametresine argüman geçilemese bile boş dizi geçilmiş olur. Şüphesiz ellipsis parameresine heterojen türler argüman olarak geçirilebilir:
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function foo(...args)
-{
-    writeln(`Length:${args.length}`)
-    for (let arg of args)
-        write(`${arg} `)
-    writeln()
-}
-
-
-function main()
-{
-    foo(10, 20, 30)
-    foo(0, 20)
-    foo()
-    foo(10, 20, "ankara", 30, "istanbul")
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+function foo(...args) {  
+    writeLine(`Length:${args.length}`)  
+    for (let arg of args)  
+        write(`${arg} `)  
+    writeLine()  
+}  
+  
+  
+let main = () => {  
+    foo(10, 20, 30)  
+    foo(0, 20)  
+    foo()  
+    foo(10, 20, "ankara", 30, "istanbul")  
+}  
+  
 main()
 ```
+
+>Aşağıdaki demo örnekte `arguments` dizisi kullanmakla, `...` parametresi kullanmak arasındaki benzerlik ve fark ele alınmıştır.
+
+```javascript
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+    
+function foo(x, ...args) {  
+    writeLine(`x = ${x}`)  
+    writeLine(`Length:${args.length}`)  
+    for (let arg of args)  
+        write(`${arg} `)  
+    writeLine()  
+}  
+  
+  
+function bar(x) {  
+    writeLine(`x = ${x}`)  
+    writeLine(`Length:${arguments.length}`)  
+    for (let i = 1; i < arguments.length; ++i)  
+        write(`${arguments[i]} `)  
+    writeLine()  
+}  
+  
+  
+let main = () => {  
+    foo(10, 20, 30)  
+    bar(10, 20, 30)  
+}  
+  
+main()
+```
+
+XXXXXXXXXXXXXXXXXX
 
 > Dikkat edilirse dizi referansı paremetresi ile ellipsis parametresi arasındaki tipik fark şudur: Ellipsis parametresi bir dizi parametresidir, fakat argüman olarak dizi referansı geçilmesi gerekmez. Zaten geçilen argümanlardan dizi yaratılıp ilgili fonksiyona geçilmiş olur. Ellipsis parametresi ile ES6 ile eklenen Lambda ifadelerine ilişkin bir durum da çözülebilmektedir: Lambda ifadelerinin arguments dizisi ya tanımlanmaz ya da her zaman boş bir dizidir. 
 >
@@ -5248,7 +4732,7 @@ main()
 
 **Modüller**
 
-> Bir js dosyasına genel olarak `modül` denir. ES6’dan önce ES’de bir js dosyasından başka bir js dosyasındaki bir ismi kullanmanın doğrudan bir yolu yoktu. Bu sebeple bazı ES kullanan teknolojiler bu işlemi yapabilecek araçları da barındırıyorlardı. Örneğin NodeJS teknolojisinde farklı modüller ile çalışmak ES6 olmasa da mümkündür.
+> Bir js dosyasına genel olarak `modül` denir. ES6’dan önce ES’de bir js dosyasından başka bir js dosyasındaki bir ismi kullanmanın doğrudan bir yolu yoktu. Bu sebeple bazı ES kullanan teknolojiler bu işlemi yapabilecek araçları da barındırıyorlardı. Örneğin NodeJS'de farklı modüller ile çalışmak ES6 olmasa da mümkündür.
 
 **_Anahtar Notlar:_** ES6’ ya bazı durumlarda çıktığı yıl olan 2015 dolayısıyla ES2015 de denilmektedir. Örneğin NodeJS terminolojisinde modüller iki gruba ayrılır: CommonJS moduller ya da NodeJS moduller, ES2015 veya ES6 modüller.
 

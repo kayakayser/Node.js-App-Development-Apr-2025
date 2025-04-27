@@ -1,20 +1,34 @@
 let write = a => process.stdout.write(a)
 let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)
 
-let countValue = (a, pred) => {
-    let count = 0
-
-    a.forEach(e => {if (pred(e)) ++count})
-
-    return count
+let Product = function (name, price, stock) {
+    this.name = name
+    this.price = price
+    this.stock = stock
+    this.getTotal =  function () {return this.stock * this.price }
+    this.toString = function () {return this.name}
 }
 
-let main = () => {
-    let a = [1, 2, 4, 3, -5, 4, 9, 3]
+function foo(x, ...args) {
+    writeLine(`x = ${x}`)
+    writeLine(`Length:${args.length}`)
+    for (let arg of args)
+        write(`${arg} `)
+    writeLine()
+}
 
-    writeLine(countValue(a, v => v % 2 === 0))
-    writeLine(countValue(a, v => v === 4))
-    writeLine(countValue(a, v => v === 67))
+function bar(x) {
+    writeLine(`x = ${x}`)
+    writeLine(`Length:${arguments.length}`)
+    for (let i = 1; i < arguments.length; ++i)
+        write(`${arguments[i]} `)
+    writeLine()
+}
+
+
+let main = () => {
+    foo(10, 20, 30)
+    bar(10, 20, 30)
 }
 
 main()
