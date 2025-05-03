@@ -4668,81 +4668,134 @@ let main = () => {
 main()
 ```
 
-XXXXXXXXXXXXXXXXXX
+>Dikkat edilirse dizi referansı parametresi ile ellipsis parametresi arasındaki tipik fark şudur: Ellipsis parametresi bir dizi parametresidir, fakat argüman olarak dizi referansı geçilmesi gerekmez. Zaten geçilen argümanlardan dizi yaratılıp ilgili fonksiyona aktarılmış olur. 
 
-> Dikkat edilirse dizi referansı paremetresi ile ellipsis parametresi arasındaki tipik fark şudur: Ellipsis parametresi bir dizi parametresidir, fakat argüman olarak dizi referansı geçilmesi gerekmez. Zaten geçilen argümanlardan dizi yaratılıp ilgili fonksiyona geçilmiş olur. Ellipsis parametresi ile ES6 ile eklenen Lambda ifadelerine ilişkin bir durum da çözülebilmektedir: Lambda ifadelerinin arguments dizisi ya tanımlanmaz ya da her zaman boş bir dizidir. 
+>Lambda ifadelerinin arguments dizisi ya tanımlanmaz ya da her zaman boş bir dizidir. Yani programcı açısından Lambda ifadeleri içerisinde `arguments` dizisi kullanılmamalıdır.
 >
-> Aşağidaki örneği inceleyiniz:
+> Aşağıdaki demo örneğin farklı interpreter'larda çalışması yorumlanması farklı olabilir. Bu anlamda aşağıdaki demo örnekte `arguments` dizisi kullanımı geçersizdir.
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let display = () => {
-        writeln(`Arguments:${arguments.length}`)
-        for (let elem of arguments)
-            writeln(elem)
-    }
-
-    display(10, 20, 30)
-    writeln("/////////")
-    display(10)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let display = () => {  
+        writeLine(`Arguments:${arguments.length}`)  
+        for (let elem of arguments)  
+            writeLine(elem)  
+    }  
+  
+    display(10, 20, 30)  
+    writeLine("/////////")  
+    display(10)  
+}  
+  
 main()
 ```
 
-> Yukarıdaki problem ellipsis parametresi ile çözülebilir:
+> Yukarıdaki demo örnek aşağıdaki gibi yapılarak değişken sayıda argüman geçilebilir
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-function main()
-{
-    let display = (...args) => {
-        writeln(`Arguments:${args.length}`)
-        for (let elem of args)
-            writeln(elem)
-    }
-
-    display(10, 20, 30)
-    writeln("/////////")
-    display(10)
-}
-
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+let main = () => {  
+    let display = (...args) => {  
+        writeLine(`Arguments:${args.length}`)  
+        for (let elem of args)  
+            writeLine(elem)  
+    }  
+  
+    display(10, 20, 30)  
+    writeLine("/////////")  
+    display(10)  
+}  
+  
 main()
 ```
 
-**Modüller**
+##### const değişkenler:
 
-> Bir js dosyasına genel olarak `modül` denir. ES6’dan önce ES’de bir js dosyasından başka bir js dosyasındaki bir ismi kullanmanın doğrudan bir yolu yoktu. Bu sebeple bazı ES kullanan teknolojiler bu işlemi yapabilecek araçları da barındırıyorlardı. Örneğin NodeJS'de farklı modüller ile çalışmak ES6 olmasa da mümkündür.
+>Bir değişken const olarak bildirildiğinde o değişkene bir kez değer verilebilir.
 
-**_Anahtar Notlar:_** ES6’ ya bazı durumlarda çıktığı yıl olan 2015 dolayısıyla ES2015 de denilmektedir. Örneğin NodeJS terminolojisinde modüller iki gruba ayrılır: CommonJS moduller ya da NodeJS moduller, ES2015 veya ES6 modüller.
+>`const` değişkenler `const` anahtar sözcüğü ile bildirilirler:
 
-**_Anahtar Notlar:_** ES2015 (ES6) ile birlikte modül dosyalarının NodeJS gibi, “farklı modüllerle kendine özgü çalışma yöntemi olan teknolojilerde” ES6 modüllerinin kullanımlarında uzantılarının “.mjs” biçiminde seçilmesi gerekebilir.
+```javascript
+import {writeLine} from "./csd/util/console/console.js"  
+  
+const main = () => {  
+    const AVOGADRO_NUMBER = 6.02E+23  
+  
+    writeLine(AVOGADRO_NUMBER)  
+}  
+  
+main()
+```
 
-**_Anahtar Notlar:_** ES6 ile birlikte bazı durumların kısıtlı bir biçimde kullanılmasını veya doğrudan kullanılamaması gibi kuralların devreye girmesine “strict mode” denilmektedir. ES6’nın ilk zamanlarında bu şekilde bildiriler gerekebiliyordu. Ancak şu an ES6’dan sonraki sürümler yaygın olarak kullanıldığından bu bildirime çoğu zaman gerek yoktur. Zaten kısıtlar vardır ve kuralları da belirlidir.
+>const bir değişkene faaliyet alanı boyunca bir kez değer verilebilir
+```javascript
+import {writeLine} from "./csd/util/console/console.js"  
+  
+const main = () => {  
+    const AVOGADRO_NUMBER = 6.02E+23  
+  
+    AVOGADRO_NUMBER = 6.02 //error  
+    writeLine(AVOGADRO_NUMBER)  
+}  
+  
+main()
+```
 
-> Bir modül içerisinde kullanılan bir isme başka bir modülden doğrudan erişilemez. Bunun için modül içerisinde bir isim `export` anahtar sözcüğü ile bildirilmelidir. `export` anahtar sözcüğün iki kullanımı vardır: isimlerin `export` edilmesi (named exports), varsayılan export (default export).
+
+>`const` değişkenlere atama bildirim sırasında yapılmalıdır:
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js"  
+  
+const main = () => {  
+    const AVOGADRO_NUMBER //error  
+  
+    AVOGADRO_NUMBER = 6.02E+23  
+    writeLine(AVOGADRO_NUMBER)  
+}  
+  
+main()
+```
+
+>`const` değişkenler faaliyet alanı bakımından `let` değişkenler ile aynıdır:
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js"  
+  
+const main = () => {  
+    {  
+        const AVOGADRO_NUMBER = 6.02E+23  
+    }  
+  
+    writeLine(AVOGADRO_NUMBER) //error  
+}  
+  
+main()
+```
+
+
+> İkinci defa atama yapılmayacak ve bildirim sırasında atama yapılabilecek her değişken const yapılmalıdır. Bu durum yorumlayıcıların da kodu efektif olarak çalıştırmasını sağlar. Ayrıca bir değişkenin const yapılması, `let` bir değişkenin okunabilirliğini artırır. `Bir değişkenin let olması o değişkene faaliyet alanı boyunca atama yapılacağı anlamına gelir. Çünkü atama yapılmıyorsa programcı zaten bunu const yapar` şeklinde anlaşılır.
+
+##### Modüller
+
+> Bir `js` dosyasına genel olarak `modül (module)` denir. ES6’dan önce ES’de bir `js` dosyasından başka bir `js` dosyasındaki bir ismi kullanmanın doğrudan bir yolu yoktu. Bu sebeple bazı ES kullanan teknolojiler bu işlemi yapabilecek araçları da barındırıyorlardı. Örneğin NodeJS'de farklı modüller ile ES6 öncesinde de çalışabilmek mümkündür.
+
+**_Anahtar Notlar:_** ES6’ ya bazı kaynaklarda çıktığı yıl olan 2015 dolayısıyla ES2015 de denilmektedir. 
+
+>NodeJS terminolojisinde modüller iki gruba ayrılır: **CommonJS moduller, ES2015 / ES6 modüller.**
+
+>ES6 modüller için özellikle `commonjs` ile karıştırılmaması için `.mjs` uzantısı kullanılması bir convention'dır. Örneğin, Nodejs ile yazılan uygulamalarda common js modülleri kullanılıyorsa `.js`, ES6 modülleri kullanılıyorsa `.mjs` uzantısı seçilmelidir.
+
+**_Anahtar Notlar:_** ES6 ile birlikte bazı durumların kısıtlı bir biçimde kullanılmasını veya doğrudan kullanılamaması gibi kuralların devreye girmesine **strict mode** denilmektedir. ES6’nın ilk zamanlarında bu şekilde bildiriler gerekebiliyordu. Ancak şu an ES6’dan sonraki sürümler yaygın olarak kullanıldığından bu bildirime çoğu zaman gerek yoktur. Zaten kısıtlar vardır ve kuralları da belirlidir.
+
+> Bir modül içerisinde kullanılan bir isme başka bir modülden doğrudan erişilemez. Bunun için modül içerisinde bir isim `export` anahtar sözcüğü ile bildirilmelidir. `export` anahtar sözcüğün iki kullanımı vardır: **isimlerin `export` edilmesi (named exports)**, **varsayılan export (default export)**.
  
- **Modül İçerisinden İsimlerin export Edilmesi (named exports)**
+ ###### Modül İçerisinden İsimlerin export Edilmesi (named exports)
  
 > Bu kullanımın genel biçimi:
 
@@ -4757,59 +4810,47 @@ veya
 ```
 
 ```javascript
-function write(a)
-{
-    process.stdout.write(a)
-}
-
-function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
-
-export {write, writeln}
+//util/console.js
+let write = a => process.stdout.write(a)  
+let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
+  
+export {write, writeLine}
 ``` 
 
 > Yukarıdaki export değişkenler aynı script içerisinde ise aşağıdaki gibi bir export bildirimi yapılabilir:
 
 ```javascript
-export function write(a)
-{
-    process.stdout.write(a)
-}
-
-export function writeln(a)
-{
-    write(a === undefined ? '\n' : `${a}\n`)
-}
+export let isEven = a => a % 2 === 0  
+export let isOdd = a => !isEven(a)
+//...
 ```
 
-**Varsayılan export**
+###### Varsayılan export
 
 > Bir modülün ismi zaten export edilmiştir. Ancak programcı isterse bir modülü default bir isimle de export edebilir. Bir modül içerisinde bir tane default yapılabilir:
 
-```
-    export default writeln
+```javascript
+    export default writeLine
 ```
 
-**Modüllerin import edilmesi**
+###### Modüllerin import edilmesi
 
-> Bir modül içerisinde başka bir modülde export edilen bir elemanı kullanabilmek için import anahtar sözcüğü kullanılır. Bir modül içerisinde birden fazla import bildirimi olabilir. Bildirim sırasının önemi yoktur. import bildirimleri iki şekilde kullanılabilir: 
+> Bir modül içerisinde başka bir modülde export edilen bir elemanı kullanabilmek için `import` anahtar sözcüğü kullanılır. Bir modül içerisinde birden fazla import bildirimi olabilir. Bildirim sırasının önemi yoktur. import bildirimleri iki şekilde kullanılabilir: 
 > 
-> -isimlerin import edilmesi
-> -default export edilen modüllerin import edilmesi
+> - isimlerin import edilmesi
+> - default export edilen modüllerin import edilmesi
 
 > İsimlerin import edilmesinin genel biçimi:
 
-```
+```javascript
 	import {isim listesi} from <modül ismi>
 ```
 
 Örneğin:
 
 ```javascript
-import {writeln} from "./util.mjs"
-import {Random} from "./Random.mjs"
+import {writeLine} from "./csd/util/console/console.js"  
+import {randomInt} from "./util/random/random.js"  
 ```
 
 > Tüm isimler aşağıdaki gibi yıldız `*` (asterisk) ile takma isim (alias) kullanarak aşağıdaki gibi bildirilebilir:
@@ -4821,271 +4862,296 @@ import * as util from "./util.mjs"
 > `import` bildirimde `{}` içerisindeki isimlere de takma isim verilebilir:
 
 ```javascript
-import {Random as R} from "./Random.mjs"
+import {randomInt as rInt} from "./csd/util/random/random.js"  
 ```
 
 > `import` bildiriminin kullanımına bir örnek:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {isPrime} from "./csdnumberutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
-
-function main()
-{
-    for (let i = 0; i < 10; ++i) {
-        let val = randomInt(0, 99)
-        writeLine(`${val} sayısı ${isPrime(val) ? "asaldır": "asal değildir"}`)
-    }
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {randomInt} from "./csd/util/random/random.js"  
+  
+let main = () => {  
+    for (let i = 0; i < 10; ++i)  
+        writeLine(randomInt(0, 100))  
+}  
+  
 main()
 ```
 
-**const değişkenler:**
-
->`const` değişkenler `const` anahtar sözcüğü ile bildirilirler:
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-import {writeLine} from "./consoleutil.mjs";
-
-function main()
-{
-    const AVOGADRO_NUMBER = 6.02E+23
-    
-    writeLine(AVOGADRO_NUMBER)
-}
-
+import {writeLine as csdWriteLine} from "./csd/util/console/console.js"  
+import {writeLine as msdWriteLine} from "./msd.util/console.js"  
+import {randomInt} from "./csd/util/random/random.js"  
+  
+let main = () => {  
+    for (let i = 0; i < 10; ++i)  
+        csdWriteLine(randomInt(0, 100))  
+  
+    for (let i = 0; i < 10; ++i)  
+        msdWriteLine(randomInt(0, 100))  
+}  
+  
 main()
 ```
 
->`const` değişkenler faaliyet alanı bakımından `let` değişkenler ile aynıdır:
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-import {writeLine} from "./consoleutil.mjs";
-
-function main()
-{
-    {
-        const AVOGADRO_NUMBER = 6.02E+23
-    }
-
-    writeLine(AVOGADRO_NUMBER) //error
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {isArmstrong} from "./csd/util/numeric/numeric.js";  
+  
+const main = () => {  
+    for (let i = 0; i < 999_999; ++i) {  
+        if (isArmstrong(i))  
+            writeLine(`${i}`)  
+    }  
+}  
+  
 main()
 ```
 
->`const` bir değişkene bir kez atama yapılabilir:
 
 ```javascript
-import {writeLine} from "./consoleutil.mjs";
-
-function main()
-{
-    const AVOGADRO_NUMBER = 6.02E+23
-
-    AVOGADRO_NUMBER = 6.02 //error
-
-
-    writeLine(AVOGADRO_NUMBER)
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {Point} from "./csd/math/geometry/Point.js"  
+  
+const main = () => {  
+    const p = new Point(100, 100)  
+    writeLine(p.toString())  
+  
+    p.offset(-20, 30)  
+    writeLine(p.toString())  
+}  
+  
 main()
 ```
-
->`const` değişkenlere atama bildirim sırasında yapılmalıdır:
 
 ```javascript
-import {writeLine} from "./consoleutil.mjs";
 
-function main()
-{
-    const AVOGADRO_NUMBER //error
-
-    AVOGADRO_NUMBER = 6.02E+23
-
-
-    writeLine(AVOGADRO_NUMBER)
+//csd/math/geometry/Point.js
+export const Point = function(x, y) {  
+    this.x = x  
+    this.y = y  
+    this.euclideanDistance = function(other) {  
+        return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2))  
+    }  
+    this.offset = function(dx, dy) {this.x += dx; this.y += dy}  
+    this.toString = function () {return `(${this.x}, ${this.y})`}  
 }
-
-main()
 ```
 
-> İkinci defa atama yapılmayacak ve bildirim sırasında atama yapılabilecek her değişken const yapılmalıdır. Bu durum yorumlayıcıların da efektif olarak kod çalıştırmasını sağlar. Ayrıca bir değişkenin const yapılması, `let` bir değişkenin okunabilirliğini artırır. Bir değişkenin `let` olması “o değişkene faaliyet alanı boyunca atama yapılacağı anlamına gelir. Çünkü atama yapılmıyorsa programcı zaten bunu `const` yapar” şeklinde anlaşılır.
-
-**Destructing assignments:**
+##### Destructing assignments:
 
 >Parçalama ataması ES’de bir dizinin elemanlarının veya bir nesnenin property değerlerlerinin kolay bir biçimde değişkenlere atanmasını sağlar. ES6 ile eklenmiştir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {Point} from "./csdmatutil.mjs";
-
-function main()
-{
-    const p = new Point(10, 20)
-
-    const {x, y} = p
-    writeLine(`x = ${x}, y = ${y}`)
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {randomIntPoint} from "./csd/math/geometry/Point.js"  
+  
+const main = () => {  
+    for (let i = 0; i < 10; ++i) {  
+        const {x, y} = randomIntPoint(-100, 100)  
+  
+        writeLine(`x = ${x}, y = ${y}`)  
+    }  
+}  
+  
 main()
 ```
 
->Burada point referansının gösterdiği nesnenin parçaları x ve y `const` değişkenlerine atanmıştır. Parçalanan değişkenlerin isimleri nesnenin property elemanlarının isimleri ile aynı olmalıdır. Değişkenlerin isimleri aşağıdaki gibi değiştirilebilir:
+
+>Burada Point nesnesinin parçaları x ve y `const` değişkenlerine atanmıştır. Parçalanan değişkenlerin isimleri nesnenin property elemanlarının isimleri ile aynı olmalıdır. Değişkenlerin isimleri aşağıdaki gibi değiştirilebilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {Point} from "./csdmatutil.mjs";
-
-function main()
-{
-    const p = new Point(10, 20)
-
-    const {x: a, y: b} = p
-    writeLine(`x = ${a}, y = ${a}`)
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {randomIntPoint} from "./csd/math/geometry/Point.js"  
+  
+const main = () => {  
+    for (let i = 0; i < 10; ++i) {  
+        const {x: a, y: b} = randomIntPoint(-100, 100)  
+  
+        writeLine(`x = ${a}, y = ${b}`)  
+    }  
+}  
+  
 main()
 ```
 
->Parçalama işlemi fonksiyonun geri dönüş değerine ilişkin referansın gösterdiği nesnenin elemanlarını elde etmekte kullanılabilir:
+
+>Diziyi parçalama sırasında `[]` kullanılmalıdır. Dizinin bazı elemanları parçalamada istenmezse virgül koyarak elaman pas geçilebilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {createPoint, createRandomPoint} from "./csdmatutil.mjs";
-
-function main()
-{
-    const {x, y} = createPoint(100, 100)
-
-    writeLine(`x = ${x}, y = = ${y}`)
-
-    const {x: a, y: b} = createRandomPoint(-100, 100)
-
-    writeLine(`x = ${a}, y = = ${b}`)
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {randomIntArray} from "./csd/util/array/array.js";  
+  
+const main = () => {  
+    const a = randomIntArray(10, 0, 99)  
+      
+    writeLine(a)  
+    const [x,,,,y] = a  
+    writeLine(`x = ${x}, y = ${y}`)  
+}  
+  
 main()
 ```
 
 Örneğin:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {createComplex, createPoint, createRandomPoint, getOrigin} from "./csdmatutil.mjs";
-
-function main()
-{
-    const {real, imag} = createComplex()
-
-    writeLine(`${real} + ${imag}i`)
-
-    const {x, y} = getOrigin()
-
-    writeLine(`(${x}, ${y})`)
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {randomIntPoints} from "./csd/math/geometry/Point.js";  
+  
+const main = () => {  
+    for (const {x, y} of randomIntPoints(10, -100, 100))  
+        writeLine(`x = ${x}, y = ${y}`)  
+}  
+  
 main()
 ```
-
->Diziye parçalama sırasında `[]` kullanılmalıdır. Dizinin bazı elemanları parçalamada istenmezse virgül koyarak elaman es geçilebilir:
 
 ```javascript
-import {write, writeLine} from "./csdstdioutil.mjs";
-import {randomIntArray, randomDoubleArray} from "./csdarrayutil.mjs";
-
-const main = () => {
-    const a = randomIntArray(10, 0, 99)
-    writeLine(a)
-    const [x,,,y] = a
-    write(`x = ${x}, y = ${y}`)
+import {randomInt, randomNumber} from "../../util/random/random.js";  
+  
+export const Point = function(x, y) {  
+    this.x = x  
+    this.y = y  
+    this.euclideanDistance = function(other) {  
+        return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2))  
+    }  
+    this.offset = function(dx, dy) {this.x += dx; this.y += dy}  
+    this.toString = function () {return `(${this.x}, ${this.y})`}  
+}  
+  
+export const randomIntPoint = (min, bound) => new Point(randomInt(min, bound), randomInt(min, bound))  
+  
+export const randomIntPoints = (n, min, bound) => {  
+    let points = new Array(n)  
+    for (let i = 0; i < n; i++)  
+        points[i] = randomIntPoint(min, bound)  
+  
+    return points  
+}  
+  
+export const randomPoint = (min, bound) => new Point(randomNumber(min, bound), randomNumber(min, bound))  
+  
+export const randomPoints = (n, min, bound) => {  
+    let points = new Array(n)  
+    for (let i = 0; i < n; i++)  
+        points[i] = randomPoint(min, bound)  
+  
+    return points  
 }
-
-main()
 ```
 
-Örneğin:
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-import {write, writeLine} from "./csdstdioutil.mjs";
-import {createRandomPoints} from "./mumathutil.mjs";
-
-const main = () => {
-    for (const {x, y} of createRandomPoints(10, -100.5, 100.5))
-        writeLine(`x = ${x}, y = ${y}`)
-}
-
+import {writeLine} from "./csd/util/console/console.js"  
+import {solveQuadraticEquation} from "./csd/util/math/math.js";  
+  
+const main = () => {  
+    const {exists, x1, x2} = solveQuadraticEquation(1, 4, 4)  
+  
+    if (exists)  
+        writeLine(`x1 = ${x1}, x2 = ${x2}`)  
+    else  
+        writeLine("No real root")  
+}  
+  
 main()
 ```
-
-**Temel Türleri Sarmalayan Nesneler (Sınıflar)**
-
->ES’ de temel türleri sarmalayan (wrapper) nesneler bulunur. Örneğin `string` türü için `String` sarmalayan nesnesi, `number` türü için `Number` sarmalayan nesnesi kullanılabilir. Temel türlerin metotları olamayacağından yararlı işlemler için sarmalayan sınıflar düşünülmüştür. Örneğin:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
+const calculateDelta = (a, b, c) => b * b - 4 * a * c  
+  
+export const solveQuadraticEquation = (a, b, c) => {  
+    const delta = calculateDelta(a, b, c)  
+  
+    if (delta >= 0) {  
+        const sqrtDelta = Math.sqrt(delta)  
+  
+        return {exists:true, x1: (-b + sqrtDelta) / (2 * a), x2: (-b - sqrtDelta) / (2 * a)}  
+    }  
+  
+    return {exists:false, x1: undefined, x2: undefined}  
+}  
 
-function main()
-{
-    let a = randomInt(0, 99)
+//...
+```
 
-    writeLine(typeof a)
-    writeLine(a)
+##### Temel Türleri Sarmalanması
 
-    let msg = a.toString(2)
+>ES’ de temel türleri sarmalayan (wrapper) nesneler/sınıflar bulunur. Örneğin `string` türü için `String` sarmalayan nesnesi, `number` türü için `Number` sarmalayan nesnesi kullanılabilir. Temel türlerin metotları olamayacağından yararlı işlemler için sarmalayan sınıflar düşünülmüştür. Örneğin:
 
-    writeLine(typeof msg)
-    writeLine(msg)
-}
-
+```javascript
+import {randomInt} from "./csd/util/random/random.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    const a = randomInt(0, 100)  
+    let msg = a.toString()  
+  
+    writeLine(msg)  
+}  
+  
 main()
 ```
 
-> Burada `a` nın gösterdiği tür için `toString` fonksiyonu çağrılırken sarmalanır ve Number türü olarak işleme girer. Burada `a` nın gösterdiği tür değişmez. İşlem öncesi otomatik tür dönüşümü ile Number nesnesi olarak sarmalanır.
+> Burada `a` 'nın gösterdiği nesneye ilişkin değer, `toString` fonksiyonu çağrılırken sarmalanır ve Number türü olarak işleme girer. Burada `a` nın gösterdiği tür değişmez. İşlem öncesi otomatik tür dönüşümü ile Number nesnesi olarak sarmalanır.
 > 
 > Temel türlere ilişkin sarmalama `new` operatörü ile de yapılabilir. Bu durumda artık değer temel tür olmaktan çıkmıştır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
-
-function main()
-{
-    let a = new Number(randomInt(0, 99)) //Sarmalandı
-
-    writeLine(typeof a)
-    writeLine(a)
-
-    let msg = a.toString(2)
-
-    writeLine(typeof msg)
-    writeLine(msg)
-}
-
+import {randomInt} from "./csd/util/random/random.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    const a = new Number(randomInt(0, 100))  
+    let msg = a.toString()  
+  
+    writeLine(msg)  
+}  
+  
 main()
 ```
 
+>Sarmalama işlemi new operatörü kullanılmadan da yapılabilir
+
+```javascript
+import {randomInt} from "./csd/util/random/random.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    const a = Number(randomInt(0, 100))  
+    let msg = a.toString()  
+  
+    writeLine(msg)  
+}  
+  
+main()
+```
+
+XXXXXXXXXXXXXXXXX
+
 **String Nesnesi**
 
-> ES’ de string türünü sarmalayan String isimli bir nesne bulunmaktadır. String nesnesi Java’ da olduğu gibi immutable’ dır. Yani String nesnesi içerisinde bulunan yazı üzerinde değişiklik yapılamaz. Değişiklik yapan metotlar yeni bir String nesnesi döndürürler. String nesnesinin yararlı elemanları vardır.
+> ES’ de `string` türünü sarmalayan `String` isimli bir nesne bulunmaktadır. String nesnesi Java’ da olduğu gibi immutable’ dır. Yani String nesnesi içerisinde bulunan yazı üzerinde değişiklik yapılamaz. Değişiklik yapan metotlar yeni bir String nesnesi döndürürler. String nesnesinin yararlı elemanları vardır.
 > 
 > String nesnesinin `length` property elemanı ile içerisinde tutuğu yazının karakter sayısı elde edilebilir:
 
 ```javascript
-import {randomTextTR} from "./csdstringutil.mjs";
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
-
-function main()
-{
-    let s = randomTextTR(randomInt(5, 10))
-
-    writeLine(`Length:${s.length}, text:${s}`)
-}
-
+import {randomTextTR} from "./csd/util/string/string.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    const s = randomTextTR(10)  
+  
+    writeLine(s)  
+}  
+  
 main()
 ```
 
