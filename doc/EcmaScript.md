@@ -36,6 +36,12 @@
 > 
 > `number`, `string` ve `boolean` türlerini sarmalayan (wrapper) sırasıyla `Number`, `String` ve `Boolean` isimli nesneler (object) bulunmaktadır.
 
+**Anahtar Notlar:** Yazılar da aslında bilgisayar belleğinde 2'lik sistemde sayılar biçiminde tutulmaktadır. Bir yazıyı oluşturan elemanlara **karakter (character)** denilmektedir. İşte bir yazıda her bir karakter 2'lik sistemde bir sayı ile ifade edilir. Böylece yazı  aslında ikilik sistemde bir sayı dizisi gibi tutulmaktadır. İşte bir karakter için hangi sayının karşı geldiğini belirten tablolara **karakter tabloları (character table)** denilmektedir. Karakter tablosundaki karakter şekillerine **glyph** denilmektedir. Her karaktere tabloda bir sıra numarası verilmiştir. Buna da **code point (code point)** denilmektedir. Dünyanın ilk standart karakter tablosu `ASCII` (American Standard Code Information Interchange) denilen tablodur. `ASCII` tablosu aslında 7 bit bir tablodur. Dolayısıyla tabloda 128 tane glyph için code point bulundurulmuştur. `ASCII` dışında `IBM EBCDIC` tablosunu geliştirmiştir. Wang firması `WISCII` tablosunu kullanmıştır. `ASCII` tablosu Amerikalılar tarafından yalnızca İngilizce karakterleri ifade etmek için oluşturulmuştur. Bilgisayarlar yaygınlaşmaya başladığında farklı karakterlere sahip olan Türkiye gibi, Yunanistan gibi, Almanya gibi ülkeler bu `ASCII` tablosunu 8 bite çıkartıp elde edilen 128'lik yeni alanı kendi karakterlerini ifade etmek için kullanmışlardır. `ASCII` tablosunun ilk yarısı (yani [0, 128] numaraları karakterleri) standarttır. Ancak ikinci yarısı **code page (code page)** adı altında farklı ülkeler tarafından farklı yerleşimler yapılarak kullanılmaktadır. DOS zamanlarında Türkçe karakterler için `OEM 857` denilen code page kullanılıyordu. Daha sonra Microsoft Windows sistemlerinde Türkçe karakterler için `1254 code page`'i düzenledi. ISO, bu code page'leri standart hale getirmiştir. Bugün Türkçe karakterler `ISO` tarafından `ASCII 8859-9` Code page'i ile düzenlenmiştir. `ASCII` tablosu ve onların code page'leri uzun süre kullanılmış ve hala kullanılmakta olsa da maalesef karışıklıklara yol açmaktadır. İşte ortalama 20 yıldır artık karakterleri 2 byte içerisinde ifade ederek dünyanın bütün dillerinin ve ortak sembollerinin tek bir tabloya yerleştirilmesi ile ismine `UNICODE` denilen bir tablo oluşturulmuştur.
+
+[Unicode Homepage &#x1F517;](https://home.unicode.org)
+
+`UNICODE` tablo ISO tarafından `10646` ismiyle de bazı farklılıklarla standardize edilmiştir. `UNICODE` tablonun ilk 128 karakteri standart ASCII karakterleri, ikinci 128 karakteri `ISO 8859-9` code page'indeki karakterlerdir. Bir karakter tablosundaki code point'lerin ikilik sistemde ifade edilme biçimine **encoding** denilmektedir. ASCII code page'lerinde encoding doğrudan code point'in 1 byte'lık sayı karşılığıdır. Ancak `UNICODE` tablonun değişik encoding'leri kullanılmaktadır. `UNICODE` tablonun klasik encoding'i `UTF-16`'dır. Burada code point doğrudan 16 bit bir sayı biçiminde ifade edilir. `UTF-32` encoding'inde ise code point 32 bitlik bir sayı biçiminde ifade edilmektedir. Ancak `UNICODE` tablonun en yaygın kullanılan encoding'i `UTF-8` encoding'idir. `UTF-8` kodlamasında standart ASCII karakterler 1 byte ile, diğer karakterler 2 byte, 3 byte, 4 byte ve 5 byte ile kodlanabilmekedir. Türkçe karakterler `UTF-8` encoding'inde 2 byte yer kaplamaktadr. `UTF-8` encoding'i `UNICODE` bir yazının adeta sıkıştırılmış bir hali gibi düşünülebilir. Bugün pek çok programlama editörü default durumda dosyayı `UNICODE UTF-8` encoding'ine göre saklamaktadır.
+
 ##### ECMAScript'de Değişkenler
 
 > ECMAScript'de genel olarak 4(dört) yerde değişken bildirimi yapılabilir.
@@ -4424,79 +4430,6 @@ let main = () => {
 main()
 ```
 
-SSSSSSSSSSSSSSSSSSSSSSSSSS
-
-**_Sınıf Çalışması:_** Parametresi ile aldığı sayı kadar aşağıdaki özelliklere sahip ürünler üreten `createRandomProducts` isimli global fonksiyonu yazınız:
-
-> Product
-> - Id
-> - name
-> - stock
-> - cost
-> - price
-> 
-> Buna göre aşağıdaki işlemleri yapan kodları yazınız:
-> 
-> 1. Stokta bulunan ürünleri maliyet fiyatına göre pahalıdan ucuza doğru sıralayınız
-> 2. Stokta bulunmayan ürünleri total miktarına göre sıralayınız
-
-**Çözüm:**
-
-```javascript
-let write = a => process.stdout.write(a)  
-let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
-let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
-let randomText = (n, text) => {  
-    let str = ""  
-    let len = text.length;  
-  
-    for (let i = 0; i < n; ++i)  
-        str += text.charAt(randomInt(0, len))  
-  
-    return str  
-}  
-let randomTextTR = (n) => randomText(n, "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZabcçdefgğhıijklmnoöprsştuüvyz")  
-  
-let randomTextsTR = (n, min, bound) => {  
-    let result = [];  
-  
-    while (n--)  
-        result.push(randomTextTR(randomInt(min, bound)))  
-  
-    return result  
-}  
-  
-let randomTextEN = (n) =>  randomText(n, "ABCDEFGHIJKLMNOPQRSTUWXVYZabcdefghijklmnopqrstuwxvyz")  
-  
-let randomTextsEN = (n, min, bound) => {  
-    let result = [];  
-  
-    while (n--)  
-        result.push(randomTextEN(randomInt(min, bound)))  
-  
-    return result  
-}  
-  
-let Product = function (id, name, stock, cost, price) {  
-    this.id = id;  
-    this.name = name;  
-    this.stock = stock;  
-    this.cost = cost;  
-    this.price = price;  
-    this.getTotal =  function () {return this.stock * this.price }  
-    this.toString = function () {return this.name}  
-}  
-  
-let createRandomProducts = (count) =>  {  
-    //TODO:  
-}  
-
-let main = () => {  
-  
-}  
-  
-main()
-```
 
 **_Sınıf Çalışması:_** Array prototipine parametresi aldığı predicate callback fonksiyon için koşula uyan elemanlarını sola, koşula uymayanlarını ise sağa atan ve ilk koşula uymayan elemanın indeks numarasını döndüren `partition` isimli global fonksiyonu ekleyiniz.
 **Çözüm:**
@@ -5082,7 +5015,7 @@ export const solveQuadraticEquation = (a, b, c) => {
 //...
 ```
 
-##### Temel Türleri Sarmalanması
+##### Temel Türlerin Sarmalanması
 
 >ES’ de temel türleri sarmalayan (wrapper) nesneler/sınıflar bulunur. Örneğin `string` türü için `String` sarmalayan nesnesi, `number` türü için `Number` sarmalayan nesnesi kullanılabilir. Temel türlerin metotları olamayacağından yararlı işlemler için sarmalayan sınıflar düşünülmüştür. Örneğin:
 
@@ -5134,12 +5067,29 @@ const main = () => {
 main()
 ```
 
-XXXXXXXXXXXXXXXXX
-
 **String Nesnesi**
 
-> ES’ de `string` türünü sarmalayan `String` isimli bir nesne bulunmaktadır. String nesnesi Java’ da olduğu gibi immutable’ dır. Yani String nesnesi içerisinde bulunan yazı üzerinde değişiklik yapılamaz. Değişiklik yapan metotlar yeni bir String nesnesi döndürürler. String nesnesinin yararlı elemanları vardır.
-> 
+> ES’ de `string` türünü sarmalayan `String` isimli bir nesne bulunmaktadır. String nesnesi Java’ da olduğu gibi immutable’ dır. Yani String nesnesi içerisinde bulunan yazı üzerinde değişiklik yapılamaz. Değişiklik yapan metotlar yeni bir String nesnesin adresini döndürürler. String nesnesinin yararlı elemanları vardır.
+
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+const main = () => {  
+    let s1 = "ankara"  
+    let s2 = "istanbul"  
+  
+    //...
+}  
+  
+main()
+```
+
+>Bu kod için yazıların String nesneleri ile tutuluşuna ilişkin temsili şekil aşağıdaki gibidir:
+
+![String Internal](./media/StringInternal.png)
+
+>Burada yazının karakterlerinden oluşan dizinin `String` nesnesi içerisinde tutulmadığına (tutulamayacağına) dikkat ediniz.
+
 > String nesnesinin `length` property elemanı ile içerisinde tutuğu yazının karakter sayısı elde edilebilir:
 
 ```javascript
@@ -5149,628 +5099,596 @@ import {writeLine} from "./csd/util/console/console.js";
 const main = () => {  
     const s = randomTextTR(10)  
   
+    writeLine(`Length: ${s.length}`)  
     writeLine(s)  
 }  
   
 main()
 ```
 
->`length` property elemanına değer atanamaz. Yani `const` durumdadır. Atama durumunda error olup olmayacağı garanti değildir. Ancak `length` property elemanının değişmeyeceği garanti altındadır:
+>`length` property elemanına değer atanamaz. Yani `const` durumdadır. Atama durumunda error olup olmayacağı garanti değildir. Bazı interpreter'lar bu durumda error oluşturmamaktadır ancak `length` property elemanının değişmeyeceği garanti altındadır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "ankara"
-
-    s.length = 70
-
-    writeLine(s)
-    writeLine(`Length:${s.length}`)
-}
-
+import {randomTextTR} from "./csd/util/string/string.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    const s = randomTextTR(10)  
+  
+    writeLine(`Length: ${s.length}`)  
+    writeLine(s)  
+  
+    s.length = 2 //error  
+}  
+  
 main()
 ```
 
-**_Anahtar Notlar:_** Array nesnesi immutable bir tür olmadığından `length` property elemanına değer atanabilir. Örneğin dizinin eleman sayısı büyütülebilir. Bu durumda yeni elemanlar `undefined` değerinde olurlar:
+>Array nesnesi immutable bir tür olmadığından `length` property elemanına değer atanabilir. Örneğin dizinin eleman sayısı büyütülebilir. Bu durumda yeni elemanlar `undefined` değerinde olurlar:
 
 ```javascript
-import {writeLine, write} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let a = [1, 2]
-
-
-    for (let val of a)
-        write(`${val} `)
-
-    writeLine()
-
-    a.length = 7
-
-    for (let val of a)
-        write(`${val} `)
-}
-
+import {writeLine, write} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let a = [1, 2]  
+    
+    for (let val of a)  
+        write(`${val} `)  
+  
+    writeLine()  
+  
+    a.length = 7  
+  
+    for (let val of a)  
+        write(`${val} `)  
+}  
+  
 main()
 ```
 
 >Benzer şekilde `length` property elemanı ile dizinin boyutu küçültülebilir:
 
 ```javascript
-import {writeLine, write} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let a = [1, 2, 3, 5, 6, 7, 8, 9]
-
-
-    for (let val of a)
-        write(`${val} `)
-
-    writeLine()
-
-    a.length = 7
-
-    for (let val of a)
-        write(`${val} `)
-}
-
+import {writeLine, write} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let a = [1, 2, 3, 5, 6, 7, 8, 9]  
+  
+    for (let val of a)  
+        write(`${val} `)  
+  
+    writeLine()  
+  
+    a.length = 7  
+  
+    for (let val of a)  
+        write(`${val} `)  
+}  
+  
 main()
 ```
 
 >String sınıfının `charAt` metodu ile herhangi bir indeksteki karakter elde edilebilir.
 
 ```javascript
-import {write} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "ankara"
-
+import {writeLine, write} from "./csd/util/console/console.js";  
+import {randomTextTR} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    const s = randomTextTR(10)  
+  
+    writeLine(s)  
+  
     for (let i in s)
-        write(`${s.charAt(i)} `)
-}
-
+        write(`${s.charAt(i)} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
 
 >String içerisindeki karakterlere `[]` operatörü ile de erişilebilir:
 
 ```javascript
-import {write} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "ankara"
-
-    for (let i in s)
-        write(`${s[i]} `)
-}
-
+import {writeLine, write} from "./csd/util/console/console.js";  
+import {randomTextTR} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    const s = randomTextTR(10)  
+  
+    writeLine(s)  
+  
+    for (let i in s)  
+        write(`${s[i]} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
 
->`charCodeAt` metodu ile verilen bir index numarasındaki karakterin karakter tablosundaki sıra numarası elde edilir:
+>`charCodeAt` metodu ile verilen bir index numarasındaki karakterin karakter tablosundaki sıra numarası (code point)elde edilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "oğuz"
-
-    writeLine(s)
-
-    for (let i in s)
-        writeLine(s.charCodeAt(i))
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "oğuz"  
+  
+    writeLine(s)  
+  
+    for (let i in s)  
+        write(`${s.charCodeAt(i)} `)  
+  
+    writeLine()  
+}  
+  
 main()
 ```
 
 >`concat` fonksiyonu ile iki string birleştirilebilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let name = "oğuz"
-    let surname = " karan"
-
-    let fullName = name.concat(surname)
-
-    writeLine(fullName)
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let name = "oğuz"  
+    let surname = " karan"  
+  
+    let fullName = name.concat(surname)  
+  
+    writeLine(fullName)  
+}  
+  
 main()
 ```
 
 > ES’ de de Java da olduğu gibi `+` operatörü ile de birleştirme yapılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let name = "oğuz"
-    let surname = " karan"
-    let fullName = name + surname
-
-    writeLine(fullName)
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let name = "oğuz"  
+    let surname = "karan"  
+  
+    let fullName = name + " " + surname  
+  
+    writeLine(fullName)  
+}  
+  
 main()
 ```
 
 >Aşağıdaki örnekte `concat` metoduna number türü geçirilmiş ve otomatik olarak `string` türüne dönüşmüştür:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let degree = 3.4
-    let msg = "Bugün hava ".concat(degree).concat(" derece")
-
-    writeLine(msg)
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let degree = 3.4  
+    let msg = "Bugün hava ".concat(degree).concat(" derece")  
+  
+    writeLine(msg)  
+}  
+  
 main()
 ```
 
 >Yukarıdaki kod aşağıdaki gibi de yazılabilirdi:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let degree = 3.4
-    let msg = "Bugün hava " + degree + " derece"
-
-    writeLine(msg)
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let degree = 3.4  
+    let msg = "Bugün hava " + degree + " derece"  
+  
+    writeLine(msg)  
+}  
+  
 main()
 ```
 
 >`indexOf` metodu ile bir yazı içerisinde başka bir yazı aranabilir. Bu durumda metot yazı bulunursa ilk bulunan yazının ilk karakterinin index numarasını, bulunamazsa -1 değeri döndürür:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"
-    let s = "çok"
-    let index = text.indexOf(s)
-
-    writeLine(index !== -1 ? "Aranan yazı " + index + " numaralı indekste bulundu" : "Bulunamadı")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"  
+    let s = "çok"  
+    let index = text.indexOf(s)  
+  
+    writeLine(index !== -1 ? "Aranan yazı " + index + " numaralı indekste bulundu" : "Bulunamadı")  
+}  
+  
 main()
 ```
 
 >`indexOf` metoduna ikinci argüman olarak aramaya hangi indeksten başlayacağı bilgisi geçilebilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"
-    let s = "çok"
-    let index = text.indexOf(s, 26)
-
-    writeLine(index !== -1 ? "Aranan yazı " + index + " numaralı indekste bulundu" : "Bulunamadı")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"  
+    let s = "çok"  
+    let index = text.indexOf(s, 12)  
+  
+    writeLine(index !== -1 ? "Aranan yazı " + index + " numaralı indekste bulundu" : "Bulunamadı")  
+}  
+  
 main()
 ```
 
 **_Sınıf Çalışması:_** Parametresi ile aldığı birinci yazının içerisinde parametresi ile aldığı ikinci yazıdan kaç tane olduğunu döndüren `countString` isimli fonksiyonu yazınız ve test ediniz. Fonksiyon büyük-küçük harf duyarlı olarak yazılacaktır.
 
+>**Test Kodları:**
+>
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function countString(s1, s2)
-{
-    let i = -1
-    let count = 0
-
-    while ((i = s1.indexOf(s2, i + 1)) !== -1)
-        ++count
-
-    return count
-}
-
-
-function main()
-{
-    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"
-    let s = "çok"
-    let count = countString(text, s)
-
-    writeLine(`Count:${count}`)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {countString} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    let s1 = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"  
+    let s2 = "çok"  
+  
+    writeLine(countString(s1, s2) === 2)  
+  
+  
+    s1 = "aaa"  
+    s2 = "aa"  
+    writeLine(countString(s1, s2) === 2)  
+}  
+  
 main()
 ```
 
->Fonksiyon aşağıdaki gibi de yazılabilir:
+
+>**Çözüm-1:**
+```javascript
+const countString = (s1, s2) => {  
+    let count = 0  
+    let idx = -1  
+  
+    while ((idx = s1.indexOf(s2, idx + 1)) !== -1)  
+        ++count  
+  
+    return count  
+}
+```
+
+**Çözüm-2:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function countString(s1, s2)
-{
-    let count = 0
-
-    for (let i = -1; (i = s1.indexOf(s2, i + 1)) !== -1; ++i, ++count)
-        ;
-
-    return count
+const countString = (s1, s2) => {  
+    let count = 0  
+    for (let idx = -1; (idx = s1.indexOf(s2, idx + 1)) !== -1; ++count)  
+        ;  
+  
+    return count  
 }
-
-
-function main()
-{
-    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"
-    let s = "çok"
-    let count = countString(text, s)
-
-    writeLine(`Count:${count}`)
-}
-
-main()
 ```
 
 >`toUpperCase` ve `toLowerCase` fonksiyonları sırasıyla büyük harfe ve küçük harfe dönüştürülmüş yeni `String` döndürürler:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function countString(s1, s2, ignoreCase)
-{
-    if (ignoreCase) {
-        s1 = s1.toLowerCase()
-        s2 = s2.toLowerCase()
-    }
-
-    let count = 0
-
-    for (let i = -1; (i = s1.indexOf(s2, i + 1)) !== -1; ++count)
-        ;
-
-    return count
-}
-
-function main()
-{
-    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"
-    let s = "Çok"
-    let count = countString(text, s, true)
-
-    writeLine(`Count:${count}`)
-}
-
-main()
-```
- 
->Yukarıdaki fonksiyon yaklaşım olarak iki ayrı fonksiyon olarak da tasarlanabilir:
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function countString(s1, s2, ignoreCase)
-{
-    let count = 0
-
-    for (let i = -1; (i = s1.indexOf(s2, i + 1)) !== -1; ++count)
-        ;
-
-    return count
-}
-
-let countStringIgnoreCase = (s1, s2) => countString(s1.toLowerCase(), s2.toLowerCase())
-
-function main()
-{
-    let text = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"
-    let s = "Çok"
-    let count = countStringIgnoreCase(text, s)
-
-    writeLine(`Count:${count}`)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {countStringIgnoreCase} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    let s1 = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"  
+    let s2 = "Çok"  
+  
+    writeLine(countStringIgnoreCase(s1, s2) === 2)  
+  
+    s1 = "aaa"  
+    s2 = "AA"  
+    writeLine(countStringIgnoreCase(s1, s2) === 2)  
+}  
+  
 main()
 ```
 
->`startsWith` ve `endsWith` metotları sırasıyla bir String’in bir yazı ile başlayıp başlamadığını veya bitip bitmediğini test etmek için kullanılabilir:
+```javascript
+const countString = (s1, s2) => {  
+    let count = 0  
+  
+    for (let idx = -1; (idx = s1.indexOf(s2, idx + 1)) !== -1; ++count)  
+        ;  
+  
+    return count  
+}  
+  
+const countStringIgnoreCase = (s1, s2) => countString(s1.toLowerCase(), s2.toLowerCase())
+```
+
+
+>`startsWith` ve `endsWith` metotları sırasıyla bir String’in bir yazı ile başlayıp başlamadığını ve bitip bitmediğini test etmek için kullanılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-let concatIfNotStarts = (s1, s2) => s1.startsWith(s2) ? s1 : s2 + s1
-let concatIfNotEnds = (s1, s2) => s1.endsWith(s2) ? s1 : s1 + s2
-
-function main()
-{
-    let url = "www.csystem.org"
-    let email = "oguzkaran@csystem.org"
-
-    url = concatIfNotStarts(url, "http://")
-    email = concatIfNotEnds(email, ".org")
-
-    writeLine(url)
-    writeLine(email)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {concatIfNotEnds, concatIfNotStarts} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    let url = "www.csystem.org"  
+    let email = "oguzkaran@csystem.org"  
+  
+    url = concatIfNotStarts(url, "http://")  
+    email = concatIfNotEnds(email, ".org")  
+  
+    writeLine(url)  
+    writeLine(email)  
+}  
+  
 main()
+```
+
+```javascript
+export const concatIfNotStarts = (s1, s2) => s1.startsWith(s2) ? s1 : s2 + s1  
+export const concatIfNotEnds = (s1, s2) => s1.endsWith(s2) ? s1 : s1 + s2
 ```
 
 >`fromCharCode` metodu karakter sıra numarasından karakteri bir `String` olarak elde etmek için kullanılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let code = 67
-
-    writeLine(String.fromCharCode(code))
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let code = 67  
+  
+    writeLine(String.fromCharCode(code))  
+}  
+  
 main()
 ```
 
 >`includes` metodu bir yazı içerisinde parametresi aldığı yazının bulunup bulunmadığını test etmek için kullanılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let str = "Bugün hava çok güzel"
-    let s = "çok"
-
-    writeLine(str.includes(s) ? "Yazı var" : "Yazı yok")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let str = "Bugün hava çok güzel"  
+    let s = "çok"  
+  
+    writeLine(str.includes(s) ? "Yazı var" : "Yazı yok")  
+}  
+  
 main()
 ```
 
 >`repeat` metodu bir yazıdan istenildiği miktarda birleştirilmiş yeni bir yazı elde etmek için kullanılabilir. Başka bir deyişle bu metot yazıyı çoklamaktadır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "ali"
-    let str = s.repeat(10)
-
-    writeLine(str)
-    writeLine(s)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "ali"  
+    let str = s.repeat(10)  
+  
+    writeLine(str)  
+    writeLine(s)  
+}  
+  
 main()
 ```
 
->`slice`, `substr` ve `substring` fonksiyonları bir yazı içerisinden bir parçasını yazı olarak elde etmekte kullanılır. `substring` fonksiyonu belirli bir indeksten itibaren ikinci parametresi ile aldığı indekse kadar yazıyı döndürür:
+>**Sınıf Çalışması:** Aşağıda prototipleri verilen fonksiyonları açıklamalara göre yazınız
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
+const padLeading = (s, len, str) => {...}
+const padTrailing = (s, len, str) => {...}
+```
 
-function main()
-{
-    let s = "ankara"
-    let str = s.substring(2, 5) //[2, 5)
+>**Açıklamalar:**
+>- padLeading fonksiyonu birinci parametresi ile aldığı yazının uzunluğu ikinci parametresi ile aldığı uzunluk bilgisinden küçükse yazıyı baştan str ile besleyecektir. Örneğin `padLeading("ankara", 9, "x")` çağrısında metot `xxxankara`yazısına geri dönecektir.
+>- Yazının uzunluğu len değerinden küçük değilse aynı yazıya geri dönecektir.
+>- padTrailing fonksiyonu, padLeading gibi çalışacak, tek fark olarak yazıyı sondan besleyecektir.
+>- Metotların üçüncü parametresinin birden fazla karakterden oluşan yazı olarak verilip verilmediği kontrol edilmeyecektir. Metotlar üçüncü parametre için yalnızca tek bir karakterden oluşan yazı olacak şekilde yazılacaktır.
 
-    writeLine(str)
-}
+>**Test Kodları:**
 
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import {padLeading, padTrailing} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    let s = "ankara"  
+    let str = "x"  
+  
+    writeLine(padLeading(s, 9, str) === "xxxankara")  
+    writeLine(padTrailing(s, 9, str) === "ankaraxxx")  
+}  
+  
+main()
+````
+
+>**Çözüm:**
+
+```javascript
+export const padLeading = (s, len, str) => s.length < len ? str.repeat(len - s.length) + s : s  
+  
+export const padTrailing = (s, len, str) => s.length < len ? s + str.repeat(len - s.length) : s
+```
+
+>`slice`, `substr` ve `substring` fonksiyonları bir yazı içerisinden bir parçasını yazı olarak elde etmekte kullanılır. 
+>
+>`substring` fonksiyonu belirli bir indeksten itibaren ikinci parametresi ile aldığı indekse kadar yazıyı döndürür:
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "ankara"  
+    let str = s.substring(2, 5) //[2, 5)  
+  
+    writeLine(str)  
+}  
+  
 main()
 ```
 
 >`substr` fonksiyonun ikinci parametresi birinci parametresi ile verilen indeksten itibaren kaç tane karakterin alınacağını belirtir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "ankara"
-    let str = s.substr(2, 3)
-
-    writeLine(str)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "ankara"  
+    let str = s.substr(2, 3)  
+  
+    writeLine(str)  
+}  
+  
 main()
 ```
 
-> `substr` ve `substring` fonksiyonlarının index değerleri negative de olabilir. Bu durum bazı interpreter implementasyonlarında error’ a yol açabilir.
+>`substr` fonksiyonu artık `deprecated` durumdadır. Kullanılmaması önerilir.
+
+
+> `substr` ve `substring` fonksiyonlarına geçilen argümanların sınırlar içerisinde olması gerekir
 > 
-> `slice` fonksiyonu `substr` fonksiyonu gibidir. Ancak negatif indeks değerleri için de kullanılabilir. Negatif indeks için yazının karakter uzunluğu ile negatif indeks değeri toplanarak elde edilen indeks değerinden itibaren yazı elde edilir:
+> `slice` fonksiyonu `substring` fonksiyonu gibidir. Ancak negatif indeks değerleri için de kullanılabilir. Negatif indeks için yazının karakter uzunluğu ile negatif indeks değeri toplanarak elde edilen indeks değerinden itibaren yazı elde edilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "ankara"
-    let str = s.slice(-4) //length - 4
-
-    writeLine(str)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "ankara"  
+    let str = s.slice(-4, -1) //[length - 4, length - 1)  
+  
+    writeLine(str)  
+}  
+  
 main()
 ```
 
 >`split` metodu verilen ayraç veya ayraçlara gore yazıyı parçalar ve yazının parçalarından oluşan diziyi döndürür:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "Bugün hava çok güzel"
-    let words = s.split(" ")
-
-    for (let word of words)
-        writeLine(word)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "Bugün hava çok güzel"  
+    let words = s.split(" ")  
+  
+    words.forEach(w => writeLine(w))  
+}  
+  
 main()
 ```
 
 >`split` metodu düzenli ifade (regular expression) alarak da çalışabilmektedir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "Bugün hava  çok güzel. Çok çok güzel"
-    let words = s.split(/[ .]/)
-
-    for (let word of words)
-        writeLine(`(${word})`)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "Bugün hava  çok güzel. Çok çok güzel"  
+    let words = s.split(/[ .]/)  
+  
+    words.forEach(w => writeLine(`{${w}}`))  
+}  
+  
 main()
 ```
 
 >Düzenli ifade `/` ve `/` arasında verilmelidir. Birden fazla karakter ayraç olarak kullanılacaksa `[]` arasında yazılmalıdır. Yukarıdaki örnekte ayraçlar yanyana yazıldığında yanyana yazılan ayraçlar arasındaki boş string’ler de diziye eklenir. Boş string’in eklenmemesi için `]`’den sonra `+` konmalıdır. Bu işlem düzenli ifadeler için “buradaki karakterlerden bir veya birden fazlası” anlamına gelmektedir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "Bugün hava  çok güzel. Çok çok güzel"
-    let words = s.split(/[ .]+/)
-
-    for (let word of words)
-        writeLine(`(${word})`)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "Bugün hava  çok güzel. Çok çok güzel"  
+    let words = s.split(/[ .]+/)  
+  
+    words.forEach(w => writeLine(`{${w}}`))  
+}  
+  
 main()
 ```
 
 >`[` veya `]` ayraç olarak kullanılacaksa ters bölü ile yazılmalıdır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let s = "Bugün]hava.çokgüzel"
-    let words = s.split(/[ .\]]+/)
-
-    for (let word of words)
-        writeLine(word)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    let s = "Bugün]hava.çok güzel"  
+    let words = s.split(/[ .\]]+/)  
+  
+    words.forEach(w => writeLine(`{${w}}`))  
+}  
+  
 main()
 ```
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı bir dizinin elemanlarını aralarında ikinci parametresi ile aldığı başka bir string olacak şekilde birleştirilmiş string ile geri dönen `join` isimli fonksiyonu yazınız ve test ediniz.
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomTextsTR} from "./csdstringutil.mjs";
-
-let join = (arr, delim) => arr.reduce((r, e) => r + delim + e)
-
-function main()
-{
-    let texts = randomTextsTR(10, 5, 10)
-
-    texts.forEach(writeLine)
-
-    writeLine("------------------------")
-
-    writeLine(`(${join(texts, "-")})`)
-}
-
-main()
-```
 
 > Array sınıfının `join` metodu ile yukarıdaki fonksiyon yazılmadan da birleştirme işlemi yapılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomTextsTR} from "./csdstringutil.mjs";
-
-function main()
-{
-    let texts = randomTextsTR(10, 5, 10)
-
-    texts.forEach(writeLine)
-
-    writeLine("------------------------")
-
-    writeLine(`(${texts.join("-")})`)
-}
-
+import {writeLine, write} from "./csd/util/console/console.js";  
+import {randomTextsTR} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    let texts = randomTextsTR(10, 5, 10)  
+  
+    texts.forEach(s => write(`${s} `))  
+    writeLine()  
+    writeLine(`(${texts.join("-")})`)  
+}  
+  
 main()
 ```
 
 >`join` metoduna argüman geçilmezse dizinin elemanları aralarına virgül koyarak birleştirip yazıyı döndürür:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomTextsTR} from "./csdstringutil.mjs";
-
-function main()
-{
-    let texts = randomTextsTR(10, 5, 10)
-
-    texts.forEach(writeLine)
-
-    writeLine("------------------------")
-
-    writeLine(`(${texts.join()})`)
-}
-
+import {writeLine, write} from "./csd/util/console/console.js";  
+import {randomTextsTR} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    let texts = randomTextsTR(10, 5, 10)  
+  
+    texts.forEach(s => write(`${s} `))  
+    writeLine()  
+    writeLine(`(${texts.join()})`)  
+}  
+  
 main()
 ```
 
 >Ayraç koymadan birleştirmek için `join` metoduna boş string (“”) argüman olarak geçilmelidir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomTextsTR} from "./csdstringutil.mjs";
-
-function main()
-{
-    let texts = randomTextsTR(10, 5, 10)
-
-    texts.forEach(writeLine)
-
-    writeLine("------------------------")
-
-    writeLine(`(${texts.join("")})`)
-}
-
+import {writeLine, write} from "./csd/util/console/console.js";  
+import {randomTextsTR} from "./csd/util/string/string.js";  
+  
+const main = () => {  
+    let texts = randomTextsTR(10, 5, 10)  
+  
+    texts.forEach(s => write(`${s} `))  
+    writeLine()  
+    writeLine(`(${texts.join("")})`)  
+}  
+  
 main()
 ```
 
 >ES6 ile birlikte String sabitine aşağıdaki gibi `raw` işlemi yapıldığında yazının içerisindeki escape sequence karakterlerin kendi anlamında kullanılması engellenmiş olur:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    writeLine(String.raw`c:\test\names.txt`)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    const path = String.raw`C:\test\names.dat`  
+  
+    writeLine(path);  
+}  
+  
 main()
 ```
 
@@ -5779,32 +5697,50 @@ main()
 >ES’de bir string sabitinin (string literal) iki tane iki tırnak veya iki tane tek arasında yazılması tamamen eşdeğerdir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    writeLine("Ankara")
-    writeLine('Ankara')
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    writeLine("Ankara")  
+    writeLine('Ankara')  
+}  
+  
 main()
 ```
 
 >Burada tek kullanım farkı tek tırnak ile yazılmış string içesinde tek tırnak karakteri `\` ile kullanılmalıdır. Benzer şekilde iki tırnak ile yazılmış string içerisinde iki tırnak karakteri yine `\` ile kullanılmalıdır. Ancak iki tırnak ile yazılmış sabitlerde tek tırnak vet ek tırnak ile yazılmış sabitlerde iki tırnak doğrudan kullanılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    writeLine("\"Ankara\"")
-    writeLine('"Ankara"')
-    writeLine('\'Ankara\'')
-    writeLine("'Ankara'")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    writeLine("\"Ankara\"")  
+    writeLine('"Ankara"')  
+    writeLine('\'Ankara\'')  
+    writeLine("'Ankara'")  
+}  
+  
 main()
 ```
+
+SSSSSSSSSSSSSSSSSSSSSSSSSS
+
+**_Sınıf Çalışması:_** Parametresi ile aldığı bir dizinin elemanlarını aralarında ikinci parametresi ile aldığı başka bir string olacak şekilde birleştirilmiş string ile geri dönen `join` isimli fonksiyonu yazınız ve test ediniz.
+
+**_Sınıf Çalışması:_** Parametresi ile aldığı sayı kadar aşağıdaki özelliklere sahip ürünler üreten `createRandomProducts` isimli global fonksiyonu yazınız:
+
+> Product
+> - Id
+> - name
+> - stock
+> - cost
+> - price
+> 
+> Buna göre aşağıdaki işlemleri yapan kodları yazınız:
+> 
+> 1. Stokta bulunan ürünleri maliyet fiyatına göre pahalıdan ucuza doğru sıralayınız
+> 2. Stokta bulunmayan ürünleri total miktarına göre sıralayınız
+
+**Çözüm:**
 
 **Date nesnesi (sınıfı)**
 
