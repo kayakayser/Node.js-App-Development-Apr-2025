@@ -2,10 +2,16 @@ import {randomInt} from "../random/random.js";
 
 const LETTERS_TR = "abcçdefgğhıijklmnoöprsştuüvyz"
 const UPPERCASE_TR = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ"
-const ALL_LETTERS_TR = LETTERS_TR + UPPERCASE_TR
 const LETTERS_EN = "abcdefghijklmnopqrstuvwxyz"
 const UPPERCASE_EN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const ALL_LETTERS_TR = LETTERS_TR + UPPERCASE_TR
 const ALL_LETTERS_EN = LETTERS_EN + UPPERCASE_EN
+
+
+const countString = (s1, s2) => {
+    //TODO:
+}
+
 
 const randomText = (count, source) => {
     let result = ""
@@ -32,4 +38,4 @@ const randomTexts = (count, min, bound, source) => {
 const randomTextsTR = (count, min, bound) => randomTexts(count, min, bound, ALL_LETTERS_TR)
 const randomTextsEN = (count, min, bound) => randomTexts(count, min, bound, ALL_LETTERS_EN)
 
-export {randomText, randomTextTR, randomTextEN, randomTextsTR, randomTextsEN, randomTexts}
+export {countString, randomText, randomTextTR, randomTextEN, randomTextsTR, randomTextsEN, randomTexts}

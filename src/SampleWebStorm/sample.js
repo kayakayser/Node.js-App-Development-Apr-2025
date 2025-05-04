@@ -1,15 +1,11 @@
-import {randomTextsEN, randomTextsTR, randomTextTR} from "./csd/util/string/string.js";
 import {writeLine} from "./csd/util/console/console.js";
+import {countString} from "./csd/util/string/string";
 
 const main = () => {
-    const a = [1, 2, 3, 4, 5]
-    const s = "ankara"
+    const s1 = "Bugün hava çok güzel. Bu çok güzel havada ders mi yapılır"
+    const s2 = "çok"
 
-    a.length = 30
-
-    writeLine(`Length: ${a.length}`)
-    writeLine(`Length: ${s.length}`)
-    writeLine(`Length: ${s.length}`)
+    writeLine(countString(s1, s2) === 2)
 }
 
 main()
