@@ -5726,6 +5726,8 @@ SSSSSSSSSSSSSSSSSSSSSSSSSS
 
 **_Sınıf Çalışması:_** Parametresi ile aldığı bir dizinin elemanlarını aralarında ikinci parametresi ile aldığı başka bir string olacak şekilde birleştirilmiş string ile geri dönen `join` isimli fonksiyonu yazınız ve test ediniz.
 
+**Çözüm:**
+
 **_Sınıf Çalışması:_** Parametresi ile aldığı sayı kadar aşağıdaki özelliklere sahip ürünler üreten `createRandomProducts` isimli global fonksiyonu yazınız:
 
 > Product
@@ -5741,141 +5743,130 @@ SSSSSSSSSSSSSSSSSSSSSSSSSS
 > 2. Stokta bulunmayan ürünleri total miktarına göre sıralayınız
 
 **Çözüm:**
+##### Date nesnesi (sınıfı)
 
-**Date nesnesi (sınıfı)**
+>ES’ de tarih-zaman işlemleri için Date isimli bir nesne bulunmaktadır. ES'de tarih, zaman ve tarih-zaman olarak ayrı türler yoktur. Date nesnesi yaratmak için ctor çeşitli argümanlar ile kullanılabilir:
 
->ES’ de tarih zaman işlemleri için Date isimli bir nesne bulunmaktadır. Date nesnesi yaratmak için ctor çeşitli argümanlar ile kullanılabilir:
+>Date nesnesi parametresiz olarak yaratılırsa çalışılan sistemin o anki tarih-zaman bilgisi elde edilir. `toString` metodu tarih-zamana ilişkin standart yazı bilgisini döndürür
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date();
-    let nowStr = now.toString()
-
-    writeLine(nowStr)
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let now = new Date()  
+  
+    writeLine(now.toString())  
+}  
+  
 main()
 ```
 
-> Date nesnesi parametresiz olarak yaratılırsa çalışılan sistemin o anki tarih-zaman bilgisi elde edilir. `toString` metodu tarih-zamana ilişkin standart yazı bilgisini döndürür. Bu zaman sistemin zamanıdır.
-> 
-> Date nesnesinin yıl, ay, gün, saat, dakika, saniye, milisaniye değerlerini parametre olarak alan bir ctor’u vardır. Zamana ilişkin parametrelerin default değerleri sıfırdır, tarihe ilişkin parametrelerin default değerleri ay için 1(bir) ve gün için de 1(bir) değeridir:
+
+> Date nesnesinin yıl, ay, gün, saat, dakika, saniye, milisaniye değerleri ctor'a parametre olarak verilebilir. Zamana ilişkin parametrelerin default değerleri sıfırdır, tarihe ilişkin parametrelerin default değerleri ay için 0(sıfır) ve gün için de 1(bir) değeridir. Date nesnesi ay bilgisini `[0, 11]` aralığında alır
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let date = new Date(2021, 8, 6, 17, 1, 0, 120)
-
-    writeLine(date)
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let date = new Date(2025, 4, 17) //17th May 2025 midnight 
+  
+    writeLine(date.toString())  
+    date = new Date(2025, 4, 17, 13)  //17th May 2025 13:00:00
+    writeLine(date.toString())  
+}  
+  
 main()
 ```
-
-**_Anahtar Notlar:_** Date nesnesi ay bilgisini `[0, 11]` aralığında alır. Buna dikkat edilmelidir.
 
 > Date sınıfının ctor’ una milisaniye değeri de parameter olarak geçilebilir.
-> 
-> Date nesnesinin `getDay` fonksiyonu tarihin haftanın hangi gününe geldiği bilgisini verir.
+
+> Date nesnesinin `getDay` fonksiyonu tarihin haftanın hangi gününe geldiği bilgisini verir. Bu fonksiyon haftanın günlerini `[0, 6]` aralığında sıfır pazar ve 6 cumartesi olacak şekilde verir. Buradaki isim kötü tasarlanmıştır. Dikkat edilmelidir.
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date(2022, 0, 18)
-
-    writeLine(now)
-    writeLine(now.getDay())
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let date = new Date(2025, 4, 17)  
+  
+    writeLine(date.getDay())  
+  
+}  
+  
 main()
 ```
 
->`getDay` fonksiyonu haftanın günlerini `[0, 6]` aralığında sıfır pazar ve 6 cumartesi olacak şekilde değer verir. Buradaki isim kötü tasarlanmıştır. Dikkat edilmelidir.
 >
->`getDate` fonksiyonu ile o aya ilişkin gün bilgisi elde edilebilir:
+>`getDate` fonksiyonu ile o aya ilişkin gün bilgisi elde edilebilir. Bu isim de kötü tasarlanmıştır
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date(2022, 0, 18)
-
-    writeLine(now)
-    writeLine(now.getDate())
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let date = new Date(2025, 4, 17)  
+  
+    writeLine(date.getDate())  
+}  
+  
 main()
 ```
 
->`getYear` fonksiyonu **deprecated** olmuştur. Bu fonksiyonu yerine `getFullYear` fonksiyonu kullanılmalıdır:
+>`getYear` fonksiyonu **deprecated** olmuştur. Bu fonksiyon yerine `getFullYear` fonksiyonu kullanılmalıdır
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date()
-
-    writeLine(now.getFullYear())
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let date = new Date(2025, 4, 17)  
+  
+    writeLine(date.getFullYear())  
+}  
+  
 main()
 ```
 
-**_Anahtar Notlar:_** Programlamada “deprecated” terimi artık programlamada tercih edilmemesi gereken durumlar için kullanılmaktadır. Deprecated olmuş bir araç (metot, sınıfı vs.) durumuna göre düzgün çalışmayabilir ya da silinmiş olabilir. Genel kural deprecated olmuş aracın kullanılmamasıdır. Bazı ES yorumlayıcıları deprecated fonksiyonları silebilir. Bu durumda kod taşınabilir olmaz.
+**_Anahtar Notlar:_** Programlamada `deprecated` terimi artık tercih edilmemesi gereken durumlar için kullanılmaktadır. Deprecated olmuş bir araç (metot, sınıf vs.) durumuna göre düzgün çalışmayabilir ya da silinmiş olabilir. Genel kural, deprecated olmuş aracın kullanılmamasıdır. Bazı ES yorumlayıcıları deprecated araçları silebilir. Bu durumda kod taşınabilir olmaz.
 
->`getTime` fonksiyonu 1.1.1970 gece yarısı ile o tarih arasındaki milisaniye değerini döndürür:
+>`getTime` fonksiyonu 1.1.1970 gece yarısı (epoch time) ile o tarih arasındaki milisaniye değerini döndürür:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date()
-
-    writeLine(now.getTime())
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let date = new Date()  
+  
+    writeLine(date.getTime())  
+}  
+  
 main()
 ```
 
 >`getMonth` fonksiyonu ay bilgisini sıfır değeri Ocak ayı olacak şekilde döndürür:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date()
-
-    writeLine(now.getMonth() + 1)
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let now = new Date()  
+  
+    writeLine(now.getMonth() + 1)  
+}  
+  
 main()
 ```
 
-> Tüm get fonksiyonların `set` fonksiyonu karşılığı da bulunmaktadır.
-> 
+> Tüm get fonksiyonların `set` fonksiyonu karşılığı da bulunmaktadır. Bu anlamda Date nesnesi immutable değildir
+
 > Date nesnesinin `now` fonksiyonu 1.1.1970 ile çağrıldığı zaman arasında milisaniye değerini döndürür:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let millis = Date.now() //new Date().getTime()
-
-    writeLine(millis)
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let millis = Date.now() //new Date().getTime()  
+  
+    writeLine(millis)  
+}  
+  
 main()
 ```
 
@@ -5884,279 +5875,181 @@ main()
 **Çözüm:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function runBigEarthquakeApp()
-{
-    let earthquakeMillis = new Date(1999, 7, 17, 3, 2).getTime()
-    let now = Date.now()
-
-    let totalYear = (now - earthquakeMillis) / (1000 * 60 * 60 * 24 * 365)
-
-    writeLine(totalYear)
-}
-
-function main()
-{
-    runBigEarthquakeApp()
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let earthQuakeDate = new Date(1999, 7, 17, 3, 2)  
+    let totalYears = (Date.now() - earthQuakeDate.getTime()) / (1000 * 60 * 60 * 24 * 365)  
+  
+    writeLine(totalYears)
+}  
+  
 main()
 ```
 
-> **_Sınıf Çalışması:_** Aşağıdaki elemanları içeren bir `Person` sınıfını fonksiyon ile oluşturunuz.
+```javascript
+import {writeLine} from "./msd.util/console.js";  
+import {getTotalYears} from "./csd/util/date/date.js";  
+  
+const main = () => {  
+    let earthQuakeDate = new Date(1999, 7, 17, 3, 2)  
+    let totalYears = getTotalYears(earthQuakeDate, new Date())  
+  
+    writeLine(totalYears)  
+}  
+  
+main()
+```
+
+> **_Sınıf Çalışması:_** Aşağıdaki elemanları içeren bir `Person` nesnesini ile oluşturunuz.
 > 
 > - Ad soyad
 > - T.C. Kimlik No
 > - Doğum tarihi
 > - Adres
 > 
-> Person nesnelerinden oluşan bir dizi yaratınız. Bu diziyi parametre olarak alıp kişilerin yaş ortalamasını bulan `averageAges` isimli global fonksiyonu yazınız.
+> Person nesnelerinden oluşan bir dizi yaratınız. Bu diziyi parametre olarak alıp kişilerin yaş ortalamasını bulan `ageAverage` isimli global fonksiyonu yazınız.
 
 **Çözüm:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-let Person = function (name, citizenId, birthDate, address) {
-    this.name = name
-    this.citizenId = citizenId
-    this.birthDate = birthDate
-    this.address = address
-    this.getAge = () => (Date.now() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365)
-}
-
-
-function runAgeAverageApp()
-{
-    let people = [
-        new Person("Turgut Karaağaç", "12345456", new Date(1989, 8, 10), "Güngören"),
-        new Person("Burak Gökbayrak", "12345458", new Date(1990, 1, 11), "İzmit"),
-        new Person("Abdülkadir Karadağ", "12345454", new Date(1993, 7, 24), "Güngören"),
-        new Person("Oğuz Karan", "12345452", new Date(1976, 8, 10), "Riva"),
-        new Person("Evren Kasap", "123454590", new Date(1985, 9, 16), "Şişli"),
-    ]
-
-    let average = people.map(p => p.getAge()).reduce((r, v) => r + v) / people.length
-
-    writeLine(`Average:${average}`)
-}
-
-
-function main()
-{
-    runAgeAverageApp()
-}
-
+import {writeLine} from "./msd.util/console.js";  
+import {getTotalYears} from "./csd/util/date/date.js";  
+  
+const Person = function(name, citizenId, birthDate, address) {  
+    this.name = name  
+    this.citizenId = citizenId  
+    this.birthDate = birthDate  
+    this.address = address  
+    this.getAge = () => getTotalYears(this.birthDate, new Date())  
+}  
+  
+const ageAverage = (people) => people.reduce((r, a) => r + a.getAge(), 0) / people.length  
+  
+const getPeople = () => {  
+    const people = []  
+  
+    people[0] = new Person("Oğuz Karan", "12345678922", new Date(1976, 8, 10), "Riva")  
+    people[1] = new Person("Ayberk Neşeli", "12345678924", new Date(2004, 0, 12), "Riva")  
+    people[2] = new Person("Barış Er", "12345678926", new Date(1982, 6, 12), "Riva")  
+    people[3] = new Person("Fatih Karabulut", "12345678920", new Date(1998, 10, 22), "Riva")  
+  
+    return people  
+}  
+  
+const main = () => {  
+    writeLine(`Age average:${ageAverage(getPeople())}`)  
+}  
+  
 main()
 ```
 
 >Date nesnesinin bir grup UTC (Universal Time Clock) zamanına yönelik bilgileri döndüren `getUTCXXX` metotları vardır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date()
-
-    writeLine(`${now.getUTCDate()}.${now.getUTCMonth() + 1}.${now.getUTCFullYear()} ${now.getUTCHours()}:${now.getUTCMinutes()}:${now.getUTCSeconds()}`)
-    writeLine(`${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let now = new Date()  
+  
+    writeLine(`${now.getUTCDate()}.${now.getUTCMonth() + 1}.${now.getUTCFullYear()} ${now.getUTCHours()}:${now.getUTCMinutes()}:${now.getUTCSeconds()}`)  
+    writeLine(`${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)  
+}  
+  
 main()
 ```
 
->Date nesnesi aldığı tarih zamana ilişkin değerlere yönelik geçerlilik kontrolü yapmaz. Verilen değerleri uygun tarihleri elde edecek işlemi yapar:
+>Date nesnesi aldığı tarih zamana ilişkin değerlere yönelik geçerlilik kontrolü yapmaz. Verilen değerleri uygun tarihleri elde edecek işlemi yapar. set fonksiyonlarında da geçerlilik kontrolü yapılmaz
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let date = new Date(2020, 34, 234)
-
-    writeLine(`${date.toDateString()}`)
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    let date = new Date(2020, 34, 234)  
+  
+    writeLine(`${date.toDateString()}`)  
+}  
+  
 main()
 ```
 
 >Bu durumda programcı tarih geçerliliği için kendisi bir fonksiyon yazmalıdır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-const daysOfMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-const isLeapYear = year => year % 4 === 0 && year % 100 !== 0 || year % 400 === 0
-const isValidForBounds = (val, min, max) => min <= val && val <= max
-const isValidHour = val => isValidForBounds(val, 0, 23)
-const isValidMinute = val => isValidForBounds(val, 0, 59)
-const isValidSecond = val => isValidForBounds(val, 0, 59)
-const isValidTime = (hour, minute, second) => isValidHour(hour) && isValidMinute(minute) && isValidSecond(second)
-
-const isValidDate = function (day, month, year) {
-    if (day < 1 || day > 31 || month < 1 || month > 11)
-        return false
-
-    let days = month === 2 && isLeapYear(year) ? 29 : daysOfMonths[month]
-
-    return day <= days
-}
-
-function main()
-{
-    let day = 29
-    let month = 1
-    let year = 2019
-    let hour = 22
-    let minute = 7
-    let second = 56
-
-    if (isValidDate(day, month, year) && isValidTime(hour, minute, second)) {
-        let date = new Date(year, month, day, hour, minute, second)
-
-        writeLine(date.toString())
-    }
-    else
-        writeLine("Geçersiz tarih/zaman bilgileri")
-}
-
+import {writeLine} from "./msd.util/console.js";  
+import {isValidDate, isValidTime} from "./csd/util/date/date.js";  
+  
+const main = () => {  
+    let day = 29  
+    let month = 1  
+    let year = 2019  
+    let hour = 22  
+    let minute = 7  
+    let second = 56  
+  
+    if (isValidDate(day, month, year) && isValidTime(hour, minute, second)) {  
+        let date = new Date(year, month, day, hour, minute, second)  
+  
+        writeLine(date.toString())  
+    }  
+    else  
+        writeLine("Geçersiz tarih/zaman bilgileri")  
+}  
+  
 main()
 ``` 
 
 > Şüphesiz kullanılan ortamda buna yönelik yardımcı metotlar bulunabilir.
-> 
-> Date nesnesi immutable değildir. `setXXX` metotları tarih/ zamana ilişkin değerlerin değiştirilmesi için kullanılır:
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let now = new Date()
-
-    writeLine(now.toString())
-
-    now.setDate(78) // Dikkat geçerlilik kontrolü yapılmıyor
-
-    writeLine(now.toString())
-}
-
-main()
-```
-
-> Bu metotlar da geçerlilik kontrolü yapmazlar.
-> 
+ 
 > Date nesnesinin (sınıfının) diğer fonksiyonları dökümanlardan incelenebilir.
 
-**Rasgele Sayı Üretimi**
+##### Rassal Sayı Üretimi
 
-> ES’ de rasgele sayı üretimi için bir nesne bulunmamaktadır. Rastgele sayı üretimi `Math` nesnesinin `random` isimli fonksiyonu ile yapılabilir. Random fonksiyonu `[0, 1)` aralığında rasgele belirlenmiş bir sayı üretir:
+> ES’ de rassal sayı üretimi için bir nesne bulunmamaktadır. Rassal sayı üretimi `Math` nesnesinin `random` isimli fonksiyonu ile yapılabilir. Bu fonksiyon `[0, 1)` aralığında rassal belirlenmiş bir sayı üretir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    for (let i = 0; i < 10; ++i)
-        writeLine(Math.random())
-}
-
+import {writeLine} from "./msd.util/console.js";  
+  
+const main = () => {  
+    for (let i = 0; i < 10; ++i)  
+        writeLine(Math.random())  
+}  
+  
 main()
 ```
 
 >Belirli bir aralıkta rasgele sayılar programcı tarafından yazılan fonksiyonlar ile elde edilebilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function randomBoolean()
-{
-    return randomInt(0, 2) === 1
-}
-
-function randomInt(min, max) //[min, max)
-{
-    return parseInt(randomNumber(min, max))
-}
-
-function randomNumber(min, max) //[min, max)
-{
-    return Math.random() * (max - min) + min
-}
-
-function main()
-{
-    let min = 10, max = 20
-
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomInt(min, max))
-
-    writeLine("************")
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomNumber(min, max))
-
-    writeLine("************")
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomBoolean())
-}
-
+import {write, writeLine} from "./msd.util/console.js";  
+import {randomBoolean, randomInt, randomNumber} from "./csd/util/random/random.js";  
+  
+const main = () => {  
+    let min = 10, max = 20  
+  
+    for (let i = 0; i < 10; ++i)  
+        write(`${randomInt(min, max)} `)  
+  
+    writeLine()  
+    for (let i = 0; i < 10; ++i)  
+        write(`${randomNumber(min, max)} `)  
+  
+    writeLine()  
+    for (let i = 0; i < 10; ++i)  
+        write(`${randomBoolean(min, max)} `)  
+}  
+  
 main()
 ```
 
->Bu fonksiyonlar Lambda ifadeleri kullanarak da yazılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-let randomNumber = (min, max) => Math.random() * (max  - min) + min //[min, max)
-let randomInt = (min, max) => parseInt(randomNumber(min, max)) // [min, max)
-let randomBoolean = () => randomInt(0, 2) === 1
-
-function main()
-{
-    let min = 10, max = 20
-
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomInt(min, max))
-
-    writeLine("************")
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomNumber(min, max))
-
-    writeLine("************")
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomBoolean())
-}
-
-main()
+export const randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
+export const randomNumber = (min, bound) => Math.random() * (bound - min)  
+export const randomBoolean = () => Math.random() < 0.5
 ```
 
->Şüphesiz bu fonksiyonların başka `.js` dosyası içerisinden kullanımı daha iyi bir tekniktir:
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomBoolean, randomInt, randomNumber} from "./csdrandomutil.mjs";
-
-function main()
-{
-    let min = 10, max = 20
-
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomInt(min, max))
-
-    writeLine("************")
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomNumber(min, max))
-
-    writeLine("************")
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomBoolean())
-}
-
-main()
-```
+SSSSSSSSSSSSSSSSSSSSSSSS
 
 > **_Sınıf Çalışması:_** Parametresi ile aldığı iki tane yıl arasında rasgele tarih döndüren `randomDate` isimli fonksiyonu yazınız.
 > 
@@ -6174,99 +6067,17 @@ main()
 **Çözüm:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomDate} from "./csddateutil.mjs";
 
-function main()
-{
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomDate())
-
-    writeLine("----------------------------------------------------")
-
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomDate(2021))
-
-    writeLine("----------------------------------------------------")
-
-    for (let i = 0; i < 10; ++i)
-        writeLine(randomDate(2019, 2022))
-}
-
-main()
-```
- 
-```javascript
-//csddateutil.js
-const randomDate = function (minYear, maxYear) {
-    if (arguments.length === 0)
-        maxYear = minYear = new Date().getFullYear()
-    else if (arguments.length === 1)
-        maxYear = minYear
-
-    const year = randomInt(minYear, maxYear + 1)
-    const month = randomInt(1, 13)
-    const day = randomInt(1, month === 2 && isLeapYear(year) ? 29 : daysOfMonths[month])
-
-    return new Date(year, month, day)
-}
 ``` 
  
-**_Sınıf Çalışması:_** Bir paranın yazı gelme olasılığını yaklaşık olarak hesaplayan programı yazınız.
+>**_Sınıf Çalışması:_** Bir paranın yazı gelme olasılığını yaklaşık olarak hesaplayan programı yazınız.
 
 **Çözüm-1:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
 
-function getCoinTailProbability(n)
-{
-    let count = 0
-
-    for (let i = 0; i < n; ++i)
-        count += randomInt(0, 2)
-
-    return count / n
-}
-
-function main()
-{
-    let n = 100000
-
-    writeLine(`p=${getCoinTailProbability(n)}`)
-}
-
-main()
 ```
 
-**Çözüm-2:**
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomBoolean} from "./csdrandomutil.mjs";
-
-function getCoinTailProbability(n)
-{
-    let count = 0
-
-    for (let i = 0; i < n; ++i)
-        if (randomBoolean())
-            ++count
-
-    return count / n
-}
-
-
-function main()
-{
-    let n = 100000
-
-    writeLine(`p=${getCoinTailProbability(n)}`)
-}
-
-main()
-```
 
 > **_Sınıf Çalışması:_** Craps hemen hemen dünyanın her yerinde bilinen, iki zarla oynanan bir oyundur.
 > 
@@ -6302,60 +6113,7 @@ main()
 **Çözüm:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
 
-const rollDice = () => randomInt(1, 7)  + randomInt(1, 7)
-
-function continueGame(dice)
-{
-    let result
-
-    while ((result = rollDice()) !== dice && result !== 7)
-        ;
-
-    return result !== 7
-}
-
-function playCraps()
-{
-    const total = rollDice()
-    let result;
-
-    switch (total) {
-        case 7:
-        case 11:
-            result = true;
-            break
-        case 2:
-        case 3:
-        case 12:
-            result = false;
-            break;
-        default:
-            result = continueGame(total)
-    }
-
-    return result;
-}
-
-function runSimulation(n)
-{
-    let winCount = 0;
-
-    for (let i = 0; i < n; ++i)
-        if (playCraps())
-            ++winCount
-
-    writeLine(`Kazanma Olasılığı:${winCount / n}`)
-}
-
-function main()
-{
-    runSimulation(100000)
-}
-
-main()
 ```
 
 > **_Sınıf Çalışması:_** Bir tombala torbasında 1'den 99'a kadar numaralanmış (99 dahil) pullar bulunmaktadır. Bu tombala torbasıyla aşağıdaki oyunlar oynanmaktadır:
@@ -6371,92 +6129,7 @@ main()
 **Çözüm:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
-import {isPrime} from "./csdnumberutil.mjs";
 
-const WinInfo = function () {
-    this.firstWinStatus = 0
-    this.secondWinStatus = 0
-    this.thirdWinStatus = 0
-}
-
-const pullFirst = () => randomInt(1, 100)
-const pullSecond = function (first) {
-    let second
-
-    while ((second = randomInt(1, 100)) === first)
-        ;
-
-    return second
-}
-
-const pullThird = function (first, second) {
-    let third
-
-    while ((third = randomInt(1, 100)) === first || third === second)
-        ;
-
-    return third
-}
-
-const playFirstGame = (first, second, third) => first + second + third < 150
-
-const playSecondGame = (first, second, third) => isPrime(first + second + third)
-
-const playThirdGame = function (first, second, third) {
-    const max = Math.max(first, second, third)
-    const min = Math.min(first, second, third)
-    const mid = first + second + third - max - min
-
-    return max - min > mid
-}
-
-
-function playLottery()
-{
-    const winInfo = new WinInfo()
-    const first = pullFirst()
-    const second = pullSecond(first)
-    const third = pullThird(first, second)
-
-    winInfo.firstWinStatus = playFirstGame(first, second, third)
-    winInfo.secondWinStatus = playSecondGame(first, second, third)
-    winInfo.thirdWinStatus = playThirdGame(first, second, third)
-
-    return winInfo
-}
-
-function runSimulation(n)
-{
-    let firstCount = 0
-    let secondCount = 0
-    let thirdCount = 0
-
-    for (let i = 0; i < n; ++i) {
-        const winInfo = playLottery()
-
-        if (winInfo.firstWinStatus)
-            ++firstCount
-
-        if (winInfo.secondWinStatus)
-            ++secondCount
-
-        if (winInfo.thirdWinStatus)
-            ++thirdCount
-    }
-
-    writeLine(`1.oyun kazanma olasılığı:${firstCount / n}`)
-    writeLine(`2.oyun kazanma olasılığı:${secondCount / n}`)
-    writeLine(`3.oyun kazanma olasılığı:${thirdCount / n}`)
-}
-
-function main()
-{
-    runSimulation(100000)
-}
-
-main()
 ```
 
 **_Sınıf Çalışması:_** Parametresi ile aldığı 1, 2 veya 3 basamaklı bir sayının Türkçe yazı karşılığını döndüren `numToStrTR3D` fonksiyonunu yazınız ve test ediniz. Fonksiyon basamak sayısı kontrolü yapmayacaktır.
@@ -6464,56 +6137,7 @@ main()
 **Çözüm:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
 
-let onesTR = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]
-let tensTR = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]
-
-function numToStrTR3D(val)
-{
-    if (val === 0)
-        return "sıfır"
-
-    let str = val > 0 ? "" : "eksi"
-    val = Math.abs(val)
-
-    let a = parseInt(val / 100)
-    let b = parseInt(val / 10) % 10
-    let c = val % 10
-
-    if (a !== 0) {
-        if (a !== 1)
-            str += onesTR[a]
-        str += "yüz"
-    }
-
-    if (b !== 0)
-        str += tensTR[b]
-
-    if (c !== 0)
-        str += onesTR[c]
-
-    return str
-}
-
-function runTestNumToStrTR3D()
-{
-    writeLine(`0->${numToStrTR3D(0)}`)
-
-    for (let i = 0; i < 20; ++i) {
-        let val = randomInt(-999, 1000)
-
-        writeLine(`${val} -> ${numToStrTR3D(val)}`)
-    }
-}
-
-function main()
-{
-    runTestNumToStrTR3D()
-}
-
-main()
 ```
 
 > **_Sınıf Çalışması:_** Parametresi ile aldığı sayıyı 3'erli basamaklara ayırarak bir diziye yerleştiren ve dizinin referansını döndüren `getDigitsInThrees` fonksiyonunu yazınız ve test ediniz. 
@@ -6527,36 +6151,10 @@ main()
 **Çözüm:**
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
 
-function getDigitsInThrees(val)
-{
-    val = Math.abs(val)
-    let digits = []
-
-    while (val !== 0) {
-        digits.unshift(val % 1000)
-        val = parseInt(val / 1000)
-    }
-
-    return digits
-}
-
-function main()
-{
-    for (let i = 0; i < 30; ++i) {
-        let val = randomInt(-200000000, 200000000)
-        writeLine(`val=${val}`)
-        getDigitsInThrees(val).forEach(val => writeLine(val))
-        writeLine("----------------------------------------------------")
-    }
-}
-
-main()
 ```
 
-**Sınıflar**
+##### Sınıflar
 
 > ES ile nesne yönelimli programlama ES6 öncesinde de yapılabilmekteydi. Bunun için bir object ilk değer verme sentaksı ya da bir fonksiyon bildirimi kullanılabilir:
 
@@ -6644,7 +6242,7 @@ function main()
 main()
 ```
 
-> ES ile object içerisindeki değişkenler iki tırnak ile de bildirilebilmektedir:
+> ES'de object içerisindeki değişkenler iki tırnak ile de bildirilebilmektedir:
 
 ```javascript
 function writeln(a)
