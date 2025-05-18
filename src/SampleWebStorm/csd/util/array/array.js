@@ -1,5 +1,7 @@
 import {randomInt, randomNumber} from "../random/random.js";
 
+const join = (a, sep) => a.reduce((s, e) => s + sep + e)
+
 const randomIntArray = (n, min, bound) => {
     const a = new Array(n)
 
@@ -18,4 +20,4 @@ const randomNumberArray = (n, min, bound) => {
     return a
 }
 
-export  {randomIntArray, randomNumberArray}
+export  {join, randomIntArray, randomNumberArray}

@@ -4302,7 +4302,7 @@ main()
 let write = a => process.stdout.write(a)  
 let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
   
-let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
+let randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 let randomText = (n, text) => {  
     let str = ""  
     let len = text.length;  
@@ -4352,7 +4352,7 @@ main()
 let write = a => process.stdout.write(a)  
 let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
   
-let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
+let randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min  
 let randomText = (n, text) => {  
     let str = ""  
     let len = text.length;  
@@ -4437,7 +4437,7 @@ main()
 ```javascript
 let write = a => process.stdout.write(a)  
 let writeLine = a => write(a === undefined ? '\n' : `${a}\n`)  
-let randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min + 1  
+let randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min  
   
 Array.prototype.partition = function(pred) {  
     //TODO  
@@ -5722,27 +5722,88 @@ const main = () => {
 main()
 ```
 
-SSSSSSSSSSSSSSSSSSSSSSSSSS
 
-**_Sınıf Çalışması:_** Parametresi ile aldığı bir dizinin elemanlarını aralarında ikinci parametresi ile aldığı başka bir string olacak şekilde birleştirilmiş string ile geri dönen `join` isimli fonksiyonu yazınız ve test ediniz.
+**_Sınıf Çalışması:_** Parametresi ile aldığı bir dizinin elemanlarını aralarında, ikinci parametresi ile aldığı başka bir string olacak şekilde birleştirilmiş string ile geri dönen `join` isimli fonksiyonu yazınız ve test ediniz.
 
 **Çözüm:**
+
+```javascript
+import {join} from "./csd/util/array/array.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    const a = ["Ayberk", "Ayhan", "Barış", "Hüseyin", "Kaya", "Mustafa", "Ramazan", "Vildan", "Oğuz"]  
+    const s = join(a, "--")  
+  
+    writeLine(s)  
+}  
+  
+main()
+```
+
+```javascript
+const join = (a, sep) => a.reduce((s, e) => s + sep + e)
+```
 
 **_Sınıf Çalışması:_** Parametresi ile aldığı sayı kadar aşağıdaki özelliklere sahip ürünler üreten `createRandomProducts` isimli global fonksiyonu yazınız:
 
-> Product
-> - Id
-> - name
-> - stock
-> - cost
-> - price
-> 
-> Buna göre aşağıdaki işlemleri yapan kodları yazınız:
-> 
-> 1. Stokta bulunan ürünleri maliyet fiyatına göre pahalıdan ucuza doğru sıralayınız
-> 2. Stokta bulunmayan ürünleri total miktarına göre sıralayınız
+ Product
+ - Id
+ - name
+ - stock
+ - cost
+ - price
+ 
+Buna göre aşağıdaki işlemleri yapan kodları yazınız: 
+1. Stokta bulunan ürünleri maliyet fiyatına göre pahalıdan ucuza doğru sıralayınız.
+2. Stokta bulunan ürünleri total miktarına göre sıralayınız.
 
 **Çözüm:**
+
+```javascript
+import {randomTextTR} from "./csd/util/string/string.js";  
+import {randomInt, randomNumber} from "./csd/util/random/random.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const Product = function(id, name, stock, cost, price) {  
+    this.id = id;  
+    this.name = name;  
+    this.stock = stock;  
+    this.cost = cost;  
+    this.price = price;  
+    this.getTotal = function () {  
+        return this.price * this.stock  
+    }  
+    this.toString = function () {  
+        return `id: ${this.id}, name: ${this.name}, stock: ${this.stock}, cost: ${this.cost}, price: ${this.price}, total: ${this.getTotal()}`  
+    }  
+}  
+  
+const createRandomProducts = count => {  
+    let products = []  
+  
+    for (let i = 0; i < count; ++i)  
+        products[i] = new Product(i + 1, randomTextTR(randomInt(5, 15)), randomNumber(-100, 100), randomNumber(1, 10000), randomNumber(10, 1000000))  
+  
+    return products  
+}  
+  
+const main = () => {  
+    const products = createRandomProducts(10)  
+  
+    products.forEach(p => writeLine(p.toString()))  
+    let productsInStock = products.filter(p => p.stock > 0).sort((p1, p2) => p2.cost - p1.cost)  
+  
+    writeLine("Products in stock sorted by cost descending:")  
+    productsInStock.forEach(p => writeLine(p.toString()))  
+  
+    productsInStock = products.filter(p => p.stock > 0).sort((p1, p2) => p1.getTotal() - p2.getTotal())  
+    writeLine("Products in stock sorted by total:")  
+    productsInStock.forEach(p => writeLine(p.toString()))  
+}  
+  
+main()
+```
 ##### Date nesnesi (sınıfı)
 
 >ES’ de tarih-zaman işlemleri için Date isimli bir nesne bulunmaktadır. ES'de tarih, zaman ve tarih-zaman olarak ayrı türler yoktur. Date nesnesi yaratmak için ctor çeşitli argümanlar ile kullanılabilir:
@@ -6045,19 +6106,18 @@ main()
 
 ```javascript
 export const randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)  
-export const randomNumber = (min, bound) => Math.random() * (bound - min)  
+export const randomNumber = (min, bound) => Math.random() * (bound - min) + min
 export const randomBoolean = () => Math.random() < 0.5
 ```
 
-SSSSSSSSSSSSSSSSSSSSSSSS
 
 > **_Sınıf Çalışması:_** Parametresi ile aldığı iki tane yıl arasında rasgele tarih döndüren `randomDate` isimli fonksiyonu yazınız.
 > 
 > **Açıklamalar:**
 > 
-> - Fonksiyon tek argüman aldığında sadece o argümana ilişkin yıl içerisinde rasgele tarih üretecektir.
+> - Fonksiyon tek argüman aldığında sadece o argümana ilişkin yıl içerisinde rasgele tarihi üretecektir.
 > - Fonksiyon argümansız çağrıldığında sistemin zamanına ilişkin yıl içerisinde rasgele tarih üretecektir
-> - Açıklananlar dışından fonksiyon içerisinde başka bir control yapılmayacaktır
+> - Açıklananlar dışında fonksiyon içerisinde başka bir control yapılmayacaktır
 > - Test kodu için bilgiyi ekrana İngilizce ve Türkçe olarak aşağıdaki formatlarda yazdıran `displayDateTR` ve `displayDateEN` isimli fonksiyonları yazınız:
 > 
 > İngilizce format: Jul 11th 1983 Mon
@@ -6067,17 +6127,140 @@ SSSSSSSSSSSSSSSSSSSSSSSS
 **Çözüm:**
 
 ```javascript
-
+import {dateToStringEN, dateToStringTR, randomDate} from "./csd/util/date/date.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const displayDateTR = d => writeLine(dateToStringTR(d))  
+const displayDateEN = d => writeLine(dateToStringEN(d))  
+  
+const printDateTR = d => writeLine(d.toStringTR())  
+const printDateEN = d =>  writeLine(d.toStringEN())  
+  
+const main = () => {  
+    const d = randomDate(2020, 2025)  
+    writeLine(d.toString())  
+    displayDateTR(d)  
+    displayDateEN(d)  
+    printDateTR(d)  
+    printDateEN(d)  
+}  
+  
+main()
 ``` 
+
+**`./csd/util/date/date.js` modülü**
+
+```javascript
+import {randomInt} from "../random/random.js";  
+  
+const daysOfMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]  
+const monthsTR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]  
+const monthsEN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nove", "Dec"]  
+const daysOfWeekTR = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"]  
+const daysOfWeekEN = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]  
+  
+const isValidForBounds = (val, min, max) => min <= val && val <= max  
+const isValidHour = val => isValidForBounds(val, 0, 23)  
+const isValidMinute = val => isValidForBounds(val, 0, 59)  
+const isValidSecond = val => isValidForBounds(val, 0, 59)  
+const getDays = (m, y) => m === 1 && isLeapYear(y) ? 29 : daysOfMonths[m]  
+const getDaySuffix = d => {  
+    let suffix = "th"  
+  
+    switch (d) {  
+        case 1:  
+        case 21:  
+        case 31:  
+            suffix = "st";  
+            break;  
+        case 2:  
+        case 22:  
+            suffix = "nd";  
+            break;  
+        case 3:  
+        case 23:  
+            suffix = "rd";  
+            break;  
+    }  
+  
+    return suffix  
+}  
+  
+export const isLeapYear = y => y % 4 === 0 && y % 100 !== 0 || y % 400 === 0  
+  
+export const isValidDate = (d, m, y) => d >= 1 && d <= 31 && m >= 0 && m <= 11 && d <= getDays(m, y)  
+  
+export const isValidTime = (h, m, s) => isValidHour(h) && isValidMinute(m) && isValidSecond(s)  
+  
+export const getTotalYears = (startDate, endDate) => (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 365)  
+  
+export const randomDate = (min, max) => {  
+    const year = (max === undefined) ? (min === undefined) ? (new Date().getFullYear()) : (min): (randomInt(min, max + 1))  
+    const month = randomInt(0, 12)  
+    const day = randomInt(1, getDays(month, year) + 1)  
+  
+    return new Date(year, month, day)  
+}  
+  
+export const dateToStringTR = d => `${d.getDate()} ${monthsTR[d.getMonth()]} ${d.getFullYear()} ${daysOfWeekTR[d.getDay()]}`  
+  
+export const dateToStringEN = d => `${monthsEN[d.getMonth()]} ${d.getDate()}${getDaySuffix(d.getDate())} ${d.getFullYear()} ${daysOfWeekEN[d.getDay()]}`  
+  
+Date.prototype.toStringTR = function () {  
+    return dateToStringTR(this)  
+}  
+  
+Date.prototype.toStringEN = function () {  
+    return dateToStringEN(this)  
+}
+```
  
->**_Sınıf Çalışması:_** Bir paranın yazı gelme olasılığını yaklaşık olarak hesaplayan programı yazınız.
+ **_Sınıf Çalışması:_** Bir paranın yazı gelme olasılığını yaklaşık olarak hesaplayan programı yazınız.
 
 **Çözüm-1:**
 
 ```javascript
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const calculateTailProbability = (n) => {  
+    let total = 0  
+    for (let i = 0; i < n; ++i)  
+        total += randomInt(0, 2)  
+  
+    return total / n  
+}  
+  
+const main = () => {  
+    writeLine(`p = ${calculateTailProbability(10_000)}`)  
+}  
+  
+main()
 ```
 
+
+**Çözüm-2:**
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomBoolean} from "./csd/util/random/random.js";  
+  
+const calculateTailProbability = n => {  
+    let count = 0  
+  
+    for (let i = 0; i < n; ++i)  
+        if (randomBoolean())  
+            ++count  
+  
+    return count / n  
+}  
+  
+const main = () => {  
+    writeLine(`p = ${calculateTailProbability(10_000)}`)  
+}  
+  
+main()
+```
 
 > **_Sınıf Çalışması:_** Craps hemen hemen dünyanın her yerinde bilinen, iki zarla oynanan bir oyundur.
 > 
@@ -6088,7 +6271,7 @@ SSSSSSSSSSSSSSSSSSSSSSSS
 > - 7 ya da 11 ise oyuncu kazanır.
 > - 2, 3, 12 ise oyuncu kaybeder. (Buna craps denir!)
 > - İki zarın toplam değeri yukarıdakilerin dışında bir değer ise (yani 4, 5, 6, 8, 9, 10) oyun şu şekilde devam eder:
->     - Oyuncu aynı sonucu buluncaya kadar zarları tekrar atar. Eğer aynı sonucu bulamadan önce oyuncu 7 atarsa (yani atılan iki zarın toplam değeri 7 olursa) oyuncu kaybeder.
+>     - Oyuncu aynı sonucu buluncaya kadar zarları tekrar atar. Eğer aynı sonucu bulmadan önce oyuncu 7 atarsa (yani atılan iki zarın toplam değeri 7 olursa) oyuncu kaybeder.
 >     - Eğer 7 gelmeden önce oyuncu aynı sonucu tekrar atmayı başarırsa, kazanır.
 > 
 > Birkaç örnek:
@@ -6113,10 +6296,57 @@ SSSSSSSSSSSSSSSSSSSSSSSS
 **Çözüm:**
 
 ```javascript
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const sumOfDice = () => randomInt(1, 7) + randomInt(1, 7)  
+  
+const rollDiceForIndeterminate = v => {  
+    let total  
+  
+    while ((total = sumOfDice()) !== 7 && total !== v)  
+        ;  
+  
+    return total !== 7  
+}  
+  
+const playCraps = () => {  
+    let total = sumOfDice()  
+  
+    switch (total) {  
+        case 7:  
+        case 11:  
+            return true  
+        case 2:  
+        case 3:  
+        case 12:  
+            return false  
+        default:  
+            return rollDiceForIndeterminate(total)  
+    }  
+}  
+  
+const calculateCrapsProbability = n => {  
+    let count = 0  
+  
+    for (let i = 0; i < n; ++i)  
+        if (playCraps())  
+            ++count  
+  
+    return count / n  
+}  
+  
+const main = () => {  
+    writeLine(`p = ${calculateCrapsProbability(100_000)}`)  
+}  
+  
+main()
 ```
 
-> **_Sınıf Çalışması:_** Bir tombala torbasında 1'den 99'a kadar numaralanmış (99 dahil) pullar bulunmaktadır. Bu tombala torbasıyla aşağıdaki oyunlar oynanmaktadır:
+
+SSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
+ >**_Sınıf Çalışması:_** Bir tombala torbasında 1'den 99'a kadar numaralanmış (99 dahil) pullar bulunmaktadır. Bu tombala torbasıyla aşağıdaki oyunlar oynanmaktadır:
 >  
 > Çekilen bir pul torbaya geri atılmamak üzere
 >  
