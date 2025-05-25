@@ -6344,8 +6344,6 @@ main()
 ```
 
 
-SSSSSSSSSSSSSSSSSSSSSSSSSSSS
-
  >**_Sınıf Çalışması:_** Bir tombala torbasında 1'den 99'a kadar numaralanmış (99 dahil) pullar bulunmaktadır. Bu tombala torbasıyla aşağıdaki oyunlar oynanmaktadır:
 >  
 > Çekilen bir pul torbaya geri atılmamak üzere
@@ -6359,7 +6357,107 @@ SSSSSSSSSSSSSSSSSSSSSSSSSSSS
 **Çözüm:**
 
 ```javascript
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {isPrime} from "./csd/util/numeric/numeric.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const getFirstBall = () => {  
+    return randomInt(1, 100)  
+}  
+  
+const getSecondBall = (f) => {  
+    let s  
+  
+    while ((s = randomInt(1, 100)) === f)  
+        ;  
+  
+    return s  
+}  
+  
+const getThirdBall = (f, s) => {  
+    let t  
+  
+    while ((t = randomInt(1, 100)) === f || t === s)  
+        ;  
+  
+    return t  
+}  
+  
+const getBalls = () => {  
+    const first = getFirstBall()  
+    const second = getSecondBall(first)  
+    const third = getThirdBall(first, second)  
+  
+    return {f: first, s: second, t: third}  
+}  
+  
+const isFirstWin = (f, s, t) => {  
+    return f + s + t > 150  
+}  
+  
+  
+const isSecondWin = (f, s, t) => {  
+    return isPrime(f + s + t)  
+}  
+  
+  
+const isThirdWin = (f, s, t) => {  
+    const min = Math.min(f, s, t)  
+    const max = Math.max(f, s, t)  
+    const mid = f + s + t - min - max  
+  
+    return max - min > mid  
+}  
+  
+const calculateFirstGameProbability = n => {  
+    let count = 0  
+  
+    for (let i = 0; i < n; ++i) {  
+        const {f, s, t} = getBalls()  
+  
+        if (isFirstWin(f, s, t))  
+            ++count  
+    }  
+  
+    return count / n  
+}  
+  
+const calculateSecondGameProbability = n => {  
+    let count = 0  
+  
+    for (let i = 0; i < n; ++i) {  
+        const {f, s, t} = getBalls()  
+  
+        if (isSecondWin(f, s, t))  
+            ++count  
+    }  
+  
+    return count / n  
+}  
+  
+const calculateThirdGameProbability = n => {  
+    let count = 0  
+  
+    for (let i = 0; i < n; ++i) {  
+        const {f, s, t} = getBalls()  
+  
+        if (isThirdWin(f, s, t))  
+            ++count  
+    }  
+  
+    return count / n  
+}  
+  
+  
+const main = () => {  
+    const n = 30000  
+  
+    writeLine(`First Probability:${calculateFirstGameProbability(n)}`);  
+    writeLine(`Second Probability:${calculateSecondGameProbability(n)}`);  
+    writeLine(`Third Probability:${calculateThirdGameProbability(n)}`);  
+}  
+  
+main()
 ```
 
 **_Sınıf Çalışması:_** Parametresi ile aldığı 1, 2 veya 3 basamaklı bir sayının Türkçe yazı karşılığını döndüren `numToStrTR3D` fonksiyonunu yazınız ve test ediniz. Fonksiyon basamak sayısı kontrolü yapmayacaktır.
@@ -6367,139 +6465,98 @@ SSSSSSSSSSSSSSSSSSSSSSSSSSSS
 **Çözüm:**
 
 ```javascript
+const ONES = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]  
+const TENS = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]
 
+const numToStrTR3D = v => {  
+    if (v === 0)  
+        return "sıfır"  
+  
+    let result =  v < 0 ? "eksi" : ""  
+  
+    v = Math.abs(v)  
+    const a = Math.trunc(v / 100)  
+    const b = Math.trunc(v / 10) % 10  
+    const c = v % 10  
+  
+    if (a !== 0) {  
+        if (a !== 1)  
+            result += ONES[a]  
+  
+        result += "yüz"  
+    }  
+  
+    result += TENS[b]  
+    result += ONES[c]  
+  
+    return result  
+}
 ```
 
-> **_Sınıf Çalışması:_** Parametresi ile aldığı sayıyı 3'erli basamaklara ayırarak bir diziye yerleştiren ve dizinin referansını döndüren `getDigitsInThrees` fonksiyonunu yazınız ve test ediniz. 
-> 
-> Örneğin:
-> 
->     1234567 -> 1 234 567
->     1       -> 1
->     3456    -> 3 456
+ **_Sınıf Çalışması:_** Parametresi ile aldığı sayıyı 3'erli basamaklara ayırarak bir diziye yerleştiren ve dizinin referansını döndüren `digitsInThrees` fonksiyonunu yazınız ve test ediniz. Örneğin:
+     1234567 -> 1 234 567
+     1       -> 1
+     3456    -> 3 456
 
-**Çözüm:**
+**Çözüm-1:**
+
+```javascript
+const getDigits = (a, count) => {  
+    const n = !a ? 1 : Math.trunc(Math.log10(Math.abs(a)) / count) + 1  
+    const result = new Array(n)  
+    const divider = Math.trunc(Math.pow(10, count))  
+  
+    a = Math.abs(a)  
+    for (let i = n - 1; a !== 0; result[i--] = a % divider, a = Math.trunc(a / divider))  
+        ;  
+  
+    return result
+}  
+  
+const digits = a => getDigits(a, 1)  
+  
+const digitsInTwos = a => getDigits(a, 2)  
+  
+const digitsInThrees = a => getDigits(a, 3)
+```
+
+**Çözüm-2:**
+
+```javascript
+const getDigits = (a, count) => {  
+    const result = []  
+    const divider = Math.trunc(Math.pow(10, count))  
+  
+    a = Math.abs(a)  
+    while (a !== 0) {  
+        result.unshift(a % divider)  
+        a = Math.trunc(a / divider)  
+    }  
+      
+    return result  
+}  
+  
+const digits = a => getDigits(a, 1)  
+  
+const digitsInTwos = a => getDigits(a, 2)  
+  
+const digitsInThrees = a => getDigits(a, 3)
+```
+
+
+>2.çözümde dizinin eleman sayısı bulunmamıştır. Çünkü ES'de diziler dinamik olarak büyüyebilmektedir. Fonksiyonlar özelinde çok önemli olmasa da 2. çözümde interpreter'ın implementasyonuna göre kaydırma (shift) maliyeti söz konusu olabilir. 
+
+
+SSSSSSSSSSSSSSSSSSSSSS
+
+**Sınıf Çalışması:** Parametresi ile aldığı kentilyon kadarlık bir sayının Türkçe okunuşunu döndüren `numToStrTR`fonksiyonunu yazınız ve test ediniz. Okunuşlarda kelimeler arasında bir tane SPACE karakteri olacaktır.
 
 ```javascript
 
 ```
-
 ##### Sınıflar
 
-> ES ile nesne yönelimli programlama ES6 öncesinde de yapılabilmekteydi. Bunun için bir object ilk değer verme sentaksı ya da bir fonksiyon bildirimi kullanılabilir:
-
-```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-let Product = function (id, name, stock) {
-    this.id = id
-    this.name = name
-    this.stock = stock
-    this.toString = () => "[" + this.id + "]" + this.name + "-" + this.stock
-}
-
-function main()
-{
-    let p =  new Product(1234, "laptop", 10)
-
-    writeln(p.toString());
-
-}
-
-main()
-```
-
-> Örneğin bir nesne türünden dizi bildirimi de yapılabilmektedir:
-
-```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-let Product = function (id, name, stock) {
-    this.id = id
-    this.name = name
-    this.stock = stock
-    this.toString = () => "[" + this.id + "]" + this.name + "-" + this.stock
-}
-
-function main()
-{
-    let products = [
-        new Product(1234, "laptop", 10),
-        new Product(12345678, "mouse", 11),
-        new Product(12345, "klavye", 10)]
-
-    for (let p of products)
-        writeln(p.toString())
-}
-
-main()
-```
-
-> Burada `new` operatörü programcının nesne bildiriminde kullanılan fonksiyon da this dönülmediği için zorunludur. Eğer nesne bildiriminde kullanılan fonksiyon this dönerse new operatörü kullanılmasa da olur. Fakat bu şekilde nesne yaratılması this dönülse bile her javascript yorumlayıcısında çalışmayabilir:
-
-```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-let Product = function (id, name, stock) {
-    this.id = id;
-    this.name = name;
-    this.stock = stock;
-    this.toString = () => "[" + this.id + "]" + this.name + "-" + this.stock;
-
-    return this;
-};
-
-function main()
-{
-    let products = [
-        new Product(1234, "laptop", 10),
-        Product(12345678, "mouse", 11),
-        Product(12345, "klavye", 10)];
-
-    for (let p of products)
-        writeln(p.toString());
-}
-
-main()
-```
-
-> ES'de object içerisindeki değişkenler iki tırnak ile de bildirilebilmektedir:
-
-```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-function toString()
-{
-    return  `[${this.id}]${this.name}-${this.stock}`
-}
-
-function main()
-{
-    let product = {
-        "id": 12345,
-        "name": "laptop",
-        "stock": 10,
-        "toString" : toString
-    }
-
-    writeln(product.toString())
-}
-
-main()
-```
-
+> ES ile nesne yönelimli programlama ES6 öncesinde de yapılabilmekteydi. Anımsanacağı gibi bunun için bir object ilk değer verme sentaksı ya da bir fonksiyon bildirimi kullanılabilir. 
 > ES6 ile birlikte artık bir sınıf bildirimi, türetme, çok biçimlilik gibi kavramlar da dile dahil edilmiştir:
 
 ```javascript
@@ -6512,11 +6569,8 @@ class Product {
     constructor(id, name, stock)
     {
         this.id = id;
-        this.name = name;
-        if (arguments.length >= 3)
-            this.stock = stock;
-        else
-            this.stock = 0;
+        this.name = name;        
+        this.stock = 0;
     }
 
     toStr()

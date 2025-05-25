@@ -1,3 +1,6 @@
+const ONES = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]
+const TENS = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]
+
 const digitsPowSum = a => {
     let n = a.countDigits()
     let total = 0
@@ -10,9 +13,52 @@ const digitsPowSum = a => {
     return total
 }
 
-Number.prototype.countDigits = () => !this ? 1 : Math.trunc(Math.log10(Math.abs(this))) + 1
+const numToStrTR3D = v => {
+    if (v === 0)
+        return "sıfır"
+
+    let result =  v < 0 ? "eksi" : ""
+
+    v = Math.abs(v)
+    const a = Math.trunc(v / 100)
+    const b = Math.trunc(v / 10) % 10
+    const c = v % 10
+
+    if (a !== 0) {
+        if (a !== 1)
+            result += ONES[a]
+
+        result += "yüz"
+    }
+
+    result += TENS[b]
+    result += ONES[c]
+
+    return result
+}
+
+
+Number.prototype.countDigits = function () {return countDigits(this)}
 
 const countDigits = a => !a ? 1 : Math.trunc(Math.log10(Math.abs(a))) + 1
+
+const getDigits = (a, count) => {
+    const n = !a ? 1 : Math.trunc(Math.log10(Math.abs(a)) / count) + 1
+    const result = new Array(n)
+    const divider = Math.trunc(Math.pow(10, count))
+
+    a = Math.abs(a)
+    for (let i = n - 1; a !== 0; result[i--] = a % divider, a = Math.trunc(a / divider))
+        ;
+
+    return result
+}
+
+const digits = a => getDigits(a, 1)
+
+const digitsInTwos = a => getDigits(a, 2)
+
+const digitsInThrees = a => getDigits(a, 3)
 
 const fibonacciNumber = n => {
     if (n <= 2)
@@ -34,7 +80,7 @@ const isEven = a => a % 2 === 0
 
 const isOdd = a => !isEven(a)
 
-const isPrime = a  =>{
+const isPrime = a  => {
     if (a <= 1)
         return false
 
@@ -85,8 +131,13 @@ const nthPrime = n => {
     return i - 1
 }
 
+const numToStrTR = a => {
+    //TODO:
+}
+
 const isArmstrong = a => a >= 0 && a === digitsPowSum(a)
 
 Number.prototype.isPrime = () => isPrime(this)
 
-export {fibonacciNumber, isEven, isOdd, isPrime, countDigits, nextFibonacciNumber, nthPrime, isArmstrong}
+export {fibonacciNumber, isEven, isOdd, isPrime, countDigits, digits, digitsInTwos, digitsInThrees, nextFibonacciNumber,
+    numToStrTR, nthPrime, isArmstrong}
