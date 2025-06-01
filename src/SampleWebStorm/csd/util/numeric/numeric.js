@@ -1,5 +1,10 @@
-const ONES = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]
-const TENS = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]
+const g_ones_tr = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]
+const g_tens_tr = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]
+const g_number_units_tr = ["kentilyon", "katrilyon", "milyar", "milyon", "bin", ""]
+
+const g_ones_en = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+const g_tens_en = ["", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+const g_number_units_en = ["quintillion", "quadrillion", "billon", "million", "thousand", ""]
 
 const digitsPowSum = a => {
     let n = a.countDigits()
@@ -14,10 +19,7 @@ const digitsPowSum = a => {
 }
 
 const numToStrTR3D = v => {
-    if (v === 0)
-        return "sıfır"
-
-    let result =  v < 0 ? "eksi" : ""
+    let result =  ""
 
     v = Math.abs(v)
     const a = Math.trunc(v / 100)
@@ -26,13 +28,13 @@ const numToStrTR3D = v => {
 
     if (a !== 0) {
         if (a !== 1)
-            result += ONES[a]
+            result += g_ones_tr[a]
 
         result += "yüz"
     }
 
-    result += TENS[b]
-    result += ONES[c]
+    result += g_tens_tr[b]
+    result += g_ones_tr[c]
 
     return result
 }
@@ -132,7 +134,17 @@ const nthPrime = n => {
 }
 
 const numToStrTR = a => {
-    //TODO:
+    if (a === 0)
+        return "sıfır"
+
+    const threes = digitsInThrees(a)
+    let result =  ""
+    let idx = g_number_units_tr.length - 1
+
+    for (let i = threes.length - 1; i >= 0; --i)
+        result = `${numToStrTR3D(threes[i])}${g_number_units_tr[idx--]}` + result
+
+    return (a < 0 ? "eksi" : "") + result
 }
 
 const isArmstrong = a => a >= 0 && a === digitsPowSum(a)

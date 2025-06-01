@@ -6465,14 +6465,11 @@ main()
 **Çözüm:**
 
 ```javascript
-const ONES = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]  
-const TENS = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]
+const g_ones_tr = ["", "bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz"]  
+const g_tens_tr = ["", "on", "yirmi", "otuz", "kırk", "elli", "altmış", "yetmiş", "seksen", "doksan"]  
 
 const numToStrTR3D = v => {  
-    if (v === 0)  
-        return "sıfır"  
-  
-    let result =  v < 0 ? "eksi" : ""  
+    let result =  ""  
   
     v = Math.abs(v)  
     const a = Math.trunc(v / 100)  
@@ -6481,13 +6478,13 @@ const numToStrTR3D = v => {
   
     if (a !== 0) {  
         if (a !== 1)  
-            result += ONES[a]  
+            result += g_ones_tr[a]  
   
         result += "yüz"  
     }  
   
-    result += TENS[b]  
-    result += ONES[c]  
+    result += g_tens_tr[b]  
+    result += g_ones_tr[c]  
   
     return result  
 }
@@ -6546,131 +6543,203 @@ const digitsInThrees = a => getDigits(a, 3)
 
 >2.çözümde dizinin eleman sayısı bulunmamıştır. Çünkü ES'de diziler dinamik olarak büyüyebilmektedir. Fonksiyonlar özelinde çok önemli olmasa da 2. çözümde interpreter'ın implementasyonuna göre kaydırma (shift) maliyeti söz konusu olabilir. 
 
-
-SSSSSSSSSSSSSSSSSSSSSS
-
 **Sınıf Çalışması:** Parametresi ile aldığı kentilyon kadarlık bir sayının Türkçe okunuşunu döndüren `numToStrTR`fonksiyonunu yazınız ve test ediniz. Okunuşlarda kelimeler arasında bir tane SPACE karakteri olacaktır.
 
 ```javascript
 
+const g_number_units_tr = ["kentilyon", "katrilyon", "milyar", "milyon", "bin", ""]
+
+const numToStrTR = a => {  
+    if (a === 0)  
+        return "sıfır"  
+  
+    const threes = digitsInThrees(a)  
+    let result =  ""  
+    let idx = g_number_units_tr.length - 1  
+  
+    for (let i = threes.length - 1; i >= 0; --i)  
+        result = `${numToStrTR3D(threes[i])}${g_number_units_tr[idx--]}` + result  
+  
+    return (a < 0 ? "eksi" : "") + result  
+}
 ```
 ##### Sınıflar
-
-> ES ile nesne yönelimli programlama ES6 öncesinde de yapılabilmekteydi. Anımsanacağı gibi bunun için bir object ilk değer verme sentaksı ya da bir fonksiyon bildirimi kullanılabilir. 
-> ES6 ile birlikte artık bir sınıf bildirimi, türetme, çok biçimlilik gibi kavramlar da dile dahil edilmiştir:
+> ES ile nesne yönelimli programlama ES6 öncesinde de yapılabilmekteydi. Anımsanacağı gibi bunun için bir object'e ilk değer verme sentaksı ya da bir fonksiyon bildirimi kullanılabilir. 
+> ES6 ile birlikte artık bir sınıf bildirimi, türetme (inheritance), çok biçimlilik (polymorhism) gibi kavramlar da dile dahil edilmiştir:
 
 ```javascript
-function writeln(a)
-{
-    console.log(a)
-}
-
-class Product {
-    constructor(id, name, stock)
-    {
-        this.id = id;
-        this.name = name;        
-        this.stock = 0;
-    }
-
-    toStr()
-    {
-        return "[" + this.id + "]" + this.name + "-" + this.stock;
-    }
-}
-
-
-function main()
-{
-    let p = new Product(1, 'keyboard', 10)
-
-    writeln(p.toStr())
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+  
+class Product { //Since ES6  
+    constructor(id, name, stock) {  
+        this.id = id;  
+        this.name = name;  
+        this.stock = stock;  
+    }  
+  
+    toStr() {  
+        return "[" + this.id + "]" + this.name + "-" + this.stock;  
+    }  
+}  
+  
+const MyProduct = function(id, name, stock) {  
+    this.id = id;  
+    this.name = name;  
+    this.stock = stock;  
+  
+    this.toStr = function() {  
+        return "[" + this.id + "]" + this.name + "-" + this.stock;  
+    }  
+}  
+  
+  
+function main() {  
+    let p = new Product(1, 'keyboard', 10)  
+    let mp = new MyProduct(1, 'keyboard', 10)  
+  
+    writeLine(p.toStr())  
+    writeLine(mp.toStr())  
+}  
+  
 main()
 ```
 
-> Burada `Product` sınıfı içerisinde bildirilen constructor (ctor) içerisinde aynı zamanda property elemanları da (sınıfın veri elemanları gözüyle de bakılabilir) tanımlanmıştır. Sınıflar içerisinde bildirilen metotlarda (fonksiyonlar) function `anahtar` sözcüğü kullanılmaz.
+> Burada `Product` sınıfı içerisinde bildirilen constructor (ctor) içerisinde aynı zamanda property elemanları da (sınıfın veri elemanları gözüyle de bakılabilir) tanımlanmıştır. Sınıflar içerisinde bildirilen metotlarda (fonksiyonlar) function `anahtar` sözcüğü kullanılmaz. Buradaki Product sınıfının ES6 öncesi yapılış biçimi MyProduct olarak kodda incelenebilir.
 > 
-> ES6 ile bir sınıf bildirimi içerisinde sınıfın elemanlarına erişim için `get` ve `set` property' leri yazılabilir:
+> ES6 ile bir sınıf bildirimi içerisinde sınıfın elemanlarına erişim için `get (accesors)` ve `set (mutators)` property' leri yazılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class Point {
-    constructor(x, y)
-    {
-        this._x = x
-        this._y = y
-    }
-
-    get x() { return this._x }
-
-    set x(value) { this._x = value}
-
-    get y() { return this._y }
-
-    set y(value) { this._y = value}
-
-    toString()
-    {
-        return `(${this._x}, ${this._y})`
-    }
-}
-
-function main()
-{
-    const p = new Point(100, 78)
-
-    writeLine(p)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class Product {  
+    constructor(id, name, stock) {  
+        this._id = id;  
+        this._name = name;  
+        this._stock = stock;  
+    }  
+  
+    get id() {  
+        return this._id;  
+    }  
+  
+    set id(id) {  
+        this._id = id  
+    }  
+  
+    get name() {  
+        return this._name;  
+    }  
+  
+    set name(value) {  
+        this._name = value;  
+    }  
+  
+    get stock() {  
+        return this._stock;  
+    }  
+      
+    set stock(value) {  
+        this._stock = value;  
+    }  
+  
+    toStr() {  
+        return "[" + this._id + "]" + this._name + "-" + this._stock;  
+    }  
+}  
+  
+function main() {  
+    let p = new Product(1, 'keyboard', 10)  
+  
+    writeLine(`${p.id}, ${p.name}, ${p.stock}`);  
+  
+    p.name = p.name.toUpperCase()  
+  
+    writeLine(`${p.id}, ${p.name}, ${p.stock}`);  
+}  
+  
 main()
 ```
 
 > ES6 ile birlikte bir sınıfın static fonksiyonu da olabilmektedir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
+import {writeLine} from "./csd/util/console/console.js";
 
-class Point {
-    constructor(x, y)
-    {
-        this._x = x
-        this._y = y
-    }
-
-    static distance(x1, y1, x2, y2)
-    {
-        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
-    }
-
-    get x() { return this._x }
-
-    set x(value) { this._x = value}
-
-    get y() { return this._y }
-
-    set y(value) { this._y = value}
-
-    toString()
-    {
-        return `(${this._x}, ${this._y})`
-    }
+class Point {  
+    constructor(x, y) {  
+        this.x = x  
+        this.y = y  
+    }  
+  
+    static euclideanDistanceBetween(x1, y1, x2, y2) {  
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))  
+  
+    }  
+    
+    euclideanDistance(other) {  
+        return Point.euclideanDistanceBetween(this.x, this.y, other.x, other.y)  
+    }  
+  
+    offset(dx, dy) {this.x += dx; this.y += dy}  
+  
+    toString() {return `(${this.x}, ${this.y})`}  
 }
 
-function main()
-{
-    let x1 = 100
-    let y1 = 100
-    let x2 = 50
-    let y2 = 50
-
-    writeLine(Point.distance(x1, y1, x2, y2))
-}
-
+function main() {  
+    const p1 = new Point(100, 100)  
+    const p2 = new Point(96, 13)  
+  
+    writeLine(Point.euclideanDistanceBetween(100, 100, 96, 13))  
+    writeLine(p1.euclideanDistance(p2))  
+}  
+  
 main()
 ```
+
+>Aşağıdaki Circle sınıfını inceleyiniz
+
+```javascript
+export class Circle {  
+    constructor(r) {  
+        this.radius = r  
+    }  
+  
+    set radius(r) {  
+        this._r = Math.abs(r)  
+    }  
+  
+    get radius() {  
+        return this._r  
+    }  
+  
+    get area() {  
+        return Math.PI * this._r * this._r  
+    }  
+  
+    get circumference() {  
+        return 2 * Math.PI * this._r  
+    }  
+}
+```
+
+
+>Aşağıdaki Complex sınıfını inceleyiniz
+**Açıklamalar:** $z = a + i * b$, $z_1 = a_1 + i * b_1$, $z_2 = a_2 + i * b_2$ karmaşık sayıları için > 
+>- $i = \sqrt-1$
+>- $\bar{z} = a - i * b$
+>- $|z| = \sqrt{a^2 + b^2}$
+>- $z_1 \pm z_2 = (a_1 \pm a_2) + i * (b_1 \pm b2)$
+>- $z_1z_2 = (a_1 * a_2 - b_1 * b_2) + i * (a_1 * b_2 + a_2 * b_1)$
+>- $z_1 / z_2 =  (1 / |\bar{z_2}|) * (z_1 * \bar{z_2})$
+
+```javascript
+
+```
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+##### Türetme
 
 > ES6 ile birlikte bir sınıf başka bir sınıftan da türetilebilmektedir (inheritance). Burada Java programlama dilindeki gibi `extends` anahtar sözcüğü kullanılmaktadır.
 > 

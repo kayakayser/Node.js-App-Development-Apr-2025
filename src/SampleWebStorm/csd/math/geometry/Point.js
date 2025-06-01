@@ -1,13 +1,22 @@
 import {randomInt, randomNumber} from "../../util/random/random.js";
 
-export const Point = function(x, y) {
-    this.x = x
-    this.y = y
-    this.euclideanDistance = function(other) {
-        return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2))
+export class Point {
+    constructor(x, y) {
+        this.x = x
+        this.y = y
     }
-    this.offset = function(dx, dy) {this.x += dx; this.y += dy}
-    this.toString = function () {return `(${this.x}, ${this.y})`}
+
+    static euclideanDistanceBetween(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
+
+    }
+    euclideanDistance(other) {
+        return Point.euclideanDistanceBetween(this.x, this.y, other.x, other.y)
+    }
+
+    offset(dx, dy) {this.x += dx; this.y += dy}
+
+    toString() {return `(${this.x}, ${this.y})`}
 }
 
 export const randomIntPoint = (min, bound) => new Point(randomInt(min, bound), randomInt(min, bound))
