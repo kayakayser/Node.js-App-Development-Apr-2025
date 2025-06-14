@@ -6723,11 +6723,13 @@ export class Circle {
 }
 ```
 
+SSSSSSSSSSSSSSSSSSSSSSSS
 
->Aşağıdaki Complex sınıfını inceleyiniz
-**Açıklamalar:** $z = a + i * b$, $z_1 = a_1 + i * b_1$, $z_2 = a_2 + i * b_2$ karmaşık sayıları için > 
+>Aşağıdaki `Complex` sınıfını inceleyiniz
+>**Açıklamalar:** $z = a + i * b$, $z_1 = a_1 + i * b_1$, $z_2 = a_2 + i * b_2$ karmaşık sayıları için 
 >- $i = \sqrt-1$
 >- $\bar{z} = a - i * b$
+>- $- z = -a - i * b$
 >- $|z| = \sqrt{a^2 + b^2}$
 >- $z_1 \pm z_2 = (a_1 \pm a_2) + i * (b_1 \pm b2)$
 >- $z_1z_2 = (a_1 * a_2 - b_1 * b_2) + i * (a_1 * b_2 + a_2 * b_1)$
@@ -6738,8 +6740,13 @@ export class Circle {
 ```
 
 
+>Aşağıdaki `Matrix` sınıfını inceleyiniz
+
+```javascript
+
+```
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-##### Türetme
+##### Türetme (Inheritance)
 
 > ES6 ile birlikte bir sınıf başka bir sınıftan da türetilebilmektedir (inheritance). Burada Java programlama dilindeki gibi `extends` anahtar sözcüğü kullanılmaktadır.
 > 
