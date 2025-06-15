@@ -1,13 +1,19 @@
-import {writeLine} from "./csd/util/console/console.js";
-import {AnalyticalCircle} from "./csd/math/geometry/AnalyticalCircle.js";
+import {Random} from "./csd/util/random/random.js";
+import {writeLine, write} from "./csd/util/console/console.js";
 
+const main = () => {
+    for (let i = 0; i < 10; ++i)
+        write(Random.nextInt(1, 100) + " ")
 
-function main() {
-    const ac1 = new AnalyticalCircle(3.32, 100.7, 100)
-    const ac2 = new AnalyticalCircle(1.68, 96.7, 103)
+    writeLine("\n-------------------------------------")
 
-    writeLine(ac1.centerDistance(ac2))
-    writeLine(ac1.isTangent(ac2))
+    for (let i = 0; i < 10; ++i)
+        writeLine(Random.nextNumber(3.4, 7.789))
+
+    writeLine("\n-------------------------------------")
+
+    for (let i = 0; i < 10; ++i)
+        writeLine(Random.nextBoolean())
 }
 
 main()

@@ -6745,293 +6745,363 @@ SSSSSSSSSSSSSSSSSSSSSSSS
 ```javascript
 
 ```
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 ##### Türetme (Inheritance)
 
-> ES6 ile birlikte bir sınıf başka bir sınıftan da türetilebilmektedir (inheritance). Burada Java programlama dilindeki gibi `extends` anahtar sözcüğü kullanılmaktadır.
+> ES6 ile birlikte **türetme (inheritance)** artık doğrudan desteklenmektedir. Yani, bir sınıf başka bir sınıftan da türetilebilmektedir. Burada Java programlama dilindeki gibi `extends` anahtar sözcüğü kullanılmaktadır.
 > 
-> ES’ de türemiş sınıf ctor’u içerisinde taban sınıfın ctor’unu çağırmak programcının sorumluluğundadır. Programcı bunu super ctor sentaksı ile yapabilir. Bu sentaks ES’ye göre zorunludur. Bazı ES motorları super ctor sentaksı kullanılmadan da türetmeye izin verse de super ctor sentaksı mutlaka kullanılmalıdır. `super` anahtar sözcüğü taban sınıfın diğer fonksiyonlarına da ulaşmak için kullanılabilmektedir:
+> ES’ de türemiş sınıf ctor’u içerisinde taban sınıfın ctor’unu çağırmak programcının sorumluluğundadır. Programcı bunu **super ctor sentaksı** ile yapabilir. Bu sentaks ES’ye göre zorunludur. Bazı ES motorları super ctor sentaksı kullanılmadan da türetmeye izin verse de super ctor sentaksı mutlaka kullanılmalıdır. `super` anahtar sözcüğü taban sınıfın diğer fonksiyonlarına da ulaşmak için kullanılabilmektedir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class A {
-    constructor()
-    {
-        writeLine("A constructor")
-    }
-    foo() { writeLine("A foo")}
-}
-
-class B extends A {
-    constructor()
-    {
-        super()
-        writeLine("B.constructor")
-    }
-    foo()
-    {
-        writeLine("B.foo")
-        super.foo()
-    }
-}
-
-function main()
-{
-    let b = new B()
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class A { //super (base/parent) class of B
+    constructor() {  
+        writeLine("A constructor")  
+    }  
+    foo() { writeLine("A foo")}  
+}  
+  
+class B extends A {  //a sub (derived/child) class of A
+    constructor() {  
+        super() //super ctor syntax  
+        writeLine("B.constructor")  
+    }  
+  
+    foo() {  
+        writeLine("B.foo")  
+        super.foo()  
+    }  
+}  
+  
+function main() {  
+    let b = new B()  
+    let a = new A()  
+      
+    b.foo()  
+    a.foo()  
+}  
+  
 main()
 ```
 
-Örneğin:
+>Aşağıdaki demo örnekte super ctor sentaksına argüman geçilmiştir. Bu durumda programcı türemiş sınıf nesnesinin taban sınıf bölümüne ilgili değeri aktarmıştır
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class A {
-    constructor(val)
-    {
-        this.val = val
-        writeLine("A constructor")
-    }
-    foo() { writeLine("A foo")}
-}
-
-class B extends A {
-    constructor(val, a)
-    {
-        super(val)
-        this.a = a
-        writeLine("B.constructor")
-    }
-    foo()
-    {
-        writeLine("B.foo")
-        super.foo()
-    }
-}
-
-function main()
-{
-    let b = new B(10, 20)
-
-    writeLine(`b.val=${b.val}, b.a=${b.a}`)
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class A {  
+    constructor(val) {  
+        this.val = val  
+        writeLine("A constructor")  
+    }  
+    foo() { writeLine("A foo")}  
+}  
+  
+class B extends A {  
+    constructor(val, a) {  
+        super(val)  
+        this.a = a  
+        writeLine("B.constructor")  
+    }  
+    foo() {  
+        writeLine("B.foo")  
+        super.foo()  
+    }  
+}  
+  
+function main() {  
+    let b = new B(10, 20)  
+  
+    writeLine(`b.val = ${b.val}, b.a = ${b.a}`)  
+}  
+  
 main()
 ```
 
-> Burada programcı türemiş sınıf içerisinde super ctor sentaksı ile taban sınıf bölümüne ilgili değer aktarmıştır. Aşağıdaki örnekte `multiply` metodu adeta “override” edilmiştir:
+>Aşağıdaki `AnalyticalCircle`, `Circle` ve `Point` sınıflarını inceleyiniz
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class A {
-    constructor(val)
-    {
-        this._val = val
-    }
-
-    get val() {return this._val}
-    set val(value) {this._val = Math.abs(value)}
-
-    multiply(a)
-    {
-        return a * this._val
+import {Circle} from "./Circle.js";  
+import {Point} from "./Point.js";  
+  
+const DELTA = 0.0000001  
+  
+export class AnalyticalCircle extends Circle {  
+    constructor(r, x, y) {  
+        super(r)  
+        this._center = new Point(x, y)  
+    }  
+  
+    get x() {  
+        return this._center.x  
+    }  
+  
+    set x(value) {  
+        this._center.x = value  
+    }  
+  
+    get y() {  
+        return this._center.y  
+    }  
+  
+    set y(value) {  
+        this._center.y = value  
+    }  
+  
+    centerDistance(other) {  
+        return this._center.euclideanDistance(other)  
+    }  
+  
+    isTangent(other) {  
+        return Math.abs(this.centerDistance(other) - this.radius - other.radius) < DELTA  
+    }  
+  
+    toString() {  
+        return `${super.toString()}, Center:${this._center.toString()}`  
     }
 }
+```
 
-class B extends A {
-    constructor(val)
-    {
-        super(val);
-    }
-
-    multiply(a) //override
-    {
-        return super.multiply(a) * a
-    }
+```javascript
+export class Point {  
+    constructor(x, y) {  
+        this.x = x  
+        this.y = y  
+    }  
+  
+    euclideanDistance(other) {  
+        return euclideanDistance(this.x, this.y, other.x, other.y)  
+    }  
+  
+    offset(dx, dy) {this.x += dx; this.y += dy}  
+  
+    toString() {return `(${this.x}, ${this.y})`}  
 }
+```
 
-function main()
-{
-    let a = new B(10)
-    writeLine(a.multiply(20))
+```javascript
+export class Circle {  
+    constructor(r) {  
+        this.radius = r  
+    }  
+  
+    set radius(r) {  
+        this._r = Math.abs(r)  
+    }  
+  
+    get radius() {  
+        return this._r  
+    }  
+  
+    get area() {  
+        return Math.PI * this._r * this._r  
+    }  
+  
+    get circumference() {  
+        return 2 * Math.PI * this._r  
+    }  
+  
+    toString() {  
+        return `Radius: ${this._r}, Area: ${this.area}, Circumference: ${this.circumference}`  
+    }  
 }
+```
 
+##### Polymorphism
+
+>ES6 ile birlikte **çok biçimlilik (polymorphism)** kullanılabilmektedir.
+
+> Aşağıdaki örnekte `multiply` metodu adeta **override** edilmiştir:
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class A {  
+    constructor(val) {  
+        this._val = val  
+    }  
+  
+    get val() {return this._val}  
+    set val(value) {this._val = Math.abs(value)}  
+  
+    multiply(a) {  
+        return a * this._val  
+    }  
+}  
+  
+class B extends A {  
+    constructor(val) {  
+        super(val);  
+    }  
+  
+    multiply(a) { //override  
+        return super.multiply(a) * a  
+    }  
+}  
+  
+function main() {  
+    let a = new B(10)  
+  
+    writeLine(a.multiply(20))  
+}  
+  
 main()
 ```
 
 >Aşağıdaki örnekte basit bir `Employee` hiyerarşisi ile çok biçimli gibi kullanılabilen bir örnek yapılmıştır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class Employee {
-    constructor(name, citizenId, address)
-    {
-        this._name = name;
-        this._citizenId = citizenId
-        this._address = address
-    }
-
-    get name() {return this._name}
-    set name(str) {this._name = str}
-
-    get citizenId() {return this._citizenId}
-    set citizenId(id) {this._citizenId = id}
-
-    get address() {return this._address}
-    set address(addr) {this._address = addr}
-    calculatePayment() {return 0}
-}
-
-class HumanResources {
-    //...
-    payInsurance(employee)
-    {
-        writeLine(`name:${employee.name}`)
-        writeLine(`citizenId:${employee.citizenId}`)
-        writeLine(`address:${employee.address}`)
-        writeLine(`payment:${employee.calculatePayment()}`)
-    }
-}
-
-class Worker extends Employee {
-    constructor(name, citizenId, address, feePerHour, hourPerDay)
-    {
-        super(name, citizenId, address);
-        this._feePerHour = feePerHour
-        this._hourPerDay = hourPerDay
-    }
-
-    get feePerHour()
-    {
-        return this._feePerHour;
-    }
-
-    set feePerHour(value)
-    {
-        this._feePerHour = value;
-    }
-
-    get hourPerDay()
-    {
-        return this._hourPerDay;
-    }
-
-    set hourPerDay(value)
-    {
-        this._hourPerDay = value;
-    }
-
-    calculatePayment()
-    {
-        return this._feePerHour * this._hourPerDay * 30
-    }
-}
-
-class ProjectWorker extends Worker {
-    constructor(name, citizenId, address, feePerHour, hourPerDay, extra)
-    {
-        super(name, citizenId, address, feePerHour, hourPerDay)
-        this._extra = extra
-    }
-
-    get extra()
-    {
-        return this._extra;
-    }
-
-    set extra(value)
-    {
-        this._extra = value;
-    }
-
-    calculatePayment()
-    {
-        return super.calculatePayment() + this._extra;
-    }
-}
-
-function runCompanyApp()
-{
-    let humanResources = new HumanResources()
-    let worker = new Worker("Ali", "12345678912", "Şişli", 78, 8)
-    let projectWorker = new ProjectWorker("Ali", "12345678912", "Şişli", 78, 8, 500)
-
-    humanResources.payInsurance(worker)
-    writeLine("///////////")
-    humanResources.payInsurance(projectWorker)
-}
-
-function main()
-{
-    runCompanyApp()
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class Employee {  
+    constructor(name, citizenId, address) {  
+        this._name = name;  
+        this._citizenId = citizenId  
+        this._address = address  
+    }  
+  
+    get name() {return this._name}  
+    set name(str) {this._name = str}  
+  
+    get citizenId() {return this._citizenId}  
+    set citizenId(id) {this._citizenId = id}  
+  
+    get address() {return this._address}  
+    set address(addr) {this._address = addr}  
+    calculatePayment() {}  
+}  
+  
+  
+  
+class HumanResources {  
+    //...  
+    payInsurance(employee)  
+    {  
+        writeLine(`name:${employee.name}`)  
+        writeLine(`citizenId:${employee.citizenId}`)  
+        writeLine(`address:${employee.address}`)  
+        writeLine(`payment:${employee.calculatePayment()}`)  
+    }  
+}  
+  
+class Worker extends Employee {  
+    constructor(name, citizenId, address, feePerHour, hourPerDay) {  
+        super(name, citizenId, address);  
+        this._feePerHour = feePerHour  
+        this._hourPerDay = hourPerDay  
+    }  
+  
+    get feePerHour() {  
+        return this._feePerHour  
+    }  
+  
+    set feePerHour(value) {  
+        this._feePerHour = value  
+    }  
+  
+    get hourPerDay() {  
+        return this._hourPerDay  
+    }  
+  
+    set hourPerDay(value) {  
+        this._hourPerDay = value  
+    }  
+  
+    calculatePayment() {  
+        return this._feePerHour * this._hourPerDay * 30  
+    }  
+}  
+  
+class ProjectWorker extends Worker {  
+    constructor(name, citizenId, address, feePerHour, hourPerDay, extra) {  
+        super(name, citizenId, address, feePerHour, hourPerDay)  
+        this._extra = extra  
+    }  
+  
+    get extra() {  
+        return this._extra  
+    }  
+  
+    set extra(value) {  
+        this._extra = value  
+    }  
+  
+    calculatePayment() {  
+        return super.calculatePayment() + this._extra  
+    }  
+}  
+  
+class Manager extends Employee {  
+    constructor(name, citizenId, address,  salary) {  
+        super(name, citizenId, address)  
+        this._salary = salary  
+    }  
+  
+    get salary() {  
+        return this._salary  
+    }  
+  
+    set salary(value) {  
+        this._salary = value  
+    }  
+  
+    calculatePayment() {  
+        return this._salary * 1.3  
+    }  
+}  
+  
+function runCompanyApp() {  
+    let humanResources = new HumanResources()  
+    let worker = new Worker("Ali", "12345678912", "Şişli", 78, 8)  
+    let projectWorker = new ProjectWorker("Ali", "12345678912", "Şişli", 78, 8, 500)  
+    let manager = new Manager("Kaan", "12345", "Mecidiyeköy", 1000000)  
+  
+    humanResources.payInsurance(worker)  
+    writeLine("///////////")  
+    humanResources.payInsurance(projectWorker)  
+    writeLine("///////////")  
+    humanResources.payInsurance(manager)  
+}  
+  
+function main() {  
+    runCompanyApp()  
+}  
+  
 main()
 ```
 
-> ES6 çoklu türetmeyi desteklemez.
-> 
-> Aşağıdaki örneği inceleyiniz:
+> ES6 çoklu **türetmeyi (multiple inheritance)** desteklemez. Yani bir sınıfın bir tane taban sınıfı (super class ya da direct super class) olabilir.
+
+##### static Fonksiyonların Kullanımı
+
+>ES6 ile birlikte bir sınıfa static fonksiyonlar eklenebildiği için bazı durumlarda mantıksal olarak bir araya toplamak için global fonksiyon yazmak yerine, static fonksiyonlar yazılabilir. Aşağıdaki örnekte tüm fonksiyonları static olan bir sınıf yazılmıştır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {AnalyticalCircle} from "./csdanalyticalcircle.mjs";
-import {Point} from "./csdpoint.mjs";
-
-function main()
-{
-    let ac = new AnalyticalCircle(-3.4, 100, 100)
-
-    let center = ac.center
-
-    center.offset(20, 30)
-
-    writeLine(`{x : ${center.x}, y : ${center.y}}`)
-    writeLine(`{x : ${ac.x}, y : ${ac.y}}`)
-
-    ac.offset(20, 89)
-
-    writeLine(`{x : ${ac.x}, y : ${ac.y}}`)
-
-    ac.center = new Point(200, 200)
-
-    writeLine(`{x : ${ac.x}, y : ${ac.y}}`)
-
-    writeLine(new Point(3, 4).distance(new Point(5, 6)))
-}
-
+import {Random} from "./csd/util/random/random.js";  
+import {writeLine, write} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    for (let i = 0; i < 10; ++i)  
+        write(Random.nextInt(1, 100) + " ")  
+  
+    writeLine("\n-------------------------------------")  
+  
+    for (let i = 0; i < 10; ++i)  
+        writeLine(Random.nextNumber(3.4, 7.789))  
+  
+    writeLine("\n-------------------------------------")  
+  
+    for (let i = 0; i < 10; ++i)  
+        writeLine(Random.nextBoolean())  
+}  
+  
 main()
 ```
 
-**_Anahtar Notlar:_** ES6 ile birlikte bir sınıfa static fonksiyonlar eklenebildiği için bazı durumlarda mantıksal olarak bir araya toplamak için global fonksiyon yazmak yerine, static fonksiyonlar yazılabilir. Aşağıdaki örnekte tüm fonksiyonları static olan bir sınıf yazılmıştır:
 
-```javascript
-import {write, writeLine} from "./csdstdioutil.mjs";
-import {Random} from "./csdrandom.mjs";
+XXXXXXXXXXXXXXXXXXXXXXXXX
 
-function main()
-{
-    for (let i = 0; i < 10; ++i)
-        write(Random.nextInt(1, 100) + " ")
-
-    writeLine("\n-------------------------------------")
-
-    for (let i = 0; i < 10; ++i)
-        writeLine(Random.nextNumber(3.4, 7.789))
-
-    writeLine("\n-------------------------------------")
-
-    for (let i = 0; i < 10; ++i)
-        writeLine(Random.nextBoolean())
-}
-
-main()
-```
 
 **Hata Ayıklama (Error/Exception Handling)**
 

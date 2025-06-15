@@ -18,4 +18,9 @@ export class Circle {
     get circumference() {
         return 2 * Math.PI * this._r
     }
+
+    toString() {
+        return `Radius: ${this._r}, Area: ${this.area}, Circumference: ${this.circumference}`
+    }
 }
+

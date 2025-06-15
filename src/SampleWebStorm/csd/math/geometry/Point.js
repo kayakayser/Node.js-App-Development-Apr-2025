@@ -1,17 +1,17 @@
 import {randomInt, randomNumber} from "../../util/random/random.js";
 
+const euclideanDistance = (x1, y1, x2, y2)  => {
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
+}
+
 export class Point {
     constructor(x, y) {
         this.x = x
         this.y = y
     }
 
-    static euclideanDistanceBetween(x1, y1, x2, y2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2))
-
-    }
     euclideanDistance(other) {
-        return Point.euclideanDistanceBetween(this.x, this.y, other.x, other.y)
+        return euclideanDistance(this.x, this.y, other.x, other.y)
     }
 
     offset(dx, dy) {this.x += dx; this.y += dy}

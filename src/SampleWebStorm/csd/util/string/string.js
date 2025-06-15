@@ -7,6 +7,7 @@ const UPPERCASE_EN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const ALL_LETTERS_TR = LETTERS_TR + UPPERCASE_TR
 const ALL_LETTERS_EN = LETTERS_EN + UPPERCASE_EN
 
+
 export const concatIfNotStarts = (s1, s2) => s1.startsWith(s2) ? s1 : s2 + s1
 export const concatIfNotEnds = (s1, s2) => s1.endsWith(s2) ? s1 : s1 + s2
 
