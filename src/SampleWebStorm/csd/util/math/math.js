@@ -1,6 +1,18 @@
+import {MathError} from "../../error/MathError";
+
 const calculateDelta = (a, b, c) => b * b - 4 * a * c
 
 export class MathUtil {
+    static log(value) {
+        if (value < 0)
+            throw new Error("Indeterminate")
+
+        if (value === 0)
+            throw new Error("Undefined")
+
+        return Math.log(value)
+    }
+
     static solveQuadraticEquation(a, b, c) {
         const delta = calculateDelta(a, b, c)
 

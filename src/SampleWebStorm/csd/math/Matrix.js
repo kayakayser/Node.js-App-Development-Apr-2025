@@ -1,14 +1,21 @@
+import {MathError} from "../error/MathError";
+
 export class Matrix {
     constructor(row, col) {
-        //TODO
+        if (row <= 0 || col <= 0)
+            throw new Error("row and col must positive")
+
+        this._matrix = new Array(row)
+        for (let i = 1; i <= row; ++i)
+            this._matrix[i] = new Array(col)
     }
 
     get row() {
-        //TODO
+        return this._matrix.length
     }
 
     get col() {
-        //TODO
+        return this._matrix[0].length
     }
 
     setElement(i, j, e) {

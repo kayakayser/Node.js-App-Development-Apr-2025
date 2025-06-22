@@ -4,7 +4,9 @@ export class Circle {
     }
 
     set radius(r) {
-        this._r = Math.abs(r)
+        if (r < 0)
+            throw new Error("Radius can not be negative")
+        this._r = r
     }
 
     get radius() {

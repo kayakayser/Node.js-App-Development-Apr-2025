@@ -7099,594 +7099,489 @@ const main = () => {
 main()
 ```
 
-
-XXXXXXXXXXXXXXXXXXXXXXXXX
-
-
-**Hata Ayıklama (Error/Exception Handling)**
+##### Hata Ayıklama
 
 >ES yorumlayıcı ile çalışan bir programlama dili olduğundan sentaks ve semantik hatalar da genel olarak çalışma zamanı sırasında oluşur. Yani örneğin genel olarak akış sentaks ya da semantik olarak hatalı bir koda gelene kadar sentaks ve/veya semantik hata anlaşılamayabilir. Aşağıdaki kodu inceleyiniz
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let min = -10
-    let max = 10
-
-    for (let i = 0; i < 100; ++i) {
-        let a = parseInt(Math.random() * (max - min) + min)
-        writeLine(`a=${a}`)
-        if (a) {
-            writeLine("Doğru")
-            //...
-        }
-        else {
-            foo("Test")
-            //...
-        }
-    }
-
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+function main() {  
+    let min = -10  
+    let bound = 10  
+  
+    for (let i = 0; i < 100; ++i) {  
+        let a = Math.trunc(Math.random() * (bound - min) + min)  
+        writeLine(`a=${a}`)  
+        if (a) {  
+            writeLine("Doğru")  
+            //...  
+        }  
+        else {  
+            foo("Test")  
+            //...  
+        }  
+    }  
+}  
+  
 main()
 ```
 
 > Buradaki akışta `if` deyiminin doğru kısmı çalıştırıldığı sürece `foo` isminin var olup olmadığının önemi yoktur. Akış `else` kısmına gelirse error oluşur.
 > 
-> Bu durumda ES için genel olarak 3(üç) çeşit hata vardır denebilir: Sentaks hataları (Syntax errors), Çalışma zamanı hataları (Runtime Errors) ve Mantıksal hatalar (Logical Errors):
+> Bu durumda ES için genel olarak 3(üç) çeşit hata vardır denebilir: **Sentaks ve Semantic hatalar (Syntax and semantic errors), Çalışma zamanı hataları (Runtime Errors/exception) ve Mantıksal hatalar (Logical Errors)**
 > 
 > Sentaks hataları dilin söz dizimine yönelik hatalardır. Bu hatalar ES’ de sadece hatanın olduğu akışı etkiler (thread). Eş zamanlı (asenkron) diğer akışlar bundan etkilenmez. Bu hatalar yakalanıp işlenecek hatalardan değildir.
 > 
-> Çalışma zamanı hataları programın çalışma zamanında olası hata durumlarını (exception) temsil eder. Programcının yakalayıp işleyebileceği hatalardandır. Çalışma zamanında oluşan durumların her zaman hata olması gerekmez. Yakalanmaması durumunda yalnızca hatanın meydana geldiği akış sonlanır.
+> Çalışma zamanı hataları programın çalışma zamanında olası hata durumlarını (exception) temsil eder. Programcının yakalayıp işleyebileceği hatalardandır. Çalışma zamanında oluşan durumların her zaman hata olması gerekmez. Yakalanmaması durumunda yalnızca hatanın meydana geldiği akış (thread) sonlanır.
 > 
 > Mantıksal hatalar yakalanması mümkün olmayan hatalardır. Sentaks ya da çalışma zamanı hataları gibi değil, script içerisinde mantıksal yapılan bir hatalı durumda meydana gelir. Bu durum genelde kullanılan ortamın iyi bilinmemesinden kaynaklanır.
 > 
-> ES’ de hata ayıklama try, catch, throw ve finally anahtar sözcükleri ile yapılır. ES’ de herhangi bir tür fırlatılabileceği gibi genel olarak çalışma zamanı sırasında Error sınıfı türünden nesneler fırlatılır. ES’ de Error sınıfı dışında fırlatılabilecek bazı hata nesneleri de bulunur:
+> ES’ de hata ayıklama (exception handling) **try, catch, throw ve finally** anahtar sözcükleri ile yapılır. ES’ de herhangi bir tür fırlatılabileceği gibi genel olarak çalışma zamanı sırasında standart `Error` sınıfı türünden nesneler fırlatılır. ES’ de Error sınıfı dışında fırlatılabilecek bazı hata nesneleri de bulunur:
 > 
-> - EvalError: Bu hata nesnesi eval isimli global fonksiyon tarafından fırlatılır eval fonksiyonu parametresi ile aldığı yazıyı ES olarak yorumlayıp çalıştırır:
+> **- EvalError**: Bu hata nesnesi eval isimli global fonksiyon tarafından fırlatılır eval fonksiyonu parametresi ile aldığı yazıyı ES olarak yorumlayıp çalıştırır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    try {
-        let expression = 'writeLine("Merhaba"); console.log("nasılsın")'
-
-        eval(expression)
-    }
-    catch (e) {
-        writeLine(e.toString())
-    }
-}
-
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+function main() {  
+    try {  
+        let expression = 'let a = 10; writeLine(`a = ${a}`); writeLine("nasılsın")'  
+  
+        eval(expression)  
+    }  
+    catch (e) {  
+        writeLine(`Error occured:${e.toString()}`)  
+    }  
+}  
+  
+  
 main()
 ```
 
 > Burada eval fonksiyonuna verilen kod parçasında hata oluştuğunda yakalanabilir
 > 
-> - RangeError: Bu hata genel olarak numeric bir değişkenin sınır değerleri dışında değer aldığında fırlatılır.
-> - ReferenceError: Bu hata genel olarak geçersiz bir referansa erişim sağlandığında oluşur.
-> - SyntaxError: Herhangi bir sentaks hatası oluştuğunda fırlatılır. Çoğu yorumlayıcı yakalanmasına izin vermez
-> - TypeError: Bir değişkenin kullanımında türün hatalı olması durumunda fırlatılır:
+> **- RangeError:** Bu hata genel olarak numeric bir değişkenin sınır değerleri dışında değer aldığında fırlatılır.
+> **- ReferenceError:** Bu hata genel olarak geçersiz bir referansa erişim sağlandığında oluşur.
+> **- SyntaxError:** Herhangi bir sentaks hatası oluştuğunda fırlatılır. Çoğu yorumlayıcı yakalanmasına izin vermez.
+> **- TypeError:** Bir değişkenin kullanımında türün hatalı olması durumunda fırlatılır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    try {
-        let a = "ankara"
-
-        writeLine(a.toUpperCase())
-        a.foo()
-    } catch (e) {
-        writeLine(e.toString())
-    }
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+function main() {  
+    try {  
+        let a = "ankara"  
+  
+        writeLine(a.toUpperCase())  
+        a.foo()  
+    }  
+    catch (e) {  
+        writeLine(`Error occured:${e.toString()}`)  
+    }  
+}  
+  
+  
 main()
 ```
 
 > Bu sınıflar dışında kullanılan ortama göre başka hata nesneleri de olabilmektedir.
 > 
 > Bir hata throw anahtar sözcüğü ile aşağıdaki şekillerde fırlatılabilir:
-> - throw new Error([message])
-> - throw([message])
-> - throw new <sınıf ismi>([message])
-> 
+
+```javascript
+ throw new Error([message])
+ throw([message])
+ throw new <sınıf ismi>([message])
+ ```
+
 > Örneğin:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class MathUtil {
-    static log(value)
-    {
-        if (value < 0)
-            throw new Error("Belirsiz")
-
-        if (value === 0)
-            throw new Error("Tanımsız")
-
-        return Math.log(value)
-    }
-}
-
-function main()
-{
-    let min = -10
-    let max = 10
-
-    for (let i = 0; i < 100; ++i) {
-        try {
-            let result = MathUtil.log(Math.random() * (max - min) + min)
-
-            writeLine(result)
-        }
-        catch (ex) {
-            writeLine(ex.message)
-        }
-    }
-}
-
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class MathUtil {  
+    static log(value) {  
+        if (value < 0)  
+            throw new Error("Indeterminate")  
+  
+        if (value === 0)  
+            throw new Error("Undefined")  
+  
+        return Math.log(value)  
+    }  
+}  
+  
+function main() {  
+    let min = -10  
+    let max = 10  
+  
+    for (let i = 0; i < 100; ++i) {  
+        try {  
+            let result = MathUtil.log(Math.random() * (max - min) + min)  
+  
+            writeLine(result)  
+        }  
+        catch (ex) {  
+            writeLine(ex.message)  
+        }  
+    }  
+}  
+  
+  
 main()
 ```
  
 Ya da örneğin:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class MathUtil {
-    static log(value)
-    {
-        if (value < 0)
-            throw("Belirsiz")
-
-        if (value === 0)
-            throw("Tanımsız")
-
-        return Math.log(value)
-    }
-}
-
-function main()
-{
-    let min = -10
-    let max = 10
-
-    for (let i = 0; i < 100; ++i) {
-        try {
-            let result = MathUtil.log(Math.random() * (max - min) + min)
-
-            writeLine(result)
-        }
-        catch (ex) {
-            writeLine(ex.message)
-        }
-    }
-}
-
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class MathUtil {  
+    static log(value) {  
+        if (value < 0)  
+            throw("Indeterminate")  
+  
+        if (value === 0)  
+            throw("Undefined")  
+  
+        return Math.log(value)  
+    }  
+}  
+  
+function main() {  
+    let min = -10  
+    let max = 10  
+  
+    for (let i = 0; i < 100; ++i) {  
+        try {  
+            let result = MathUtil.log(Math.random() * (max - min) + min)  
+  
+            writeLine(result)  
+        }  
+        catch (ex) {  
+            writeLine(ex.message)  
+        }  
+    }  
+}  
 main()
 ```
 
 > Programcı isterse `Error` sınıfından türetme yaparak kendi hata sınıfını da yazabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {MathError} from "./csdexception.mjs";
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class MathError extends Error {  
+    constructor(message, errCode) {  
+        super(message)  
+        this._errCode = errCode  
+    }  
+  
+    get errCode() {  
+        return this._errCode  
+    }  
+}  
+  
+class MathUtil {  
+    static log(value) {  
+        if (value < 0)  
+            throw new MathError("Indeterminate", 1)  
+  
+        if (value === 0)  
+            throw new MathError("Undefined", 0)  
+  
+        return Math.log(value)  
+    }  
+}  
 
-class MathUtil {
-    static log(value)
-    {
-        if (value < 0)
-            throw new MathError("Belirsiz", -1)
-
-        if (value === 0)
-            throw new MathError("Tanımsız", 0)
-
-        return Math.log(value)
-    }
-}
-
-function main()
-{
-    let min = -10
-    let max = 10
-
-    for (let i = 0; i < 100; ++i) {
-        try {
-            let result = MathUtil.log(Math.random() * (max - min) + min)
-
-            writeLine(result)
-        }
-        catch (ex) {
-            writeLine(ex.errorMessage)
-        }
-    }
-}
-
-
+function main() {  
+    let min = -10  
+    let max = 10  
+  
+    for (let i = 0; i < 100; ++i) {  
+        try {  
+            let result = MathUtil.log(Math.random() * (max - min) + min)  
+  
+            writeLine(result)  
+        }  
+        catch (ex) {  
+            writeLine(`Message:${ex.message}, Code:${ex.errCode}`)  
+        }  
+    }  
+}  
+  
+  
 main()
 ```
 
-```javascript
-/* csdexception.mjs */
-class MathError extends Error {
-    constructor(message, errorCode)
-    {
-        super(message)
-        this._errorCode = errorCode
-    }
-
-    get errorMessage() {return `Message:${this.message}, Error Code:${this._errorCode}`}
-    get errorCode() {return this._errorCode}
-}
-
-export {MathError}
-```
  
 > ES’ de de akış error bakımından ele alınacaksa (handling) `try` bloğu içerisinde olmalıdır. `try` bloğu bir `catch` bloğu ve `finally` bloğu veya tek başına `catch` veya `finally` bloğu ile devam edebilir:
 
 ```javascript
-import {MathError} from "./csdexception.mjs";
-import {writeLine} from "./csdstdioutil.mjs";
-
-class MathUtil {
-    static log(value)
-    {
-        if (value < 0)
-            throw new MathError("Belirsiz", -1)
-
-        if (value === 0)
-            throw new MathError("Tanımsız", 0)
-
-        return Math.log(value)
-    }
-}
-
-function main()
-{
-    let min = -10
-    let max = 10
-
-    for (let i = 0; i < 100; ++i) {
-        try {
-            let result = MathUtil.log(Math.random() * (max - min) + min)
-
-            writeln(result)
-        }
-        catch (ex) {
-            writeLine(`Message:${ex.message}, Error Code:${ex.errCode}`)
-        }
-        finally {
-            writeLine("finally")
-        }
-        writeLine("-----------------------------------------------")
-    }
-}
-
+import {MathError} from "./csd/error/MathError.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class MathUtil {  
+    static log(value) {  
+        if (value < 0)  
+            throw new MathError("Indeterminate", -1)  
+  
+        if (value === 0)  
+            throw new MathError("Undefined", 0)  
+  
+        return Math.log(value)  
+    }  
+}  
+  
+function main() {  
+    let min = -10  
+    let max = 10  
+  
+    for (let i = 0; i < 100; ++i) {  
+        try {  
+            let result = MathUtil.log(Math.random() * (max - min) + min)  
+  
+            writeLine(result)  
+        }  
+        catch (ex) {  
+            writeLine(`Message:${ex.message}, Error Code:${ex.errCode}`)  
+        }  
+        finally {  
+            writeLine("finally")  
+        }  
+        writeLine("-----------------------------------------------")  
+    }  
+}  
+  
 main()
 ```
 
-**try-finally kullanımı:**
+>Aşağıdaki demo örnekte `try-finally` kullanımı ele alınmıştır
 
 ```javascript
-import {MathError} from "./csdexception.mjs";
-import {writeLine} from "./csdstdioutil.mjs";
-
-class MathUtil {
-    static log(value)
-    {
-        if (value < 0)
-            throw new MathError("Belirsiz", -1)
-
-        if (value === 0)
-            throw new MathError("Tanımsız", 0)
-
-        return Math.log(value)
-    }
-}
-
-function doWork(min, max)
-{
-    try {
-        let result = MathUtil.log(Math.random() * (max - min) + min)
-
-        writeLine(result)
-    }
-    finally {
-        writeLine("doWork:finally")
-    }
-    writeLine("----------------------------------------")
-}
-
-function main()
-{
-    let min = -10
-    let max = 10
-
-    for (let i = 0; i < 100; ++i) {
-        try {
-            doWork(min, max)
-        }
-        catch (ex) {
-            writeLine(`main:Message:${ex.message}, Error Code:${ex.errCode}`)
-        }
-        finally {
-            writeLine("main:finally")
-        }
-        writeLine("----------------------------------------")
-    }
-}
-
+import {MathError} from "./csd/error/MathError.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class MathUtil {  
+    static log(value) {  
+        if (value < 0)  
+            throw new MathError("Indeterminate", -1)  
+  
+        if (value === 0)  
+            throw new MathError("Undefined", 0)  
+  
+        return Math.log(value)  
+    }  
+}  
+  
+  
+function doSomething() {  
+    try {  
+        let min = -10  
+        let max = 10  
+  
+        let result = MathUtil.log(Math.random() * (max - min) + min)  
+  
+        writeLine(result)  
+    }  
+    finally {  
+        writeLine("doSomething -> finally")  
+    }  
+}  
+  
+function main() {  
+    for (let i = 0; i < 100; ++i) {  
+        try {  
+            doSomething();  
+        }  
+        catch (ex) {  
+            writeLine(`Message:${ex.message}, Error Code:${ex.errCode}`)  
+        }  
+        finally {  
+            writeLine("main -> finally")  
+        }  
+        writeLine("-----------------------------------------------")  
+    }  
+}  
+  
 main()
 ```
+>Aşağıdaki demo örnekte `rethrow` yapılmıştır
+
+```javascript
+import {MathError} from "./csd/error/MathError.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class MathUtil {  
+    static log(value) {  
+        if (value < 0)  
+            throw new MathError("Indeterminate", -1)  
+  
+        if (value === 0)  
+            throw new MathError("Undefined", 0)  
+  
+        return Math.log(value)  
+    }  
+}  
+  
+function doSomething() {  
+    try {  
+        let min = -10  
+        let max = 10  
+  
+        let result = MathUtil.log(Math.random() * (max - min) + min)  
+  
+        writeLine(result)  
+    }  
+    catch (ex) {  
+        writeLine(`doSomething -> Message:${ex.message}, Error Code:${ex.errCode}`)  
+        throw  ex //rethrow  
+    }  
+    finally {  
+        writeLine("doSomething -> finally")  
+    }  
+}  
+  
+function main() {  
+    for (let i = 0; i < 100; ++i) {  
+        try {  
+            doSomething();  
+        }  
+        catch (ex) {  
+            writeLine(`main-> Message:${ex.message}, Error Code:${ex.errCode}`)  
+        }  
+        finally {  
+            writeLine("main -> finally")  
+        }  
+        writeLine("-----------------------------------------------")  
+    }  
+}  
+  
+main()
+```
+
 
 >`try` bloklarının geri kalan çalışma sistematiği Java ile çok benzerdir.
 
-**_Anahtar Notlar:_** Bilindiği gibi Java’ da exception sınıfları kategori `checked` ve `unchecked` olmak üzere iki gruba ayrılır. ES’ de böyle bir durum yoktur.
+**_Anahtar Notlar:_** Bilindiği gibi Java’ da exception sınıfları kategori olarak `checked` ve `unchecked` olmak üzere iki gruba ayrılır. ES’ de böyle bir durum yoktur.
 
->Çok fazla exception handling yapılarak yazılan kodlarda çok fazla try bloğu olması kodun okunabilirliğini etkileyebilir. Bu durumda aşağıdaki gibi fonksiyonlar yazılarak kod karmaşıklığı engellenebilir:
+>Çok fazla exception handling yapılarak yazılan kodlarda çok fazla try bloğu olması kodun okunabilirliğini etkileyebilir. Bu durumda aşağıdaki gibi fonksiyonlar yazılarak kod karmaşıklığı engellenebilir.
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {MathError} from "./csdexception.mjs";
-import {subscribeJustFinally, subscribeWithFinally} from "./csdexceptionutil.mjs";
-
-class MathUtil {
-    static log(value)
-    {
-        if (value < 0)
-            throw new MathError("Belirsiz", -1)
-
-        if (value === 0)
-            throw new MathError("Tanımsız", 0)
-
-        return Math.log(value)
-    }
-}
-
-function doWork(min, max)
-{
-    subscribeJustFinally(() => writeln(MathUtil.log(Math.random() * (max - min) + min)), () => writeLine("doWork:finally"))
-
-    writeLine("-------------------------------------------")
-}
-
-function main()
-{
-    let min = -10
-    let max = 10
-
-    for (let i = 0; i < 100; ++i) {
-        subscribeWithFinally(() => doWork(min, max),
-            ex => writeLine(`main:Message:${ex.message}, Error Code:${ex.errCode}`), () => writeLine("main:finally"))
-
-        writeLine("-------------------------------------------")
-    }
-}
-
+import {MathError} from "./csd/error/MathError.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+import {ErrorUtil} from "./csd/util/error/error.js";  
+  
+class MathUtil {  
+    static log(value) {  
+        if (value < 0)  
+            throw new MathError("Indeterminate", -1)  
+  
+        if (value === 0)  
+            throw new MathError("Undefined", 0)  
+  
+        return Math.log(value)  
+    }  
+}  
+  
+const doSomethingCallback = () => {  
+    let min = -10  
+    let max = 10  
+    let result = MathUtil.log(Math.random() * (max - min) + min)  
+  
+    writeLine(result)  
+}  
+  
+const doSomethingErrorCallback = (ex) => {  
+    writeLine(`doSomething -> Message:${ex.message}, Error Code:${ex.errCode}`)  
+    throw ex //rethrow  
+}  
+  
+  
+const doSomethingFinallyCallback = () => {  
+    writeLine("doSomething -> finally")  
+}  
+  
+const doSomething = () => ErrorUtil.subscribeWithFinally(doSomethingCallback, doSomethingErrorCallback, doSomethingFinallyCallback)  
+  
+const main = () => {  
+    for (let i = 0; i < 100; ++i) {  
+        try {  
+            doSomething();  
+        }  
+        catch (ex) {  
+            writeLine(`main-> Message:${ex.message}, Error Code:${ex.errCode}`)  
+        }  
+        finally {  
+            writeLine("main -> finally")  
+        }  
+        writeLine("-----------------------------------------------")  
+    }  
+}  
+  
 main()
 ``` 
 
 ```javascript
-/*csdexceptionutil.js*/
-
-function subscribe(action, errorAction)
-{
-    try {
-        return action()
-    }
-    catch (ex) {
-        errorAction(ex)
-    }
+export class ErrorUtil {  
+    static subscribe(action, errorAction) {  
+        try {  
+            return action()  
+        }  
+        catch (ex) {  
+            errorAction(ex)  
+        }  
+    }  
+  
+    static subscribeWithFinally(action, errorAction, finallyAction) {  
+        try {  
+            return action()  
+        }  
+        catch (ex) {  
+            errorAction(ex)  
+        }  
+        finally {  
+            finallyAction()  
+        }  
+    }  
+  
+    static subscribeJustFinally(action, finallyAction) {  
+        try {  
+            return action()  
+        }  
+        finally {  
+            finallyAction()  
+        }  
+    }  
+  
 }
-
-function subscribeWithFinally(action, errorAction, finallyAction)
-{
-    try {
-        return action()
-    }
-    catch (ex) {
-        errorAction(ex)
-    }
-    finally {
-        finallyAction()
-    }
-}
-
-function subscribeJustFinally(action, finallyAction)
-{
-    try {
-        return action()
-    }
-    finally {
-        finallyAction()
-    }
-}
-
-export {subscribe, subscribeJustFinally, subscribeWithFinally}
 ```
 
 >Burada `subscribeJustFinally` ve `subscribeWithFinally` fonksiyonları `try` bloğunda her durumda ne yapılacağını callback olarak almaktadır.
- 
-**Türlerin prototype elemanı**
 
->Her türün prototype denilen bir elemanı vardır. Bunun sayesinde bir türe yeni bir eleman eklenebilmektedir:
->
->Aşağıdaki örnekte `s` referansının gösterdiği nesneye `count` isimli bir metot eklenmiştir:
 
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
+SSSSSSSSSSSSSSS
 
-class Sample {
-    constructor(value)
-    {
-        this._value = value
-    }
+**Sınıf Çalışması:** Bir kesri temsil eden `Fraction` isimli sınıfı aşağıdaki açıklamalara göre yazınız  
+>  
+>**Açıklamalar:**  
+>- Sınıf Matematikteki bir kesri temsil ettiğinden pay (numerator) ve payda (denominator) değerleri tutulacaktır.  
+>- Sınıfın ilgili set ve get property elemanları yazılacaktır.  
+>- Pay'ın sıfırdan farklı veya sıfır VE paydanın sıfır olması durumunda uygun mesajlar ile error fırlatılacaktır  
+>- Kesir her durumda sadeleşmiş bir biçimde tutulacaktır. Örneğin kesrin pay ve paydası sırasıyla 4 ve 18 olarak verildiğinde kesir 2 / 9 olarak tutulacaktır.  
+>- Kesir negatif ise işaret payda bulunacaktır. Örneğin kesrin pay ve paydası sırasıyla 3 ve -4 olarak verilmişse  kesir -3 / 4 biçiminde tutulacaktır.  
+>- Kesrin pay ve paydasının her ikisinin birden negatif olması durumunda kesir pozitif olarak tutulacaktır.  
+>- Kesrin payının sıfır olması durumunda payda ne olursa olsun 1(bir) yapılacaktır.  
+>- Sınıfın iki kesri toplayan, bir kesir ile bir tamsayıyı toplayan metotları olacaktır. Aynı işlemler çıkarma, çarpma ve bölme için de yapılacaktır.  
+>- Sınıfın kesri 1(bir) artıran ve bir azaltan inc ve dec metotları yazılacaktır.  
+>- Sınıfın toString metodu şu formatta yazı döndürecek şekilde override edilecektir. Örneğin 3 / 10 kesri için -> 3 / 10 = 3.333333    10 / 1 kesri için -> 10 Ondalık kısımda 6 basamak gösterilecektir. Geri kalan basamaklar yuvarlanacaktır.  
+>- Sınıfın equals metodu iki kesrin eşitlik karşılaştırması için yazılacaktır.
+>- Sınıfın compareTo metodu iki kesrin büyüklük küçüklük karşılaştırmasını yapacaktır. String sınıfının compareTo metodunun mantığına göre tasarlayınız.  
+>- Kesrin double türden ondalık değerini döndüren realValue property elemanı yazılacaktır.
 
-    get value() {return this._value}
-}
-
-function main()
-{
-    let s = new Sample(10000)
-
-    s.count = function () {
-        return this._value === 0 ? 1 : parseInt(Math.log10(Math.abs(this._value))) + 1
-    }
-
-    writeLine(`Number of digits:${s.count()}`)
-
-    let k = new Sample(123)
-
-    writeLine(k.count()) //error
-}
-
-main()
-```
-
->`prototype` elemanı ile Sample sınıfına aşağıdaki gibi `count` metodu eklenmiştir:
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-class Sample {
-    constructor(value)
-    {
-        this._value = value
-    }
-
-    get value() {return this._value}
-}
-
-function main()
-{
-    let s = new Sample(10000)
-    
-    Sample.prototype.count = function () {
-        return this._value === 0 ? 1 : parseInt(Math.log10(Math.abs(this._value)) + 1)
-    }
-
-    writeLine(`Number of digits:${s.count()}`)
-
-    let k = new Sample(123)
-
-    writeLine(k.count())
-}
-
-main()
-```
-
->Aşağıdaki örnekte `Number` sınıfına `count` isimli fonksiyon çalışma zamanı sırasında eklenmiştir:
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {Random} from "./csdrandom.mjs";
-import {isPrime} from "./csdnumberutil.mjs";
-
-function main()
-{
-    Number.prototype.count = function () {
-        return this === 0 ? 1 : parseInt(Math.log10(Math.abs(this))) + 1
-    }
-
-    Number.prototype.isPrimeNumber = function () {
-        return isPrime(this)
-    }
-
-    for (let i = 0; i < 20; ++i) {
-        let val = Random.nextInt(-1000000, 1000000)
-        
-        writeLine("-------------------------------")
-        writeLine(`val = ${val}`)
-        writeLine(`Number of digits: ${val.count()}`)
-        writeLine(`${val.isPrimeNumber() ? "Asal" : "Asal değil"}`)
-        writeLine("-------------------------------")
-    }
-}
-
-main()
-```
-
->Benzer durum diziler için de geçerlidir:
-
-```javascript
-import {randomIntArray} from "./csdarrayutil.mjs";
-
-function main()
-{
-    const min = 10
-    const max = 100
-    const a = randomIntArray(10, min, max)
-
-    a.writeIntArray()
-    a.multiplyBy(2)
-    a.writeIntArray()
-}
-
-main()
-```
-
-```javascript
-/* csdarrayutil.mjs */
-
-import {randomInt, randomDouble} from "./csdrandomutil.mjs";
-import {write, writeLine} from "./csdstdioutil.mjs";
-
-const randomIntArray = (n, min, max) => {
-    let result = []
-
-    while (n--)
-        result.push(randomInt(min, max))
-
-    return result
-}
-
-const randomDoubleArray = (n, min, bound) => {
-    let result = []
-
-    while (n--)
-        result.push(randomDouble(min, bound))
-
-    return result
-}
-
-function writeIntArray()
-{
-    for (let val of this)
-        write(`${val} `)
-
-    writeLine()
-}
-
-function multiplyBy(value)
-{
-    for (let i = 0; i < this.length; ++i)
-        this[i] *= value
-}
-
-function writeDoubleArray()
-{
-    for (let val of this)
-        writeLine(val)
-}
-
-Array.prototype.writeIntArray = writeIntArray
-Array.prototype.writeDoubleArray = writeDoubleArray
-Array.prototype.multiplyBy = multiplyBy
-
-export {randomIntArray, randomDoubleArray}
-```
-
-**Bazı yararlı global fonksiyonlar**
+XXXXXXXXXXXXXXXXXXXXXXXXXX
+##### Bazı yararlı global fonksiyonlar
 
 >ES’ de NodeJS gibi teknolojilerde de çok sık kullanılan bazı global fonksiyonlar bulunur.
 
