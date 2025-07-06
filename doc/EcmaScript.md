@@ -7580,26 +7580,24 @@ SSSSSSSSSSSSSSS
 >- Sınıfın compareTo metodu iki kesrin büyüklük küçüklük karşılaştırmasını yapacaktır. String sınıfının compareTo metodunun mantığına göre tasarlayınız.  
 >- Kesrin double türden ondalık değerini döndüren realValue property elemanı yazılacaktır.
 
-XXXXXXXXXXXXXXXXXXXXXXXXXX
 ##### Bazı yararlı global fonksiyonlar
 
->ES’ de NodeJS gibi teknolojilerde de çok sık kullanılan bazı global fonksiyonlar bulunur.
+>ES’ de NodeJS'de de kullanılabilen çok sık kullanılan bazı global fonksiyonlar bulunur.
 
-**setTimeout Fonksiyonu**
+###### setTimeout Fonksiyonu
 
->Bu fonksiyon verilen bir süre sonunda verilen bir arkaplan (callback) fonksiyonun çağrılmasını sağlar. Süre milisaniye cinsinden verilir:
+>Bu fonksiyon verilen bir süre sonunda verilen bir `callback` fonksiyonun çağrılmasını sağlar. Süre milisaniye cinsinden verilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    setTimeout(() => writeLine("Birinci timeout süresi doldu"), 3000)
-    writeLine("Arka planda akış süre dolmasını bekliyor")
-    setTimeout(() => writeLine("İkinci timeout süresi doldu"), 5000)
-    writeLine("main ends!...")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    setTimeout(() => writeLine("Birinci timeout süresi doldu"), 3000)  
+    writeLine("Arka planda akış süre dolmasını bekliyor")  
+    setTimeout(() => writeLine("İkinci timeout süresi doldu"), 5000)  
+    writeLine("main ends!...")  
+}  
+  
 main()
 ```
 
@@ -7608,111 +7606,200 @@ main()
 >Set edilmiş olan bir timeout `clearTimeout` isimli bir fonksiyon ile devre dışı bırakılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    let timeout = setTimeout(() => writeLine("Süre doldu"), 7000)
-
-    let ms = parseInt(Math.random() * 10000)
-
-    writeLine(ms)
-
-    setTimeout(() => clearTimeout(timeout), ms)
-
-    writeLine("main bitti")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const main = () => {  
+    const msTimeout = randomInt(2000, 5001)  
+    const msClearTimeout = randomInt(2000, 5001)  
+  
+    writeLine(`Timeout: ${msTimeout}ms`);  
+    writeLine(`Clear timeout: ${msClearTimeout}ms`);  
+  
+    const timeout = setTimeout(() => writeLine("Timeout süresi doldu"), msTimeout)  
+      
+    setTimeout(() => clearTimeout(timeout), msClearTimeout)  
+    writeLine("main ends!...")  
+}  
+  
 main()
 ```
 
->ES’de `setInterval` fonksiyonu ile arka planda periodic olarak çalışan bir akış (interval timer) oluşturulabilir:
+>ES’de `setInterval` fonksiyonu ile arka planda periodik olarak çalışan bir akış (interval timer) oluşturulabilir:
 
 ```javascript
-import {write, writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    setInterval(() => write("."), 1000)
-    writeLine("main bitti")
-
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    setInterval(() => write("."), 1000)  
+    writeLine("main ends!...")  
+}  
+  
 main()
 ```
 
 >Aşağıdaki programı çalıştırınız:
 
 ```javascript
-import {write, writeLine} from "./csdstdioutil.mjs";
-
-function main()
-{
-    setInterval(() => write("?"), 1)
-    setInterval(() => write(":"), 1)
-    writeLine("main bitti")
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+    setInterval(() => write("?"), 1)  
+    setInterval(() => write(":"), 1)  
+    writeLine("main end!....")  
+}  
+  
 main()
 ```
 
 >Set edilmiş olan bir interval `clearInterval` isimli bir fonksiyon ile iptal edilebilir:
 
 ```javascript
-import {write, writeLine} from "./csdstdioutil.mjs";
-import {Random} from "./csdrandom.mjs";
-
-function main()
-{
-    let interval = setInterval(() => write("."), 1000)
-
-    let ms = Random.nextInt(5000, 10000)
-
-    writeLine(`Süre:${ms}`)
-
-    setTimeout(() => clearInterval(interval), ms)
-
-    writeLine("main bitti")
-}
-
+import {write, writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const main = () => {  
+    const interval = setInterval(() => write("."), 1000)  
+  
+    let ms = randomInt(5000, 10000)  
+  
+    writeLine(`Süre:${ms}`)  
+  
+    setTimeout(() => clearInterval(interval), ms)  
+}  
+  
 main()
 ```
 
-**_Sınıf Çalışması:_** Saniyede bir çalışan bir interval içerisinde rasgele sayılar üretilsin. 3 tane asal sayı geldiğinde interval’ı durduran program yazınız.
+>Aşağıdaki demo örneği inceleyiniz
+```javascript
+import {write} from "./csd/util/console/console.js";  
+  
+const clockCallback = () => {  
+    const now = new Date();  
+  
+    const hours = now.getHours().toString().padStart(2, "0")  
+    const minutes = now.getMinutes().toString().padStart(2, "0")  
+    const seconds = now.getSeconds().toString().padStart(2, "0")  
+  
+    write(`${hours}:${minutes}:${seconds}\r`);  
+}  
+  
+const main = () => {  
+    setInterval(clockCallback, 1000)  
+}  
+  
+main()
+```
+
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
-import {isPrime} from "./numberextensions.mjs";
-import {write, writeLine} from "./consoleutil.mjs";
-import {Random} from "./Random.mjs";
+import {write} from "./csd/util/console/console.js";  
+  
+const clockCallback = () => {  
+    const now = new Date()  
+  
+    const nowStr = now.toLocaleTimeString("tr", {second: "2-digit", minute:"2-digit", hour:"2-digit"})  
+  
+    write(`${nowStr}\r`)  
+}  
+  
+const main = () => {  
+    setInterval(clockCallback, 1000)  
+}  
+  
+main()
+```
 
-import {Random} from "./csdrandom.mjs";
-import {isPrime} from "./csdnumberutil.mjs";
-import {write, writeLine} from "./csdstdioutil.mjs";
 
-let primeCount = 0
-let count = 0
-let n = 4
-let randomGeneratorInterval = setInterval(randomGeneratorIntervalCallback, 1000)
 
-function randomGeneratorIntervalCallback()
-{
-    let val = Random.nextInt(1, 100)
+**_Sınıf Çalışması:_** Saniyede bir çalışan bir interval içerisinde `[2, 10000]` aralığında rassal tamsayılar üretilsin. 3 tane asal sayı geldiğinde interval’ı durduran programı yazınız.
 
-    ++count
+**Çözüm-1:**
 
-    if (isPrime(val)) {
-        write(`${val} `)
-        ++primeCount
-    }
+```javascript
+import {write} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+import {isPrime} from "./csd/util/numeric/numeric.js";  
+  
+const count = 3  
+let n = 0  
+let interval;  
+  
+const randomGeneratorCallback = () => {  
+    const val = randomInt(2, 10001)  
+  
+    write(`${val}`)  
+  
+    if (isPrime(val)) {  
+        write("* ")  
+        ++n  
+    }  
+    else  
+        write(" ")  
+  
+    if (count === n)  
+        clearInterval(interval)  
+}  
 
-    if (primeCount === n) {
-        clearInterval(randomGeneratorInterval)
-        writeLine(`\nCount:${count}`)
-    }
+const main = () => {  
+    interval = setInterval(randomGeneratorCallback, 1000)  
+}  
+  
+main()
+```
+
+**Çözüm-2:**
+
+```javascript
+import {write} from "./csd/util/console/console.js";  
+import {RandomPrimeGenerator} from "./csd/random/RandomPrimeGenerator.js";  
+  
+const main = () => {  
+    const rg = new RandomPrimeGenerator(2, 2, 10000, 300)  
+  
+    rg.run((v, s) => write(`${v}${s ? "* " : " "}`))  
+}  
+  
+main()
+```
+
+```javascript
+import {randomInt} from "../util/random/random.js";  
+import {isPrime} from "../util/numeric/numeric.js";  
+  
+export class RandomPrimeGenerator {  
+    constructor(count, min, max, period) {  
+        this._count = count  
+        this._min = min  
+        this._max = max  
+        this._period = period  
+        this._n = 0  
+    }  
+  
+    randomGeneratorCallback(action) {  
+        const val = randomInt(this._min, this._max + 1)  
+  
+        if (isPrime(val)) {  
+            action(val, true)  
+            ++this._n  
+        }  
+        else  
+            action(val, false)  
+  
+        if (this._count === this._n)  
+            clearInterval(this._interval)  
+    }  
+  
+    run(action) {  
+        this._interval = setInterval(() => this.randomGeneratorCallback(action), this._period)  
+    }  
 }
 ```
 
-**Promise Sınıfı**
+XXXXXXXXXXXXXXXXXXXX
+##### Promise Sınıfı
 
 >`Promise` sınıfı, özellikle asenkron işlemlerin daha kolay ve hata yapma olasılığını azaltacak biçimde gerçekleştirilmesi için tasarlanmış standart bir sınıftır. Bir promise nesnesi yaratıldığında callback bir fonksiyon ister. Bu fonksiyonun iki tane callback fonksiyon alan parametresi bulunmaktadır. Genel olarak bu fonksiyonu çağırmayız. Bu fonksiyona geçilen fonksiyonları çağırırız. `Promise` referansını elde ettikten sonra programcı then fonksiyonu ile başarılı durumu, `catch` fonksiyonu ile başarısızlık durumunu asenkron olarak ele alabilir:
 
