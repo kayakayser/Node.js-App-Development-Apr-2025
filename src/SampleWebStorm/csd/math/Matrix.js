@@ -1,5 +1,3 @@
-import {MathError} from "../error/MathError";
-
 export class Matrix {
     constructor(row, col) {
         if (row <= 0 || col <= 0)

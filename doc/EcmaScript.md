@@ -7568,7 +7568,7 @@ SSSSSSSSSSSSSSS
 >**Açıklamalar:**  
 >- Sınıf Matematikteki bir kesri temsil ettiğinden pay (numerator) ve payda (denominator) değerleri tutulacaktır.  
 >- Sınıfın ilgili set ve get property elemanları yazılacaktır.  
->- Pay'ın sıfırdan farklı veya sıfır VE paydanın sıfır olması durumunda uygun mesajlar ile error fırlatılacaktır  
+>- Pay'ın sıfırdan farklı veya sıfır VE paydanın sıfır olması durumunda uygun mesajlar ile error fırlatılacaktır.  
 >- Kesir her durumda sadeleşmiş bir biçimde tutulacaktır. Örneğin kesrin pay ve paydası sırasıyla 4 ve 18 olarak verildiğinde kesir 2 / 9 olarak tutulacaktır.  
 >- Kesir negatif ise işaret payda bulunacaktır. Örneğin kesrin pay ve paydası sırasıyla 3 ve -4 olarak verilmişse  kesir -3 / 4 biçiminde tutulacaktır.  
 >- Kesrin pay ve paydasının her ikisinin birden negatif olması durumunda kesir pozitif olarak tutulacaktır.  
@@ -7579,7 +7579,6 @@ SSSSSSSSSSSSSSS
 >- Sınıfın equals metodu iki kesrin eşitlik karşılaştırması için yazılacaktır.
 >- Sınıfın compareTo metodu iki kesrin büyüklük küçüklük karşılaştırmasını yapacaktır. String sınıfının compareTo metodunun mantığına göre tasarlayınız.  
 >- Kesrin double türden ondalık değerini döndüren realValue property elemanı yazılacaktır.
-
 ##### Bazı yararlı global fonksiyonlar
 
 >ES’ de NodeJS'de de kullanılabilen çok sık kullanılan bazı global fonksiyonlar bulunur.
@@ -7798,292 +7797,289 @@ export class RandomPrimeGenerator {
 }
 ```
 
-XXXXXXXXXXXXXXXXXXXX
 ##### Promise Sınıfı
 
->`Promise` sınıfı, özellikle asenkron işlemlerin daha kolay ve hata yapma olasılığını azaltacak biçimde gerçekleştirilmesi için tasarlanmış standart bir sınıftır. Bir promise nesnesi yaratıldığında callback bir fonksiyon ister. Bu fonksiyonun iki tane callback fonksiyon alan parametresi bulunmaktadır. Genel olarak bu fonksiyonu çağırmayız. Bu fonksiyona geçilen fonksiyonları çağırırız. `Promise` referansını elde ettikten sonra programcı then fonksiyonu ile başarılı durumu, `catch` fonksiyonu ile başarısızlık durumunu asenkron olarak ele alabilir:
+>`Promise` sınıfı, özellikle asenkron işlemlerin daha kolay ve hata yapma olasılığını azaltacak biçimde gerçekleştirilmesi için tasarlanmış standart bir sınıftır. Bir `Promise` nesnesi yaratılırken callback bir fonksiyon ister. Bu fonksiyonun iki tane callback fonksiyon alan parametresi bulunmaktadır. Genel olarak bu fonksiyonu çağırmayız. Bu fonksiyona geçilen fonksiyonları çağırırız. `Promise` referansını elde ettikten sonra programcı `then` fonksiyonu ile başarılı durumu, `catch` fonksiyonu ile başarısızlık durumunu asenkron olarak ele alabilir:
 
 ```javascript
-import {randomBoolean} from "./csdrandomutil.mjs";
-import {writeLine} from "./csdstdioutil.mjs";
-
-function getMessage()
-{
-    let status = randomBoolean()
-
-    return new Promise((resolve, reject) => {
-        setTimeout(() =>  {
-            if (status)
-                resolve("Sözümü tuttum")
-
-            reject("Sözümü tutamadım")
-        }, 3000)
-    })
-}
-
-
-function main()
-{
-    let promise = getMessage()
-
-    promise.then(message => writeLine(message)).catch(message => writeLine(`Hata mesajı: ${message}`))
-
-    writeLine("main bitti")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomBoolean} from "./csd/util/random/random.js";  
+  
+const getMessage = () => {  
+    let status = randomBoolean()  
+  
+    writeLine(`Status: ${status}`)  
+  
+    return new Promise((resolve, reject) => {  
+        setTimeout(() =>  {  
+            if (status)  
+                resolve("Sözümü tuttum")  
+            else
+                reject("Sözümü tutamadım")  
+        }, 3000)  
+    })  
+}  
+  
+  
+const main = () => {  
+    let promise = getMessage()  
+  
+    promise.then(m => writeLine(m)).catch(m => writeLine(`Hata mesajı: ${m}`))  
+  
+    writeLine("main bitti")  
+}  
+  
 main()
 ```
 
-> Burada promise referansının `then` metodu ile başarılı durum (yani resolve ile çağrılan durum), catch `metodu` ile başarısız durum (yani reject ile çağrılan durum) asenkron olarak ele alınmıştır. Bir promise nesnesi bir t anında aşağıdaki durumlardan yalnızca birinde olabilir:
+>Burada promise referansının `then` metodu ile başarılı durum (yani resolve ile çağrılan durum), `catch` metodu ile başarısız durum (yani reject ile çağrılan durum) asenkron olarak ele alınmıştır. Bir promise nesnesi bir `t` anında aşağıdaki durumlardan yalnızca birinde olabilir:
 > 
-> 1. Fullfilled: Promise nesnesinin başarılı durumudur. Yani resolve çağrıldığı durumdur.
-> 2. Rejected: Promise nesnesinin başarısızılık durumudur. Yani reject fonksiyonun çağrıldığı durumdur.
-> 3. Pending: Promise nesnesinin henüz daha işi yapıyor olduğu yani resolve veya reject’ in henüz daha çağrılmadığı durumdur
-> 4. Settled: Başarılı ve başarısız olma durumunun tamamlanmış olduğu durumdur.
-> 
+> **- Fulfilled:** Promise nesnesinin başarılı durumudur. Yani resolve çağrıldığı durumdur.
+> **- Rejected:** Promise nesnesinin başarısızılık durumudur. Yani reject fonksiyonun çağrıldığı durumdur.
+> **- Pending:** Promise nesnesinin henüz daha işi yapıyor olduğu yani resolve veya reject’ in henüz daha çağrılmadığı durumdur.
+> **- Settled:** Başarılı ve başarısız olma durumunun tamamlanmış olduğu durumdur.
+
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomBoolean} from "./csd/util/random/random.js";  
+  
+const getMessage = () => {  
+    let status = randomBoolean()  
+  
+    writeLine(`Status: ${status}`)  
+  
+    return new Promise((resolve, reject) => {  
+        setTimeout(() =>  {  
+            if (status)  
+                resolve("Sözümü tuttum")
+            else  
+	            reject("Sözümü tutamadım")  
+        }, 1000)  
+    })  
+}  
+  
+  
+const main = () => {  
+    setInterval(() => {  
+        let promise = getMessage()  
+  
+        promise.then(m => writeLine(m)).catch(m => writeLine(`Hata mesajı: ${m}`))  
+    }, 3000)  
+  
+    writeLine("main bitti")  
+}  
+  
+main()
+```
+
 > Promise nesneleri zincirleme olarak (promise chain) kullanılabilir:
 
 ```javascript
-import {randomInt} from "./csdrandomutil.mjs";
-import {writeLine} from "./csdstdioutil.mjs";
-
-class MessageInfo {
-    constructor(val, message)
-    {
-        this._val = val
-        this._message = message
-    }
-
-    get val()
-    {
-        return this._val;
-    }
-
-    set val(value)
-    {
-        this._val = value;
-    }
-
-    get message()
-    {
-        return this._message;
-    }
-
-    set message(value)
-    {
-        this._message = value;
-    }
-}
-
-function getMessage(messageInfo)
-{
-    return new Promise(resolve =>  resolve(`Value:${messageInfo.val}, Message:${messageInfo.message}`))
-}
-
-function getMessageInfo()
-{
-    let val = randomInt(-99, 99)
-
-    return new Promise((resolve, reject) => {
-        setTimeout(() =>  {
-            writeLine(`val=${val}`)
-            if (val > 0)
-                resolve(new MessageInfo(val, "Sözümü tuttum"))
-
-            reject(new MessageInfo(val, "Sözümü tutamadım"))
-        }, 3000)
-    })
-}
-
-function main()
-{
-    let promise = getMessageInfo()
-
-    promise
-        .then(getMessage)
-        .then(message => writeLine(message))
-        .catch(messageInfo => writeLine(messageInfo.message))
-}
-
+import {randomInt} from "./csd/util/random/random.js";  
+import {writeLine} from "./csd/util/console/console.js";  
+  
+class MessageInfo {  
+    constructor(val, message) {  
+        this._val = val  
+        this._message = message  
+    }  
+  
+    get val() {  
+        return this._val;  
+    }  
+  
+    set val(value) {  
+        this._val = value;  
+    }  
+  
+    get message() {  
+        return this._message;  
+    }  
+  
+    set message(value) {  
+        this._message = value;  
+    }  
+}  
+  
+const getMessage = (messageInfo) => {  
+    return new Promise(resolve =>  resolve(`Value:${messageInfo.val}, Message:${messageInfo.message}`))  
+}  
+  
+const getMessageInfo = () => {  
+    let val = randomInt(-99, 99)  
+  
+    return new Promise((resolve, reject) => {  
+        setTimeout(() => {  
+            writeLine(`val = ${val}`)  
+            if (val > 0)  
+                resolve(new MessageInfo(val, "Sözümü tuttum"))  
+  
+            reject(new MessageInfo(val, "Sözümü tutamadım"))  
+        }, 3000)  
+    })  
+}  
+  
+const main = () => {  
+    let promise = getMessageInfo()  
+  
+    promise  
+        .then(getMessage)  
+        .then(m => writeLine(m))  
+        .catch(mi => writeLine(mi.message))  
+}  
+  
 main()
 ```
  
->Burada `getMessageInfo` fonksiyonunun geri dönüş değerinde elde edilen Promise referansı `getMessage` fonksiyonunun geri dönüş değerinden elde edilen Promise ile zincir biçiminde bağlanmıştır. Yukarıdaki örnekte `getMessage` fonksiyonunda Promise sınıfının `resolve` static fonksiyonu çağrılarak doğrudan Promise referansı döndürülebilir:
-
-```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-import {randomInt} from "./csdrandomutil.mjs";
-
-class MessageInfo {
-    constructor(val, message)
-    {
-        this._val = val
-        this._message = message
-    }
-
-    get val()
-    {
-        return this._val;
-    }
-
-    set val(value)
-    {
-        this._val = value;
-    }
-
-    get message()
-    {
-        return this._message;
-    }
-
-    set message(value)
-    {
-        this._message = value;
-    }
-}
-
-function getMessage(messageInfo)
-{
-    return Promise.resolve(`Value:${messageInfo.val}, Message:${messageInfo.message}`)
-}
-
-function getMessageInfo()
-{
-    let val = randomInt(-99, 99)
-
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            writeLine(`val=${val}`)
-            if (val > 0)
-                resolve(new MessageInfo(val, "Sözümü tuttum"))
-
-            reject(new MessageInfo(val, "Sözümü tutamadım"))
-        }, 3000)
-    })
-}
-
-function main()
-{
-    let promise = getMessageInfo()
-
-    promise
-        .then(getMessage)
-        .then(message => writeLine(message))
-        .catch(messageInfo => writeLine(messageInfo.message))
-}
-
-main()
-```
+>Burada `getMessageInfo` fonksiyonunun geri dönüş değerinde elde edilen Promise referansı `getMessage` fonksiyonunun geri dönüş değerinden elde edilen Promise ile zincir biçiminde bağlanmıştır.
 
 > Aşağıdaki örnekte main fonksiyonu içerisinde 3 saniye sonra verinin elde edildiği asenkron bir işlem yapılmıştır:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-const doWork = timeout => {
-    return new Promise(resolve => {
-        setTimeout(() => resolve(Math.random()), timeout)
-    })
-}
-
-function main()
-{
-    doWork(3000).then(val => writeLine(`val=${val}`))
-
-    writeLine("main ends")
-}
-
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const doWork = timeout => {  
+    return new Promise(resolve => {  
+        setTimeout(() => resolve(Math.random()), timeout)  
+    })  
+}  
+  
+const main = () => {  
+    doWork(3000).then(v => writeLine(`val = ${v}`))  
+  
+    writeLine("main ends!...")  
+}  
+  
 main()
 ```
 
 >Yukarıdaki program `await` operatörü ile şu şekilde yazılabilir:
 
 ```javascript
-import {writeLine} from "./csdstdioutil.mjs";
-
-const doWork = timeout => {
-    return new Promise(resolve => {
-        setTimeout(() => resolve(Math.random()), timeout)
-    })
-}
-
-async function main()
-{
-    const val = await doWork(3000)
-
-    writeLine(`val=${val}`)
-}
-
-main()
-
-writeLine("Here")
+import {write, writeLine} from "./csd/util/console/console.js";  
+  
+const doWork = timeout => {  
+    return new Promise(resolve => {  
+        setTimeout(() => resolve(Math.random()), timeout)  
+    })  
+}  
+  
+async function main() {  
+    const val = await doWork(3000)  
+  
+    writeLine(`val = ${val}`)  
+}  
+  
+main()  
+writeLine("main ends!...")
 ```
+
+>`await` operatörü `async` olarak tanımlanmış bir fonksiyon içerisinde kullanılabilir. Aksi durumda error oluşur. Akış await operatörüne geldiğinde ilgili fonksiyon `Promise` dönecek şekilde sonlanır. Ancak await işlemi başka bir akışta ilgili promise'in pending state'i boyunca bloke durumda bekler. Bu durumda promise fulfilled veya rejected duruma geldiğinde await çözülür. 
 
 >Aşağıdaki örneği inceleyiniz:
 
 ```javascript
-import {randomInt} from "./csdrandomutil.mjs";
-import {writeLine} from "./csdstdioutil.mjs";
-
-const doWork = timeout => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            let val = randomInt(-10, 10)
-
-            console.log(`val=${val}`)
-            if (val > 0)
-                resolve(val)
-            else
-                reject("not positive value ")
-        }, timeout)
-    })
-}
-
-function main()
-{
-    doWork(2000).then(val => writeLine(`val=${val}`)).catch(message => writeLine(message))
-}
-
-main()
-
-writeLine("here")
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const doWork = timeout => {  
+    return new Promise((resolve, reject) => {  
+        setTimeout(() => {  
+            let val = randomInt(-10, 10)  
+  
+            writeLine(`val = ${val}`)  
+  
+            if (val > 0)  
+                resolve(val)  
+            else  
+                reject(`not positive value:${val}`)  
+        }, timeout)  
+    })  
+}  
+  
+function main() {  
+    doWork(2000).then(v => writeLine(`resolve -> val = ${v}`)).catch(m => writeLine(`reject -> ${m}`))  
+}  
+  
+main()  
+  
+writeLine("main ends!...")
 ```
+
 
 >Yukarıdaki örnek `await` operatörü ile aşağıdaki gibi yapılabilir:
 
 ```javascript
-import {randomInt} from "./csdrandomutil.mjs";
-import {writeLine} from "./csdstdioutil.mjs";
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const doWork = timeout => {  
+    return new Promise((resolve, reject) => {  
+        setTimeout(() => {  
+            let val = randomInt(-10, 10)  
+  
+            writeLine(`val = ${val}`)  
+  
+            if (val > 0)  
+                resolve(val)  
+            else  
+                reject(`not positive value:${val}`)  
+        }, timeout)  
+    })  
+}  
+  
+async function main() {  
+    try {  
+        const v = await doWork(2000)  
+  
+        writeLine(`resolve -> val = ${v}`)  
+    }  
+    catch (m) {  
+        writeLine(`reject -> ${m}`)  
+    }  
+}  
+  
+main()  
 
-const doWork = timeout => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            let val = randomInt(-10, 10)
-
-            console.log(`val=${val}`)
-            if (val > 0)
-                resolve(val)
-            else
-                reject("not positive value ")
-        }, timeout)
-    })
-}
-
-async function main()
-{
-    try {
-        const val = await doWork(2000)
-
-        writeLine(`val=${val}`)
-    }
-    catch (err) {
-        writeLine(err.message)
-    }
-}
-
-main()
-
-writeLine("here")
+writeLine("main ends!...")
 ```
 
-**Bitsel Operatörler**
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const doWork = timeout => {  
+    return new Promise((resolve, reject) => {  
+        setTimeout(() => {  
+            let val = randomInt(-10, 10)  
+  
+            writeLine(`val = ${val}`)  
+  
+            if (val > 0)  
+                resolve(val)  
+            else  
+                reject(new Error(`not positive value:${val}`))  
+        }, timeout)  
+    })  
+}  
+  
+async function main() {  
+    try {  
+        const v = await doWork(2000)  
+  
+        writeLine(`resolve -> val = ${v}`)  
+    }  
+    catch (e) {  
+        writeLine(`reject -> ${e.message}`)  
+    }  
+}
+  
+main()  
+  
+writeLine("main ends!...")
+```
+
