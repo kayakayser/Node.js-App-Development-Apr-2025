@@ -1,27 +1,33 @@
 export class Matrix {
     constructor(row, col) {
         if (row <= 0 || col <= 0)
-            throw new Error("row and col must positive")
+            throw new Error("row and col must be positive")
 
-        this._matrix = new Array(row)
-        for (let i = 1; i <= row; ++i)
-            this._matrix[i] = new Array(col)
+        this._row = row
+        this._col = col
+        this._m = new Array(row * col)
     }
 
     get row() {
-        return this._matrix.length
+        return this._row
     }
 
     get col() {
-        return this._matrix[0].length
+        return this._col
     }
 
     setElement(i, j, e) {
-        //TODO
+        this._m[i * this._col + j] = e
     }
 
     transposed() {
-        //TODO: Returns new matrix which is the transpose of "this"
+        const r = new Matrix(this._col, this._row)
+
+        for (let i = 0; i < this._row; ++i)
+            for (let j = 0; j < this._col; ++j)
+                r._m[j * r._col + i] = this._m[i * this._col + j]
+
+        return r
     }
 
     add(other) {

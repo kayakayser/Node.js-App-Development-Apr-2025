@@ -6723,7 +6723,6 @@ export class Circle {
 }
 ```
 
-SSSSSSSSSSSSSSSSSSSSSSSS
 
 >Aşağıdaki `Complex` sınıfını inceleyiniz
 >**Açıklamalar:** $z = a + i * b$, $z_1 = a_1 + i * b_1$, $z_2 = a_2 + i * b_2$ karmaşık sayıları için 
@@ -6736,9 +6735,79 @@ SSSSSSSSSSSSSSSSSSSSSSSS
 >- $z_1 / z_2 =  (1 / |\bar{z_2}|) * (z_1 * \bar{z_2})$
 
 ```javascript
-
+const add = (re1, im1, re2, im2) =>  new Complex(re1 + re2, im1 + im2)  
+const subtract = (re1, im1, re2, im2) =>  add(re1, im1, -re2, -im2)  
+const multiply = (re1, im1, re2, im2) =>  new Complex(re1 * re2 - im1 * im2, re1 * im2 + re2 * im1)  
+const divide = (re1, im1, re2, im2) =>  {  
+    const z = multiply(re1, im1, re2, -im2)  
+    const norm = Math.sqrt(re2 * re2 + im2 * im2)  
+    const resNorm = 1 / norm  
+  
+    z.real *= resNorm  
+    z.imaginary *= resNorm  
+  
+    return z  
+}  
+  
+export class Complex {  
+    constructor(real, imaginary) {  
+        this._real = real  
+        this._imaginary = imaginary  
+    }  
+  
+    get real() {  
+        return this._real  
+    }  
+  
+    set real(value) {  
+        this._real = value  
+    }  
+  
+    get imaginary() {  
+        return this._imaginary  
+    }  
+  
+    set imaginary(value) {  
+        this._imaginary = value  
+    }  
+  
+    get norm() {  
+        return Math.sqrt(this._real * this._real + this._imaginary * this._imaginary)  
+    }  
+  
+    get conjugate() {  
+        return new Complex(this._real, -this._imaginary)  
+    }  
+  
+    add(other) {  
+        return add(this._real, this.imaginary, other._real, other._imaginary)  
+    }  
+  
+    subtract(other) {  
+        return subtract(this._real, this.imaginary, other._real, other._imaginary)  
+    }  
+  
+    multiply(other) {  
+        return multiply(this._real, this.imaginary, other._real, other._imaginary)  
+    }  
+  
+    divide(other) {  
+        return divide(this._real, this.imaginary, other._real, other._imaginary)  
+    }  
+  
+    negate() {  
+        return new Complex(-this._real, -this._imaginary)  
+    }  
+  
+    toString() {  
+        const imText = (this._imaginary < 0) ?  (` - i * ${Math.abs(this._imaginary)}`) : (` + i * ${this._imaginary}`)  
+  
+        return `${this._real}${imText}`  
+    }  
+}
 ```
 
+SSSSSSSSSSSSSSSSSSSSSSSS
 
 >Aşağıdaki `Matrix` sınıfını inceleyiniz
 
@@ -7560,9 +7629,6 @@ export class ErrorUtil {
 
 >Burada `subscribeJustFinally` ve `subscribeWithFinally` fonksiyonları `try` bloğunda her durumda ne yapılacağını callback olarak almaktadır.
 
-
-SSSSSSSSSSSSSSS
-
 **Sınıf Çalışması:** Bir kesri temsil eden `Fraction` isimli sınıfı aşağıdaki açıklamalara göre yazınız  
 >  
 >**Açıklamalar:**  
@@ -7579,6 +7645,150 @@ SSSSSSSSSSSSSSS
 >- Sınıfın equals metodu iki kesrin eşitlik karşılaştırması için yazılacaktır.
 >- Sınıfın compareTo metodu iki kesrin büyüklük küçüklük karşılaştırmasını yapacaktır. String sınıfının compareTo metodunun mantığına göre tasarlayınız.  
 >- Kesrin double türden ondalık değerini döndüren realValue property elemanı yazılacaktır.
+
+```javascript
+const check = (a, b) => {  
+    if (b === 0) {  
+        if (a === 0)  
+            throw new Error("Indeterminate")  
+  
+        throw new Error("Undefined")  
+    }  
+}  
+  
+const simplify = (f) => {  
+    const min = Math.min(Math.abs(f._numerator), f._denominator)  
+  
+    for (let i = min; i >= 2; --i)  
+        if (f._numerator % i === 0 && f._denominator % i === 0) {  
+            f._numerator /= i  
+            f._denominator /= i  
+            break  
+        }  
+}  
+  
+const setSign = (f) => {  
+    if (f._denominator < 0) {  
+        f._numerator = -f._numerator;  
+        f._denominator = -f._denominator;  
+    }  
+}  
+  
+const setFraction = (f, a, b) => {  
+    if (a === 0) {  
+        f._numerator = 0  
+        f._denominator = 1  
+        return  
+    }  
+  
+    f._numerator = a  
+    f._denominator = b  
+  
+    setSign(f)  
+    simplify(f)  
+}  
+  
+const add = (a1, b1, a2, b2) => {  
+    return new Fraction(a1 * b2 + a2 * b1, b1 * b2)  
+}  
+  
+const subtract = (a1, b1, a2, b2) => {  
+    return add(a1, b1, -a2, b2)  
+}  
+  
+const multiply = (a1, b1, a2, b2) => {  
+    return new Fraction(a1 * a2, b1 * b2)  
+}  
+  
+const divide = (a1, b1, a2, b2) => {  
+    return multiply(a1, b1, b2, a2)  
+}  
+  
+export class Fraction {  
+    constructor(numerator, denominator) {  
+        check(numerator, denominator)  
+        this._numerator = numerator  
+        this._denominator = denominator  
+        setFraction(this, numerator, denominator,)  
+    }  
+  
+    set numerator(value) {  
+        setFraction(this, value, this._denominator)  
+    }  
+  
+    get numerator() {  
+        return this._numerator  
+    }  
+  
+    set denominator(value) {  
+        check(this._numerator, value)  
+        setFraction(this, this._numerator, value)  
+    }  
+  
+    get denominator() {  
+        return this._denominator  
+    }  
+  
+    get realValue() {  
+        return this._numerator / this._denominator  
+    }  
+  
+    compareTo(other) {  
+        return this._numerator * other._denominator - other._numerator * this._denominator  
+    }  
+  
+    equals(other) {  
+        return this._numerator === other._numerator && other._denominator === other._denominator  
+    }  
+  
+    inc() {  
+        this._numerator += this._denominator  
+    }  
+  
+    dec() {  
+        this._numerator -= this._denominator  
+    }  
+  
+    add(other) {  
+        return add(this._numerator, this._denominator, other._numerator, other._denominator)  
+    }  
+  
+    addWithInt(value) {  
+        return add(this._numerator, this._denominator, value, 1)  
+    }  
+  
+    subtract(other) {  
+        return subtract(this._numerator, this._denominator, other._numerator, other._denominator)  
+    }  
+  
+    subtractWithInt(value) {  
+        return subtract(this._numerator, this._denominator, value, 1)  
+    }  
+  
+    multiply(other) {  
+        return multiply(this._numerator, this._denominator, other._numerator, other._denominator)  
+    }  
+  
+    multiplyWithInt(value) {  
+        return multiply(this._numerator, this._denominator, value, 1)  
+    }  
+  
+    divide(other) {  
+        return divide(this._numerator, this._denominator, other._numerator, other._denominator)  
+    }  
+  
+    divideWithInt(value) {  
+        return divide(this._numerator, this._denominator, value, 1)  
+    }  
+  
+    toString() {  
+        const str = this._denominator !== 1 ? ` / ${this._denominator} = ${this.realValue.toFixed(6)}` :  ""  
+  
+        return `${this._numerator}${str}`  
+    }  
+}
+```
+
 ##### Bazı yararlı global fonksiyonlar
 
 >ES’ de NodeJS'de de kullanılabilen çok sık kullanılan bazı global fonksiyonlar bulunur.
