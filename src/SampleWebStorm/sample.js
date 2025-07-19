@@ -1,27 +1,5 @@
-function main() {
-    const s = new Sample()
-
-    s.foo().bar()
+const main = () => {
 
 }
 
 main()
-
-
-class Sample {
-    constructor() {
-
-    }
-
-    foo(action) {
-        //...
-
-        return this
-    }
-
-    bar() {
-        //...
-
-        return this
-    }
-}
