@@ -76,5 +76,237 @@ main()
 
 ##### Dosya İşlemleri
 
->Nodejs'de dosya işlemlerine ilişkin fonksiyonlar `fs` isimli standart modül içerisinde bulunur. 
+>İkincil belleklerde (secondary memory) organize edilmiş alanlara **dosya (file)** denir. Dosyaların isimleri ve özellikleri (attribute) vardır.  Dosya işlemleri aslında işletim sistemi tarafından yapılır. İşletim sisteminin dosya işlemleri ile ilgili faaliyetlerinden oluşan  bölümüne **dosya sistemi (file system)** denir. 
+
+>Bir dosyanın yerini belirten yazısal ifadeye **yol ifadesi (path)** denilmektedir. Windows'ta dizin (directory) geçişleri  `\` karakteri ile UNIX/Linux ve Mac OS X sistemlerinde `/` ile belirtilir. Windows sistemlerinde ayrıca bir de `sürücü (drive)` kavramı vardır. UNIX/Linux sistemlerinde ve Mac OS X sistemlerinde sürücü kavramı yoktur. Windows sistemlerinde her sürücünün ayrı bir kökü ve dizin ağacı (directory tree) vardır. Sürücünün kök dizini onun en dış dizinidir.  
+  
+>Yol ifadeleri **mutlak (absolute)** ve **göreli (relative)** olmak üzere ikiye ayrılmaktadır. Eğer sürücü ifadesinden sonraki (yol ifadesinde sürücü de belirtilmeyebilir) ilk karakter `\` veya `/` ise böyle yol ifadelerine mutlak, değilse göreli yol ifadeleri denilmektedir. Örneğin:  
+  
+>- `c:\a\b\c.dat  ---> mutlak yol ifadesi`
+>- `\x\y\z.txt    ---> mutlak yol ifadesi`
+>- `x\y\z.txt     ---> göreli`
+>- `x.txt       ---> göreli`
+>- `c:/a/b/c.dat  ---> mutlak yol ifadesi`
+>-  `/x/y/z.txt"    ---> mutlak yol ifadesi`
+>- `x/y/z.txt"     ---> göreli`
+  
+>Her process'in bir **çalışma dizini (current working directory)** vardır. Process'in çalışma dizini göreli yol ifadelerinin  çözülmesi (resolve) için orijin belirtir. Örneğin, process'imizin çalışma dizini (cwd) `c:\temp` olsun. Biz bu programda  `x\y\z.dat` biçiminde bir yol ifadesi kullanırsak toplamda `c:\temp\x\y\z.dat` dosyasını belirtmiş oluruz. Prosesin çalışma dizini istenildiği zaman değiştirilebilir. Ancak işin başında genel olarak programın çalıştırıldığı dizindir.  Örnek Windows işletim sistemi için anlatılmıştır. Benzer şekilde örneğin cwd `/tmp` dizini ise `x/y/z.dat` biçimindeki göreli yol ifadesi toplamda `/tmp/x/y/z.dat` biçiminde olacaktır.  
+  
+>Mutlak yol ifadeleri kök dizinden itibaren çözülür. Windows sistemlerine özgü olarak eğer yol ifadesinde sürücü belirtilmemişse prosesin çalışma dizininin bulunduğu sürücü o mutlak yol ifadesindeki sürücü olarak alınır. Örneğin prosesin çalışma dizini `d:\temp` olsun. `\a\b\c.dat` mutlak yol ifadesi d'nin kök dizininden itibaren yol belirtir yani örnekteki yol ifadesi `d:\a\b\c.dat` olarak ele alınır.
+
+>Windows’ta dosya ve dizin isimlerinin büyük harf küçük harf duyarlılığı yoktur. Windows dosyanın ismini bizim belirttiğimiz gibi saklar. Ancak işleme sokarken büyük harf küçük harf farkını dikkate almaz. Ancak UNIX/Linux  sistemlerinde (Mac OS X dahil) dosya ve dizin isimlerinin büyük harf küçük harf duyarlılığı vardır.  
+  
+>Yol ifadelerinde kullanabileceğimiz iki özel dizin ismi vardır. Bunlar `.` ve `..` isimleridir. `.` o anda belirtilen dizinin aynısı, `..` ise o anda belirtilen dizinin üst dizini (parent directory) anlamına gelir. Örneğin `a\b\..\c.txt` yol ifadesi aslında `a\x.txt` ile eşdeğerdir.
+
+>Process'in çalışma dizini `process` nesnesinin `cwd` isimli fonksiyon ile elde edilebilir. `chdir` fonksiyonu ile çalışma dizini değiştirilebilir. chdir fonksiyonu verilen çalışma dizini yoksa yoksa error fırlatır.
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+  
+const main = () => {  
+  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+    try {  
+        writeLine(process.cwd())  
+        process.chdir(process.argv[2])  
+        writeLine(process.cwd())  
+    }  
+    catch (e) {  
+        process.stderr.write(`Directory not exists:${process.argv[2]}\r\n`)  
+    }  
+}  
+  
+main()
+```
+
+>Nodejs'de yol ifadelerine ilişkin fonksiyonlar `path` standart modülünde bulunur. Bu modüle ilişkin fonksiyonların bazıları şunlardır. 
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import path from "path";  
+  
+const main = () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    const p = process.argv[2]  
+  
+    writeLine(path.isAbsolute(p) ? "Absolute" : "Relative")  
+    writeLine(`Extension:${path.extname(p)}`);  
+    writeLine(`Base name:${path.basename(p)}`);  
+    writeLine(`Directory name:${path.dirname(p)}`);  
+}  
+  
+main()
+```
+
+>Nodejs'de dosya işlemlerine ilişkin fonksiyonlar `fs` isimli standart modül veya bu modül altındaki modüller içerisinde bulunur. Nodejs'de dosya işlemlerine ilişkin bir fonksiyon iki farklı biçimde bulunur. Genellikle iki biçimde aynı isimdedir. Bir fonksiyonun `fs` modülündeki versiyonu callback alır, aynı fonksiyonun `fs/promises` modülü içerisindeki versiyonu `Promise` nesnesine geri döner. Bu durumda programcı arka planda iş için ya callback verir ya da aldığı `Promise` nesnesi ile arka planı yönetir. 
+
+>Dosya işlemlerine ilişkin fonksiyonlar genel olarak iki gruba ayrılabilir:
+>- Dosyanın kendisi ile ilgili işlemler yapan fonksiyonlar. Örneğin, silme, dosya hakkında bilgi edinme vb.
+>- Dosyanının verileri ile işlem yapan fonksiyonlar: Örneğin, okuma, yazma.
+
+**Anahtar Notlar:** Her ne kadar amaçları ve kullanımları farklı olsa da bir `dizin (directory)` ve `normal dosya (regular file)` işletim sistemi açısından birer dosyadır (file). Normal dosya içerisinde veriler tutulurken, dizin içerisinde diğer dosyalar ve dizinlerin bilgileri tutulur. 
+
+**Anahtar Notlar:** Dosya sistemine ilişkin callback alan fonksiyonların, callback'lerinin birinci parametresi genel olarak error oluştuğunda yaratılan nesneye ilişkin referanstır. 
+
+>`fs` modülündeki `stat` fonksiyonu parametre olarak yol ifadesi ve bir callback alır. Bu callback'in ikinci parametresi `fs.Stats` türünden bir referanstır. Bu referansa ilişkin nesnenin içerisinde dosyaya ilişkin bilgiler bulunur. `fs.Stats` nesnesinin `isXXX` metotları ile ilgili bilgiler elde edilebilir. Bu bilgilerin bazıları çeşitli işletim sistemlerine özgüdür.
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import fs from "fs";  
+  
+const main = () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    fs.stat(process.argv[2], (e, s) => {  
+        if (e) {  
+            process.stderr.write(`Problem occurred:${e}`)  
+            return  
+        }  
+  
+        if (s.isFile())  
+            writeLine(`Regular file -> Size:${s.size}`);  
+        else if (s.isDirectory())  
+            writeLine("Directory");  
+        else if (s.isFIFO())  
+            writeLine("Fifo");  
+        else if (s.isSymbolicLink())  
+            writeLine("SymbolicLink");  
+        else if (s.isSocket())  
+            writeLine("Socket");  
+        else if (s.isCharacterDevice())  
+            writeLine("Character Device");  
+        else if (s.isBlockDevice())  
+            writeLine("Block Device");  
+        else  
+            writeLine("Other")  
+    })  
+  
+}  
+  
+main()
+```
+
+>Yukarıdaki örnek `fs/promises` modülündeki `stat` fonksiyonu aşağıdaki biçimde yapılabilir
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+  
+const showInfo = (s) => {  
+    if (s.isFile())  
+        writeLine(`Regular file -> Size:${s.size}`);  
+    else if (s.isDirectory())  
+        writeLine("Directory");  
+    else if (s.isFIFO())  
+        writeLine("Fifo");  
+    else if (s.isSymbolicLink())  
+        writeLine("SymbolicLink");  
+    else if (s.isSocket())  
+        writeLine("Socket");  
+    else if (s.isCharacterDevice())  
+        writeLine("Character Device");  
+    else if (s.isBlockDevice())  
+        writeLine("Block Device");  
+    else  
+        writeLine("Other")  
+}  
+  
+const main = () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    fsp.stat(process.argv[2]).then(showInfo).catch(e => process.stderr.write(`Problem occurred:${e}`))  
+}  
+  
+main()
+```
+
+>Yukarıdaki örnek `await`operatörü ile aşağıdaki gibi yapılabilir
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+  
+const showInfo = (s) => {  
+    if (s.isFile())  
+        writeLine(`Regular file -> Size:${s.size}`);  
+    else if (s.isDirectory())  
+        writeLine("Directory");  
+    else if (s.isFIFO())  
+        writeLine("Fifo");  
+    else if (s.isSymbolicLink())  
+        writeLine("SymbolicLink");  
+    else if (s.isSocket())  
+        writeLine("Socket");  
+    else if (s.isCharacterDevice())  
+        writeLine("Character Device");  
+    else if (s.isBlockDevice())  
+        writeLine("Block Device");  
+    else  
+        writeLine("Other")  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        const s = await fsp.stat(process.argv[2])  
+  
+        showInfo(s)  
+    }  
+    catch (e) {  
+        process.stderr.write(`Problem occurred:${e}\r\n`)  
+    }  
+}  
+  
+main()
+```
+
+
+
+XXXXXXXXXXXXXXXXXXXXXXX
+
+
+###### Text ve Binary Dosyalar
+
+>Bilgisayar dünyasında içeriklerine göre dosyalar kabaca “text” ve “binary” dosyalar biçiminde ikiye ayrılmaktadır.  
+   Aslında bu ayrım tamamen mantıksal düzeydedir. Dosyanın içerisinde ne olursa olsun dosyalar byte topluluklarından  
+   oluşurlar. Dosyaların uzantıları onların içerisinde ne olduğuna yönelik bir ipucu vermek için düşünülmüştür.  
+   İçerisinde yalnızca yazıların bulunduğu dosyalara “text” dosyalar, içerisinde yazıların dışında başka birtakım  
+   bilgilerin de bulunduğu dosyalara “binary” dosyalar denilmektedir. Örneğin notepad’te oluşturmuş olduğumuz dosyalar  
+   tipik text dosyalardır. Halbuki uzantısı “.exe” ve ya “.obj” olan dosyaların içerisinde yazı yoktur. Bunlar tipik  
+   binary dosyalardır. Uzantısı “.doc” olan veya “.docx” olan dosyalar da aslında “binary” dosyalardır. Her ne kadar bu  
+   dosyaların içerisinde yazılar varsa da yazıların dışında başka metadata bilgileri de vardır.  
+  
+>Text ve binary modda açılan dosyalar için Windows ve Unix/Linux (Mac OS X dahil) sistemlerinde farklılıklar  bulunmaktadır. Bir dosya text modda açılmışsa ve çalışılan sistem windows ise yazma yapan herhangi bir fonksiyon  Line feed (LF) ('\n') karakterini yazdığında aslında dosyaya Carriage Return (CR)('\r') ve LF karakterlerinin ikisi  birden yazılır. Benzer şekilde dosyadan okuma yapan fonksiyonlar çalışılan sistem Windows ise ve dosya text modda  açılmışsa CRLF karakterlerini yanyana gördüğünde yalnızca LF olarak okuma yaparlar. Bu konu ileride detaylandırılacaktır.
+
+>Uzantı ne olursa olsun dosyaların içerisinde byte yığınları vardır. Biz de temelde dosyalardan byte okuyup onlara  byte yazarız. Dosya içerisindeki her bir byte'ın ilk byte 0(sıfır) olmak üzere artan sırada bir pozisyon numarası vardır.  Buna dosya terminolojisinde ilgili byte’ın offset’i denilmektedir. Dosya göstericisi bir imleç gibi (kalemin ucu gibi) düşünülebilir. Dosya göstericisi o anda dosyanın neresinden itibaren okuma ya da yazma yapılacağını anlatan bir konum (offset) belirtir:  
+    x x x x x x x x  
+    0 1 2 3 4 5 6 7   
+>
+>Bu örnekte dosya göstericisinin 2 numaralı offset'i gösterdiğini düşünelim. Biz artık 2 byte'lık bir okuma yaparsak  2 ve 3 numaralı offset'teki byte'ları okuruz. Okuma ve yazma metotları okunan ya da yazılan miktar kadar dosya  göstericisini otomatik ilerletmektedir. Dosya açıldığında dosya göstericisi özel modlarda açılmamışsa başlangıçta  0(sıfır)'ıncı offset'tedir. Yazma sırasında dosya göstericisinin gösterdiği yerden itibaren eski bilgiler ezilerek  yeni bilgiler yazılır. Fakat, özel bir durum olarak dosya göstericisi dosyanın sonundaysa dosyaya yazma yapıldığında  dosya büyütülmektedir. Başka bir deyişle bu durumda dosyaya yazma işlemi ekleme (append) anlamına gelir.  
+  
+###### Dosya Göstericisinin EOF Durumu  
+  
+>Dosya göstericisinin dosyanın son byte'ından sonraki byte'ı göstermesi durumuna EOF (End Of File) durumu denir.  EOF durumundan okuma yapılamaz. Fakat dosya göstericisi EOF durumundayken dosyaya yazma yapılabilir. Bu durum dosyaya  ekleme anlamına gelir. Dosyaya ekleme yapmanın taşınabilir (portable) başka bir yolu yoktur. Dosya göstericisinin  dosyanın son byte’ından sonraki byte’ı göstermesi taşınabilir olarak mümkündür. Ancak daha ileride bir yeri taşınabilir olarak göstermesi söz konusu değildir.  
+  
+**Anahtar Notlar:** Bazı işletim sistemleri dosyanın sonundan daha ileriye konumlanmaya ve veri yazmaya izin verebilmektedir.  
+Bu duruma genel olarak dosya delikleri (file holes) denir. Aşağı seviyede anlamlıdır. Her işletim sistemi  
+desteklemeyebileceğinden, Java'da doğrudan yapılamaz. Ayrıca yapılsa bile program taşınabilir olmaz
+
 
