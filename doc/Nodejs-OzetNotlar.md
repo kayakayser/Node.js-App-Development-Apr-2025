@@ -196,6 +196,47 @@ const main = () => {
 main()
 ```
 
+>Yukarıdaki örnek `CommonJS` kullanılarak aşağıdaki gibi de yapılabilir
+
+```javascript
+const {writeLine} = require("./csd/util/console/console.js")  
+const fs= require("fs")  
+  
+const main = () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    fs.stat(process.argv[2], (e, s) => {  
+        if (e) {  
+            process.stderr.write(`Problem occurred:${e}`)  
+            return  
+        }  
+  
+        if (s.isFile())  
+            writeLine(`Regular file -> Size:${s.size}`);  
+        else if (s.isDirectory())  
+            writeLine("Directory");  
+        else if (s.isFIFO())  
+            writeLine("Fifo");  
+        else if (s.isSymbolicLink())  
+            writeLine("SymbolicLink");  
+        else if (s.isSocket())  
+            writeLine("Socket");  
+        else if (s.isCharacterDevice())  
+            writeLine("Character Device");  
+        else if (s.isBlockDevice())  
+            writeLine("Block Device");  
+        else  
+            writeLine("Other")  
+    })  
+}  
+  
+main()
+```
+
+
 >Yukarıdaki örnek `fs/promises` modülündeki `stat` fonksiyonu aşağıdaki biçimde yapılabilir
 
 ```javascript
@@ -277,10 +318,291 @@ const main = async () => {
 main()
 ```
 
+>`mkdir`fonksiyonu ile dizin yaratılabilir. Fonksiyonun options parametresi ileride ele alınacaktır.
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await fsp.mkdir(process.argv[2])  
+    }  
+    catch (e) {  
+        process.stderr.write(`Problem occurred:${e}\r\n`)  
+    }  
+}  
+  
+main()
+```
+
+>Bir dosyanın (ya da dosya olarak ele alınabilen kavramların) var olup olmadığı bilgisi `access` isimli bir fonksiyon kullanılarak elde edilebilir. access fonksiyonu erişilebilirlik anlamında sadece dosyanın var olup olmadığı durumunda kullanılmaz. Default durumda dosyanın varlığı sorgulanır. İleride ele alacağımız `options` parametresi ile dosyaya erişim olup olmadığı da sorgulanabilmektedir.
+
+>Aşağıdaki örnekte dosyanın varlığı sorgulanmaktadır
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await fsp.access(process.argv[2]);  
+          
+        writeLine("Exists")  
+    }  
+    catch (e) {  
+        writeLine("Not exist")  
+    }  
+}  
+  
+main()
+```
+
+>Aslında `fs` modülü içerisinde `exists` isimli bir fonksiyon da bulunur. Ancak bu fonksiyon uzun süredir `deprecated` durumdadır. Bu sebeple kullanılması tavsiye edilmez. Nodejs'nin resmi dökumanlarına göre `exists` fonksiyonu yerine `stat` ya da `access` fonksiyonu önerilmektedir. Ayrıca `fs` modülü içerisinde `senkron` olarak çalışan `existsSync` isimli fonksiyon da bulunmaktadır. Bu fonksiyon predicate bir fonksiyondur yani boolean türüne geri döner. Her ne kadar dosyanın var olup olmadığının kontrolü çok hızlı bir biçimde yapılabilse de bu fonksiyonun ana thread içerisinde kullanımı tavsiye edilmez.
+
+>Aşağıdaki demo örnekte `existsSync` fonksiyonunun ana thread'de çağrıldığına dikkat ediniz
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+import fs from "fs";  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    if (!fs.existsSync(process.argv[2])) {  
+        try {  
+            await fsp.mkdir(process.argv[2])  
+        } catch (e) {  
+            process.stderr.write(`Problem occurred:${e}\r\n`)  
+        }  
+    }  
+    else  
+        writeLine(`${process.argv[2]} exists`)  
+}  
+  
+main()
+```
+
+**Anahtar Notlar:** `fs` modülünde bulunan fonksiyonların hemen hepsinin senkron olarak çalışan versiyonları da bulunur. Bu fonksiyonlarının isimlerinin sonunda `Sync` bulunur.
+
+>Bir dizine ilişkin bilgiler `opendir` fonksiyonu ile elde edilebilir. Bu fonksiyon ile dizin girişi (directory entry) elde edilir. Bir dizin girişinde isim ve parentPath bilgisi bulunur. 
+
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+  
+const writeDirEntry = async (path) => {  
+    try {  
+        const dir = await fsp.opendir(path)  
+  
+        for await (const entry of dir) {  
+            writeLine("------------------------")  
+            for (const f in entry)  
+                writeLine(`${f} -> ${entry[f]}`);  
+            writeLine("------------------------")  
+        }  
+    }  
+    catch (e) {  
+        writeErrLine(`Problem occurred:${e.message}`)  
+    }  
+} 
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await fsp.access(process.argv[2])  
+        await writeDirEntry(process.argv[2])  
+    }  
+    catch (ex) {  
+        writeErrLine(`'${process.argv[2]}' not exists`)  
+    }  
+}  
+  
+main()
+```
+
+>Aşağıdaki demo örneği incleyiniz
+
+```javascript
+import {write, writeErrLine, writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+import p from "path";  
+  
+const writeInfo = async (path) => {  
+    try {  
+        const s = await fsp.stat(path)  
+  
+        write(`${p.basename(path)} is `)  
+        if (s.isFile())  
+            writeLine(`a regular file -> Size:${s.size}`);  
+        else if (s.isDirectory())  
+            writeLine("a directory");  
+        else if (s.isFIFO())  
+            writeLine("a fifo");  
+        else if (s.isSymbolicLink())  
+            writeLine("a symbolicLink");  
+        else if (s.isSocket())  
+            writeLine("a socket");  
+        else if (s.isCharacterDevice())  
+            writeLine(" a character Device");  
+        else if (s.isBlockDevice())  
+            writeLine("slock Device");  
+        else  
+            writeLine("an other device")  
+    }  
+    catch (e) {  
+        writeErrLine(`Problem occurred in stat: ${e.message}`)  
+    }  
+}  
+  
+const writeDirEntry = async (path) => {  
+    try {  
+        const dir = await fsp.opendir(path)  
+  
+        for await (const entry of dir)  
+            await writeInfo(p.resolve(entry.parentPath, entry.name));  
+    }  
+    catch (e) {  
+        writeErrLine(`Problem occurred in opendir:${e.message}`)  
+    }  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await fsp.access(process.argv[2])  
+        await writeDirEntry(process.argv[2])  
+    }  
+    catch (ex) {  
+        writeErrLine(`'${process.argv[2]}' not exists`)  
+    }  
+}  
+  
+main()
+```
+
+>`readDir` fonksiyonu ile de dizine ilişkin bilgiler elde edilebilmektedir. Bu fonksiyon ile dosya isimleri bir dizi olarak elde edilmektedir
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+  
+const writeDirEntry = async (path) => {  
+    try {  
+        (await fsp.readdir(path)).forEach(file => writeLine(file))  
+    }  
+    catch (e) {  
+        writeErrLine(`Problem occurred:${e.message}`)  
+    }  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await fsp.access(process.argv[2])  
+        await writeDirEntry(process.argv[2])  
+    }  
+    catch (ex) {  
+        writeErrLine(`'${process.argv[2]}' not exists`)  
+    }  
+}  
+  
+main()
+```
+
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+import {write, writeErrLine, writeLine} from "./csd/util/console/console.js";  
+import fsp from "fs/promises";  
+import p from "path";  
+  
+const writeInfo = async (path) => {  
+    try {  
+        const s = await fsp.stat(path)  
+  
+        write(`${p.basename(path)} is `)  
+        if (s.isFile())  
+            writeLine(`a regular file -> Size:${s.size}`);  
+        else if (s.isDirectory())  
+            writeLine("a directory");  
+        else if (s.isFIFO())  
+            writeLine("a fifo");  
+        else if (s.isSymbolicLink())  
+            writeLine("a symbolicLink");  
+        else if (s.isSocket())  
+            writeLine("a socket");  
+        else if (s.isCharacterDevice())  
+            writeLine(" a character Device");  
+        else if (s.isBlockDevice())  
+            writeLine("slock Device");  
+        else  
+            writeLine("an other device")  
+    }  
+    catch (e) {  
+        writeErrLine(`Problem occurred in stat: ${e.message}`)  
+    }  
+}  
+  
+const writeDirEntry = async (path) => {  
+    try {  
+        (await fsp.readdir(path)).forEach(async (file) => await writeInfo(p.resolve(path, file)))  
+    }  
+    catch (e) {  
+        writeErrLine(`Problem occurred in opendir:${e.message}`)  
+    }  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        process.stderr.write("Wrong number of arguments\r\n")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await fsp.access(process.argv[2])  
+        await writeDirEntry(process.argv[2])  
+    }  
+    catch (ex) {  
+        writeErrLine(`'${process.argv[2]}' not exists`)  
+    }  
+}  
+  
+main()
+```
 
 
-XXXXXXXXXXXXXXXXXXXXXXX
-
+XXXXXXXXXXXXXXXXXXXXXX
 
 ###### Text ve Binary Dosyalar
 

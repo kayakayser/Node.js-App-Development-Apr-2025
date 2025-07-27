@@ -1,23 +1,31 @@
-import {writeLine} from "./csd/util/console/console.js";
+import {write, writeErrLine, writeLine} from "./csd/util/console/console.js";
 import fsp from "fs/promises";
+import p from "path";
 
-const showInfo = (s) => {
-    if (s.isFile())
-        writeLine(`Regular file -> Size:${s.size}`);
-    else if (s.isDirectory())
-        writeLine("Directory");
-    else if (s.isFIFO())
-        writeLine("Fifo");
-    else if (s.isSymbolicLink())
-        writeLine("SymbolicLink");
-    else if (s.isSocket())
-        writeLine("Socket");
-    else if (s.isCharacterDevice())
-        writeLine("Character Device");
-    else if (s.isBlockDevice())
-        writeLine("Block Device");
-    else
-        writeLine("Other")
+let totalSize = 0
+
+const writeInfo = async (path) => {
+    try {
+        const s = await fsp.stat(path)
+
+        if (!s.isDirectory())
+            totalSize += s.size;
+    }
+    catch (e) {
+        writeErrLine(`Problem occurred in stat: ${e.message}`)
+    }
+}
+
+const writeDirEntry = async (path) => {
+    try {
+        const dir = await fsp.opendir(path)
+
+        for await (const entry of dir)
+            await writeInfo(p.resolve(entry.parentPath, entry.name));
+    }
+    catch (e) {
+        writeErrLine(`Problem occurred in opendir:${e.message}`)
+    }
 }
 
 const main = async () => {
@@ -27,12 +35,13 @@ const main = async () => {
     }
 
     try {
-        const s = await fsp.stat(process.argv[2])
+        await fsp.access(process.argv[2])
+        await writeDirEntry(process.argv[2])
 
-        showInfo(s)
+        writeLine(`Total Size:${totalSize}`)
     }
-    catch (e) {
-        process.stderr.write(`Problem occurred:${e}\r\n`)
+    catch (ex) {
+        writeErrLine(`'${process.argv[2]}' not exists`)
     }
 }
 
