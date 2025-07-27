@@ -148,7 +148,7 @@ main()
 >Nodejs'de dosya işlemlerine ilişkin fonksiyonlar `fs` isimli standart modül veya bu modül altındaki modüller içerisinde bulunur. Nodejs'de dosya işlemlerine ilişkin bir fonksiyon iki farklı biçimde bulunur. Genellikle iki biçimde aynı isimdedir. Bir fonksiyonun `fs` modülündeki versiyonu callback alır, aynı fonksiyonun `fs/promises` modülü içerisindeki versiyonu `Promise` nesnesine geri döner. Bu durumda programcı arka planda iş için ya callback verir ya da aldığı `Promise` nesnesi ile arka planı yönetir. 
 
 >Dosya işlemlerine ilişkin fonksiyonlar genel olarak iki gruba ayrılabilir:
->- Dosyanın kendisi ile ilgili işlemler yapan fonksiyonlar. Örneğin, silme, dosya hakkında bilgi edinme vb.
+>- Dosyanın bütünü ile ilgili işlemler yapan fonksiyonlar. Örneğin, silme, dosya hakkında bilgi edinme vb.
 >- Dosyanının verileri ile işlem yapan fonksiyonlar: Örneğin, okuma, yazma.
 
 **Anahtar Notlar:** Her ne kadar amaçları ve kullanımları farklı olsa da bir `dizin (directory)` ve `normal dosya (regular file)` işletim sistemi açısından birer dosyadır (file). Normal dosya içerisinde veriler tutulurken, dizin içerisinde diğer dosyalar ve dizinlerin bilgileri tutulur. 
@@ -443,7 +443,7 @@ const main = async () => {
 main()
 ```
 
->Aşağıdaki demo örneği incleyiniz
+>Aşağıdaki demo örneği inceleyiniz
 
 ```javascript
 import {write, writeErrLine, writeLine} from "./csd/util/console/console.js";  
@@ -615,7 +615,7 @@ XXXXXXXXXXXXXXXXXXXXXX
    binary dosyalardır. Uzantısı “.doc” olan veya “.docx” olan dosyalar da aslında “binary” dosyalardır. Her ne kadar bu  
    dosyaların içerisinde yazılar varsa da yazıların dışında başka metadata bilgileri de vardır.  
   
->Text ve binary modda açılan dosyalar için Windows ve Unix/Linux (Mac OS X dahil) sistemlerinde farklılıklar  bulunmaktadır. Bir dosya text modda açılmışsa ve çalışılan sistem windows ise yazma yapan herhangi bir fonksiyon  Line feed (LF) ('\n') karakterini yazdığında aslında dosyaya Carriage Return (CR)('\r') ve LF karakterlerinin ikisi  birden yazılır. Benzer şekilde dosyadan okuma yapan fonksiyonlar çalışılan sistem Windows ise ve dosya text modda  açılmışsa CRLF karakterlerini yanyana gördüğünde yalnızca LF olarak okuma yaparlar. Bu konu ileride detaylandırılacaktır.
+>Text ve binary modda açılan dosyalar için Windows ve Unix/Linux (Mac OS X dahil) sistemlerinde farklılıklar  bulunmaktadır. Bir dosya text modda açılmışsa ve çalışılan sistem windows ise yazma yapan herhangi bir fonksiyon  Line feed (LF) ('\n') karakterini yazdığında aslında dosyaya Carriage Return (CR)('\r') ve LF karakterlerinin ikisi  birden yazılır. Benzer şekilde dosyadan okuma yapan fonksiyonlar çalışılan sistem Windows ise ve dosya text modda  açılmışsa CRLF karakterlerini yan yana gördüğünde yalnızca LF olarak okuma yaparlar. Bu konu ileride detaylandırılacaktır.
 
 >Uzantı ne olursa olsun dosyaların içerisinde byte yığınları vardır. Biz de temelde dosyalardan byte okuyup onlara  byte yazarız. Dosya içerisindeki her bir byte'ın ilk byte 0(sıfır) olmak üzere artan sırada bir pozisyon numarası vardır.  Buna dosya terminolojisinde ilgili byte’ın offset’i denilmektedir. Dosya göstericisi bir imleç gibi (kalemin ucu gibi) düşünülebilir. Dosya göstericisi o anda dosyanın neresinden itibaren okuma ya da yazma yapılacağını anlatan bir konum (offset) belirtir:  
     x x x x x x x x  
