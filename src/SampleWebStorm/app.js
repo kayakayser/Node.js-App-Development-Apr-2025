@@ -1,32 +1,5 @@
-import {write, writeErrLine, writeLine} from "./csd/util/console/console.js";
-import fsp from "fs/promises";
-import p from "path";
-
-let totalSize = 0
-
-const writeInfo = async (path) => {
-    try {
-        const s = await fsp.stat(path)
-
-        if (!s.isDirectory())
-            totalSize += s.size;
-    }
-    catch (e) {
-        writeErrLine(`Problem occurred in stat: ${e.message}`)
-    }
-}
-
-const writeDirEntry = async (path) => {
-    try {
-        const dir = await fsp.opendir(path)
-
-        for await (const entry of dir)
-            await writeInfo(p.resolve(entry.parentPath, entry.name));
-    }
-    catch (e) {
-        writeErrLine(`Problem occurred in opendir:${e.message}`)
-    }
-}
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";
+import {DirectoryInfo} from "./csd/io/directory/DirectoryInfo.js";
 
 const main = async () => {
     if (process.argv.length !== 3) {
@@ -35,13 +8,13 @@ const main = async () => {
     }
 
     try {
-        await fsp.access(process.argv[2])
-        await writeDirEntry(process.argv[2])
+        const di = new DirectoryInfo(process.argv[2]);
+        const totalSize = await di.calculateTotalSize(process.argv[2])
 
         writeLine(`Total Size:${totalSize}`)
     }
-    catch (ex) {
-        writeErrLine(`'${process.argv[2]}' not exists`)
+    catch (e) {
+        writeErrLine(e.message)
     }
 }
 

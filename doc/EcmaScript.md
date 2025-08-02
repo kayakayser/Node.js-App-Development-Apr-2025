@@ -8293,3 +8293,55 @@ main()
 writeLine("main ends!...")
 ```
 
+>`async` bir fonksiyon ile bir değere geri dönüldüğünde değer, Promise ile sarmalanmış olarak dönülmüş olur. Bu işlem yorumlayıcı tarafından otomatik olarak yapılır. Eğer async bir fonksiyonda bir değere geri dönüşmemişse `undefined` değeri Promise ile sarmalanmış olur. 
+
+>Aşağıdaki demo örneği inceleyiniz
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import {randomInt} from "./csd/util/random/random.js";  
+  
+const doWork = timeout => {  
+    return new Promise((resolve, reject) => {  
+        setTimeout(() => {  
+            let val = randomInt(-10, 10)  
+  
+            writeLine(`val = ${val}`)  
+  
+            if (val > 0)  
+                resolve(val)  
+            else  
+                reject(new Error(`not positive value:${val}`))  
+        }, timeout)  
+    })  
+}  
+  
+const getValue = async (timeout) => {  
+    try {  
+        const v = await doWork(timeout)  
+  
+        //...  
+        return v  
+    }  
+    catch (e) {  
+        writeLine(`reject in getValue -> ${e.message}`)  
+        throw e  
+    }  
+}  
+  
+async function main() {  
+    try {  
+        const v = await getValue(2000)  
+  
+        writeLine(`resolve -> val = ${v}`)  
+    }  
+    catch (e) {  
+        writeLine(`reject in main -> ${e.message}`)  
+    }  
+}  
+  
+main()  
+  
+writeLine("main ends!...")
+```
+
