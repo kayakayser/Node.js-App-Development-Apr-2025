@@ -791,9 +791,132 @@ export class DirectoryInfo {
 
 ##### EventEmitter Sınıfı
 
->
+>Bu sınıf ile programcı kendi `event-driven` mimarisini yani algoritmik olarak `event-driven` çalışmayı gerçekleştirebilir. Bu sınıf `events` modülünde bulunur. Sınıfın `emit` metodu ile bir event, ismi ve verisi ile tetiklenebilir. Sınıfın `addListener` metodu ile bir event için register işlemi yapılabilir. `addListener` metodu yerine `on` metodu ile de register işlemi gerçekleştirilebilir. `once` fonksiyonu tetiklenen bir event yalnızca bir kez dinlenebilir. `removeListener` veya `off` fonksiyonu ile register edilmiş bir event unregister edilebilir. `removeAllListeners` metodu ile tüm register edilmiş event'ler unregister edilebilir. 
 
-XXXXXXXXXXXXXXXXXXXXXX
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import {RandomIntGenerator} from "./csd/random/RandomIntGenerator.js";  
+  
+const main = () => {  
+    const gen = new RandomIntGenerator(10, -5, 5, 1000)  
+    const notPrimeCallback = v => writeLine(`${v} -> not-prime`)  
+  
+    gen.on("prime", v => writeLine(`${v} -> prime`))  
+    gen.on("even", v => writeLine(`${v} -> even`))  
+    gen.on("odd", v => writeLine(`${v} -> odd`))  
+    gen.on("zero", () => writeLine("zero"))  
+    gen.run()  
+  
+    setTimeout(() => {  
+        gen.off("not-prime", notPrimeCallback)  
+    }, 5000)  
+}  
+  
+main()
+```
+
+```javascript
+import {randomInt} from "../util/random/random.js";  
+import {isPrime} from "../util/numeric/numeric.js";  
+import * as events from "node:events";  
+  
+export class RandomIntGenerator {  
+    constructor(count, min, max, period) {  
+        this._count = count  
+        this._min = min  
+        this._max = max  
+        this._period = period  
+        this._n = 0  
+        this._event = new events.EventEmitter()  
+    }  
+  
+    on(name, action) {  
+        this._event.on(name, action)  
+    }  
+  
+    off(name, action) {  
+        this._event.off(name, action)  
+    }  
+  
+    _randomGeneratorCallback(event) {  
+        const val = randomInt(this._min, this._max + 1)  
+  
+        ++this._n  
+        if (val === 0)  
+            event.emit("zero")  
+  
+        if (isPrime(val))  
+            event.emit("prime", val)  
+  
+        if (val % 2 === 0)  
+            event.emit("even", val)  
+        else  
+            event.emit("odd", val)  
+  
+        if (this._count === this._n)  
+            clearInterval(this._interval)  
+    }  
+  
+    run() {  
+        this._interval = setInterval(() => this._randomGeneratorCallback(this._event), this._period)  
+    }  
+}
+```
+
+>Aşağıdaki demo örnekte EventEmitter sınıfından türetme (inheritance) yapılmıştır. Şüphesiz ES6 sonrası için türetme böyle bir senaryoda daha uygundur
+
+```javascript
+import {writeLine} from "./csd/util/console/console.js";  
+import {RandomNumberGenerator} from "./csd/random/RandomNumberGenerator.js";  
+  
+const main = () => {  
+    const gen = new RandomNumberGenerator(10, -5, 5, 1000)  
+    const notPrimeCallback = v => writeLine(`${v} -> not-prime`)  
+  
+    gen.on("positive", v => writeLine(`${v} -> positive`))  
+    gen.on("negative", v => writeLine(`${v} -> negative`))  
+    gen.on("zero", () => writeLine("zero"))  
+    gen.run()  
+}  
+  
+main()
+```
+
+```javascript
+import {randomNumber} from "../util/random/random.js";  
+import * as events from "node:events";  
+  
+export class RandomNumberGenerator extends events.EventEmitter {  
+    constructor(count, min, max, period) {  
+        super()  
+        this._count = count  
+        this._min = min  
+        this._max = max  
+        this._period = period  
+        this._n = 0  
+    }  
+  
+    _randomGeneratorCallback(ee) {  
+        const val = randomNumber(this._min, this._max + 1)  
+  
+        ++this._n  
+  
+        if (val > 0)  
+            ee.emit("positive", val)  
+        else if (val < 0)  
+            ee.emit("negative", val)  
+        else  
+            ee.emit("zero")  
+  
+        if (this._count === this._n)  
+            clearInterval(this._interval)  
+    }  
+  
+    run() {  
+        this._interval = setInterval(() => this._randomGeneratorCallback(this), this._period)  
+    }  
+}
+```
 
 ###### Text ve Binary Dosyalar
 

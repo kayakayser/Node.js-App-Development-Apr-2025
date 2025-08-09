@@ -8114,7 +8114,7 @@ class MessageInfo {
 }  
   
 const getMessage = (messageInfo) => {  
-    return new Promise(resolve =>  resolve(`Value:${messageInfo.val}, Message:${messageInfo.message}`))  
+    return new Promise(resolve => resolve(`Value:${messageInfo.val}, Message:${messageInfo.message}`))  
 }  
   
 const getMessageInfo = () => {  
@@ -8132,7 +8132,7 @@ const getMessageInfo = () => {
 }  
   
 const main = () => {  
-    let promise = getMessageInfo()  
+    let promise = getMessageInfo()      
   
     promise  
         .then(getMessage)  

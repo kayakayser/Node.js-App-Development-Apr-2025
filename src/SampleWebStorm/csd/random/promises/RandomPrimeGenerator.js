@@ -10,7 +10,7 @@ export class RandomPrimeGenerator {
         this._n = 0
     }
 
-    _randomGeneratorCallback(action) {
+    randomGeneratorCallback(action) {
         const val = randomInt(this._min, this._max + 1)
 
         if (isPrime(val)) {
@@ -25,6 +25,6 @@ export class RandomPrimeGenerator {
     }
 
     run(action) {
-        this._interval = setInterval(() => this._randomGeneratorCallback(action), this._period)
+        this._interval = setInterval(() => this.randomGeneratorCallback(action), this._period)
     }
 }
