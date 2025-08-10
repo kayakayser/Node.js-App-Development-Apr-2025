@@ -863,7 +863,7 @@ export class RandomIntGenerator {
 }
 ```
 
->Aşağıdaki demo örnekte EventEmitter sınıfından türetme (inheritance) yapılmıştır. Şüphesiz ES6 sonrası için türetme böyle bir senaryoda daha uygundur
+>Aşağıdaki demo örnekte `EventEmitter` sınıfından `türetme (inheritance)` yapılmıştır. Şüphesiz `ES6` sonrası için türetme böyle bir senaryoda daha uygundur
 
 ```javascript
 import {writeLine} from "./csd/util/console/console.js";  
@@ -917,32 +917,52 @@ export class RandomNumberGenerator extends events.EventEmitter {
     }  
 }
 ```
-
 ###### Text ve Binary Dosyalar
 
->Bilgisayar dünyasında içeriklerine göre dosyalar kabaca “text” ve “binary” dosyalar biçiminde ikiye ayrılmaktadır.  
-   Aslında bu ayrım tamamen mantıksal düzeydedir. Dosyanın içerisinde ne olursa olsun dosyalar byte topluluklarından  
-   oluşurlar. Dosyaların uzantıları onların içerisinde ne olduğuna yönelik bir ipucu vermek için düşünülmüştür.  
-   İçerisinde yalnızca yazıların bulunduğu dosyalara “text” dosyalar, içerisinde yazıların dışında başka birtakım  
-   bilgilerin de bulunduğu dosyalara “binary” dosyalar denilmektedir. Örneğin notepad’te oluşturmuş olduğumuz dosyalar  
-   tipik text dosyalardır. Halbuki uzantısı “.exe” ve ya “.obj” olan dosyaların içerisinde yazı yoktur. Bunlar tipik  
-   binary dosyalardır. Uzantısı “.doc” olan veya “.docx” olan dosyalar da aslında “binary” dosyalardır. Her ne kadar bu  
-   dosyaların içerisinde yazılar varsa da yazıların dışında başka metadata bilgileri de vardır.  
-  
->Text ve binary modda açılan dosyalar için Windows ve Unix/Linux (Mac OS X dahil) sistemlerinde farklılıklar  bulunmaktadır. Bir dosya text modda açılmışsa ve çalışılan sistem windows ise yazma yapan herhangi bir fonksiyon  Line feed (LF) ('\n') karakterini yazdığında aslında dosyaya Carriage Return (CR)('\r') ve LF karakterlerinin ikisi  birden yazılır. Benzer şekilde dosyadan okuma yapan fonksiyonlar çalışılan sistem Windows ise ve dosya text modda  açılmışsa CRLF karakterlerini yan yana gördüğünde yalnızca LF olarak okuma yaparlar. Bu konu ileride detaylandırılacaktır.
-
->Uzantı ne olursa olsun dosyaların içerisinde byte yığınları vardır. Biz de temelde dosyalardan byte okuyup onlara  byte yazarız. Dosya içerisindeki her bir byte'ın ilk byte 0(sıfır) olmak üzere artan sırada bir pozisyon numarası vardır.  Buna dosya terminolojisinde ilgili byte’ın offset’i denilmektedir. Dosya göstericisi bir imleç gibi (kalemin ucu gibi) düşünülebilir. Dosya göstericisi o anda dosyanın neresinden itibaren okuma ya da yazma yapılacağını anlatan bir konum (offset) belirtir:  
+>Bilgisayar dünyasında içeriklerine göre dosyalar kabaca **text** ve **binary** dosyalar biçiminde ikiye ayrılmaktadır.  Aslında bu ayrım tamamen mantıksal düzeydedir. Dosyanın içerisinde ne olursa olsun dosyalar byte topluluklarından oluşurlar. Dosyaların uzantıları onların içerisinde ne olduğuna yönelik bir ipucu vermek için düşünülmüştür.  İçerisinde yalnızca yazıların bulunduğu dosyalara **text** dosyalar, içerisinde yazıların dışında başka birtakım bilgilerin de bulunduğu dosyalara **binary** dosyalar denilmektedir. Örneğin notepad’te oluşturmuş olduğumuz dosyalar  tipik text dosyalardır. Halbuki uzantısı `.exe` veya `.obj` olan dosyaların içerisinde yazı yoktur. Bunlar tipik binary dosyalardır. Uzantısı `.doc` olan veya `.docx` olan dosyalar da aslında `binary` dosyalardır. Her ne kadar bu  dosyaların içerisinde yazılar varsa da yazıların dışında başka `metadata` bilgileri de vardır.  
+>
+>Text ve binary modda açılan dosyalar için Windows ve Unix/Linux (Mac OS X dahil) sistemlerinde farklılıklar  bulunmaktadır. Bir dosya text modda açılmışsa ve çalışılan sistem windows ise yazma yapan herhangi bir fonksiyon  Line feed (LF) ('\n') karakterini yazdığında aslında dosyaya Carriage Return (CR)('\r') ve LF karakterlerinin ikisi  birden yazılır. Benzer şekilde text dosyadan okuma yapan fonksiyonlar çalışılan sistem Windows ise ve dosya text modda  açılmışsa CRLF karakterlerini yan yana gördüğünde yalnızca LF olarak okuma yaparlar. Bu konu ileride detaylandırılacaktır.
+>
+>Uzantı ne olursa olsun dosyaların içerisinde byte yığınları vardır. Biz de temelde dosyalardan byte okuyup onlara byte yazarız. Dosya içerisindeki her bir byte'ın ilk byte 0(sıfır) olmak üzere artan sırada bir pozisyon numarası vardır.  Buna dosya terminolojisinde ilgili byte’ın offset’i denilmektedir. Dosya göstericisi bir imleç gibi (kalemin ucu gibi) düşünülebilir. Dosya göstericisi o anda dosyanın neresinden itibaren okuma ya da yazma yapılacağını anlatan bir konum (offset) belirtir:  
     x x x x x x x x  
     0 1 2 3 4 5 6 7   
 >
 >Bu örnekte dosya göstericisinin 2 numaralı offset'i gösterdiğini düşünelim. Biz artık 2 byte'lık bir okuma yaparsak  2 ve 3 numaralı offset'teki byte'ları okuruz. Okuma ve yazma metotları okunan ya da yazılan miktar kadar dosya  göstericisini otomatik ilerletmektedir. Dosya açıldığında dosya göstericisi özel modlarda açılmamışsa başlangıçta  0(sıfır)'ıncı offset'tedir. Yazma sırasında dosya göstericisinin gösterdiği yerden itibaren eski bilgiler ezilerek  yeni bilgiler yazılır. Fakat, özel bir durum olarak dosya göstericisi dosyanın sonundaysa dosyaya yazma yapıldığında  dosya büyütülmektedir. Başka bir deyişle bu durumda dosyaya yazma işlemi ekleme (append) anlamına gelir.  
-  
 ###### Dosya Göstericisinin EOF Durumu  
   
->Dosya göstericisinin dosyanın son byte'ından sonraki byte'ı göstermesi durumuna EOF (End Of File) durumu denir.  EOF durumundan okuma yapılamaz. Fakat dosya göstericisi EOF durumundayken dosyaya yazma yapılabilir. Bu durum dosyaya  ekleme anlamına gelir. Dosyaya ekleme yapmanın taşınabilir (portable) başka bir yolu yoktur. Dosya göstericisinin  dosyanın son byte’ından sonraki byte’ı göstermesi taşınabilir olarak mümkündür. Ancak daha ileride bir yeri taşınabilir olarak göstermesi söz konusu değildir.  
+>Dosya göstericisinin dosyanın son byte'ından sonraki byte'ı göstermesi durumuna **EOF (End Of File)** durumu denir.  EOF durumundan okuma yapılamaz. Fakat dosya göstericisi EOF durumundayken dosyaya yazma yapılabilir. Bu durum dosyaya  ekleme anlamına gelir. Dosyaya ekleme yapmanın taşınabilir (portable) başka bir yolu yoktur. Dosya göstericisinin  dosyanın son byte’ından sonraki byte’ı göstermesi taşınabilir olarak mümkündür. Ancak daha ileride bir yeri taşınabilir olarak göstermesi söz konusu değildir.  
   
-**Anahtar Notlar:** Bazı işletim sistemleri dosyanın sonundan daha ileriye konumlanmaya ve veri yazmaya izin verebilmektedir.  
-Bu duruma genel olarak dosya delikleri (file holes) denir. Aşağı seviyede anlamlıdır. Her işletim sistemi  
-desteklemeyebileceğinden, Java'da doğrudan yapılamaz. Ayrıca yapılsa bile program taşınabilir olmaz
+**Anahtar Notlar:** Bazı işletim sistemleri dosyanın sonundan daha ileriye konumlanmaya ve veri yazmaya izin verebilmektedir.  Bu duruma genel olarak `dosya delikleri (file holes)`  denir. Aşağı seviyede anlamlıdır. Her işletim sistemi  desteklemeyebileceğinden, kullanılması taşınabilir olmaz.
+
+>`fs` ve `fs/promises` modüllerinde bulunan `writeFile` fonksiyonu ile bir veri dosyaya yazılabilir.
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {writeFile} from "fs/promises"  
+  
+const main = async () => {  
+    if (process.argv.length !== 4) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await writeFile(process.argv[2], process.argv[3], {flag: "a"})  
+        writeLine("Data written successfully")  
+    }catch (e) {  
+        writeErrLine(`Error occurred:${e.message}`)  
+    }  
+}  
+  
+main()
+```
+
+
+
+
+
+
+
 
 
