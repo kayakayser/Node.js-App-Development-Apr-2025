@@ -957,6 +957,266 @@ const main = async () => {
   
 main()
 ```
+>Yukarıdaki işlem aşağıdaki gibi `fs` modülündeki `writeFile` fonksiyonu ile aşağıdaki gibi yapılabilir.
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {writeFile} from "fs"  
+  
+const main = () => {  
+    if (process.argv.length !== 4) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    writeFile(process.argv[2], process.argv[3] + "\r\n", {flag: "a"}, e => {  
+        if (!e)  
+            writeLine("Data written successfully")  
+        else  
+            writeErrLine(`Error occurred:${e.message}`)  
+    })   
+}  
+  
+main()
+```
+>`fs/promises` modülünün `readFile` fonksiyonu ile dosyanın tüm verisi okunabilir. Bu fonksiyon dosyanın tamamını okuduğundan çok büyük dosyalar için kullanımı çok efektif değildir, hatta duruma göre çok bir dosya okunamayabilir. Bu fonksiyonun `options` parametresinde `encoding` default null değerindedir. Değerin null olması durumunda okunan bilgili `Buffer` türünden yani binary formattadır. Encoding değeri null dışı uygun bir değer verildiğinden dosyanın içeriğinde text okuma da yapılabilmektedir. `options` parametresinin `flag` değeri default olarak `r` yani salt okuma modudur. Bu durumda dosya bulunamazsa error oluşur
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {readFile, stat} from "fs/promises"  
+  
+const doStat = async (stats) => {  
+    if (!stats.isDirectory()) {  
+        const data = await readFile(process.argv[2])  
+  
+        writeLine(data.toString())  
+    }  
+    else  
+        throw new Error(`${process.argv[2]} is a directory`)  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await doStat(await stat(process.argv[2]))  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred while reading file:${err.message}`)  
+    }  
+}  
+  
+main()
+```
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {readFile, stat} from "fs/promises"  
+  
+const doStat = async (stats) => {  
+    if (!stats.isDirectory()) {  
+        const data = await readFile(process.argv[2], {encoding: "utf8"})  
+          
+        writeLine(data)  
+    }  
+    else  
+        throw new Error(`${process.argv[2]} is a directory`)  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await doStat(await stat(process.argv[2]))  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred while reading file:${err.message}`)  
+    }  
+}  
+  
+main()
+```
+>Peki çok büyük bir dosya nasıl okunacaktır? Bunun en tipik yöntemlerden biri dosyayı `blok (block/chunk)` olarak okumaktır. Bu yöntemde `tampon (buffer)` kullanılır ve iteratif olarak okuma yapılır. Nodejs'de blok blok okuma yapmak için `createReadStream` fonksiyonu kullanılabilir. Bu fonksiyon ile elde edilen `stream'in` `data` isimli even'i ile her adımda veri okunabilir, `error` isimli event'i ile herhangi bir hata durumu handle edilebilir, `end` isimli eventt'i ile dosya sonuna (EOF) gelindiğinde yapılacak işlemler belirlenebilir. Fonksiyonun options parametresine ilişkin nesnenin pek çok elemanı vardır. `highWaterMark` elemanı okunacak tampon uzunluğunu belirtmek için kullanılır. Default olarak `64K` verilmiştir. Nesnenin `start` ve `end` elemanları ile okunacak byte aralığı belirlenebilir. `start` değeri default olarak sıfır, `end` değeri default olarak `Infinity` biçiminde belirlenmiştir. `Infinity` değeri dosyanın sonuna kadar okumak anlamına gelir. Okuma aralığı `[0, Number.MAX_SAFE_INTEGER]` şeklindedir. Programcı bu alan ile tampon uzunluğunu belirleyebilir. Nesnenin diğer elemanları için ilgili dökumantasyona başvurulabilir:
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {stat} from "fs/promises"  
+import {createReadStream} from "fs"  
+  
+const doStat = (stats, bufSize) => {  
+    if (!stats.isDirectory()) {  
+        const stream = createReadStream(process.argv[2], {highWaterMark: bufSize})  
+  
+        stream.on("data", data => {  
+            writeLine(data.length)  
+            //...  
+        })  
+  
+        stream.on("error", err => writeErrLine(`Error occurred while reading:${err.message}`))  
+        stream.on("end", () => writeLine("File read successfully."))  
+    }  
+    else  
+        throw new Error(`${process.argv[2]} is a directory`)  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 4) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        const bufSize = parseInt(process.argv[3], 10)  
+        doStat(await stat(process.argv[2]), bufSize)  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred:${err.message}`)  
+    }  
+}  
+  
+main()
+```
+
+>`fs/promises` modülündeki `copyFile` fonksiyonu ile kopyalama işlemi yapılabilir. Bu fonksiyon default olarak hedef dosya varsa `truncate/overwriten` yapar. Fonksiyonun üçüncü parametresine `fs.constants.COPYFILE_EXCL` değeri girildiğinde hedef dosya varsa fonksiyon başarısız olur. 
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {stat, copyFile} from "fs/promises"  
+import fs from "fs"  
+  
+const copy = async () => {  
+    try {  
+        await copyFile(process.argv[2], process.argv[3], fs.constants.COPYFILE_EXCL)  
+        writeLine("File copied successfully")  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred while copying file: ${err}`)  
+    }  
+}  
+  
+const doCopy = async (stats) => {  
+    if (!stats.isDirectory())  
+        await copy()  
+    else  
+        throw new Error(`${process.argv[2]} is a directory`)  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 4) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await doCopy(await stat(process.argv[2]))  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred:${err.message}`)  
+    }  
+}  
+  
+main()
+```
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {stat, copyFile} from "fs/promises"  
+import fs from "fs"  
+  
+const copy = async () => {  
+    try {  
+        await copyFile(process.argv[2], process.argv[3])  
+        writeLine("File copied successfully")  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred while copying file: ${err}`)  
+    }  
+}  
+  
+const doCopy = async (stats) => {  
+    if (!stats.isDirectory())  
+        await copy()  
+    else  
+        throw new Error(`${process.argv[2]} is a directory`)  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 4) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await doCopy(await stat(process.argv[2]))  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred:${err.message}`)  
+    }  
+}  
+  
+main()
+```
+
+>Bir dosyayı açmak için `fs` veya `fs/promises` modülündeki `open` fonksiyonu kullanılabilir. Bu fonksiyon ismine `file handle` denilen bir nesnenin adresine geri döner. Bu değer ile çeşitli fonksiyonlar çağrılabilir. Örneğin `readLine` fonksiyonu ile bir dosya satır satır okunabilmektedir.
+
+```javascript
+import {writeErrLine, writeLine} from "./csd/util/console/console.js";  
+  
+import {stat, open} from "fs/promises"  
+  
+const readLines = async () => {  
+    try {  
+        const fh = await open(process.argv[2])  
+          
+        for await (const line of fh.readLines({encoding:"utf-8"}))  
+            writeLine(line)  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred while opening file: ${err.message}`);  
+    }  
+}  
+  
+const doStat = async (stats) => {  
+    if (!stats.isDirectory())  
+        await readLines()  
+    else  
+        throw new Error(`${process.argv[2]} is a directory`)  
+}  
+  
+const main = async () => {  
+    if (process.argv.length !== 3) {  
+        writeErrLine("Wrong number of arguments")  
+        process.exit(1)  
+    }  
+  
+    try {  
+        await doStat(await stat(process.argv[2]))  
+    }  
+    catch (err) {  
+        writeErrLine(`Error occurred:${err.message}`)  
+    }  
+}  
+  
+main()
+```
+
+
+
+
+
+
 
 
 
