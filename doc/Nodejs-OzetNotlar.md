@@ -1358,3 +1358,5 @@ chmod 751 test
 ```
 
 **Anahtar Notlar:** Burada anlatılanların dışında pek çok detay bulunmaktadır. Nodejs programcısı açısından gerekenler genel olarak anlatılmıştır.
+
+
