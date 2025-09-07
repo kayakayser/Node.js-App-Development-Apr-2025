@@ -122,7 +122,6 @@ const nextFibonacciNumber = a => {
     }
 }
 
-
 const nthPrime = n => {
     let count = 0
     let i = 2

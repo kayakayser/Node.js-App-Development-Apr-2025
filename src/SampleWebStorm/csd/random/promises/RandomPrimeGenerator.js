@@ -1,5 +1,5 @@
 import {randomInt} from "../util/random/random.js";
-import {isPrime} from "../util/numeric/numeric.js";
+import {isPrime} from "../util/numeric/numeric.mjs";
 
 export class RandomPrimeGenerator {
     constructor(count, min, max, period) {

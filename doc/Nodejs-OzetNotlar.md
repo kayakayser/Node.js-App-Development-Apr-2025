@@ -1213,88 +1213,6 @@ main()
 ```
 
 
-##### git Versiyon Kontrol Sistemi
-
-git, özellikle yazılım geliştirmede kullanılan bir versiyon takip aracıdır. git, 2005 senesinde `Linus Torvalds` tarafından `Linux çekirdek projesi (Linux Kernel Project)` kapsamında geliştirilmiştir. İlerleyen senelerde pek çok firma ve geliştirici tarafından kullanılır duruma gelmiştir. git'in önemli iki özelliği `dağıtık (distributed)` olması ve güvenli bir biçimde yapılan işlemlerin geçmişini (history) tutabilmesidir. Dağıtık demekle, git ile çalışan bir proje bulunduğu ana bilgisayarın dışında başka bilgisayarlara da kopyalanıp aynı anda geliştirme yapılabilmektedir. Kendi lokalinde çalışan yazılımcılar aynı zamanda yaptıklarını ana bilgisayara aktarabilirler ve bütün bu yapılanların geçmişi git tarafından tutulur ve kopyalayan da kendi lokalinde bu geçmişe sahip olabilir. git üzerinde burada anlatılanların ve diğer detaylar için bir terminolojisi bulunur. git günümüzde pek çok IDE veya benzeri uygulamalar tarafında görsel olarak da desteklenmektedir.
-###### git Kurulumu
-
-git komut satırından çalışan bir uygulamadır. Tipik olarak tüm sistemler için geliştirilmiştir. Unix/Linux sistemleri ve Mac OS X sistemleri için ilgili paket yöneticisi kullanılarak kurulabilmektedir. Windows için [git download](https://git-scm.com/downloads/win) bağlantısından kurulum detayları incelenebilir.
-
-###### Temel Kavramlar
-
-**1. Repository:** Proje dosyalarının bulunduğu yerdir (storage space). git'de repository ikiye ayrılır:
-- Local Repository: Proje dosyalarının yerel makinedeki kopyalarıdır.
-- Remote Repository: Projenin ana dosyalarının bulunduğu yerdir. 
-**2. Commits:** Projenin belirli bir zamandaki anlık durumudur (snapshot). Her commit işlemi unique olarak bir hash bilgisine sahiptir ve yapılan değişiklerinin belirlenebildiği bir mesaj bilgisine sahiptir. Bu sayede proje geçmişi izlenebilir.
-**3: Branches:** Geliştirme aşamasında ayrı bir yolu belirtir. Default branch `main` ya da `master` olarak adlandırılır. Programcı kendisi de branch'lar oluşturabilmektedir.
-
-**4. Merge:** Bir branch'daki değişiklikleri bir araya getirme yani entegre etme işlemidir. Bu anlamda bazı conflict durumları olabilir. Merge işlemi sırasında confilict'ler çözülür.
-**5. Clone:** Bir remote repository'nin yerel bir kopyasının oluşturulması işlemidir. Bu kopya tüm branch'ları ve commit geçmişini içerir. 
-
-
-**6. Pull:** Remote repository'ki güncellemeleri almak ve yerel repository'ye eklemek anlamında kullanır.
-**7. Push:** Yerel değişikliklerin remote repository'ye gönderilerek diğer kişilerin de kullanımına açılmasıdır. 
-
-Bir repository'nin lokalde kopyası aşağıdaki komut ile yapılabilir:
-
-```
-git clone https://github.com/oguzkaran/JavaApp1-Aug-2025-case-study.git
-```
-
-```
-git branch
-```
-
-komutu ile o repository içerisindeki tüm branch'lar listelenir. Aktif branch'n (checkout) başında `*` karakteri bulunur.  Bir branch yaratıp o branch'a checkout yapılması için `git checkout` komutu `-b` seçeneği ile kullanılmalıdır. 
-
-```
-git checkout -b feature/tcpconnection/okrn
-```
-
-Varolan bir branch'a checkout yapılması için `-b` seçeneği kullanılmaz
-
-```
-git checkout feature/tcpconnection/okrn
-
-```
-
-```
-git status
-```
-
-komutu ile repository'nin o anki durumu incelenebilir. Yapılmış olan bir değişiklik 
-
-```
-git add .
-```
-
-komutu ile eklenebilir. Burada `.` tüm değişiklikler anlamında isterse programcı ilgili dosyaları yazarak istediği dosyaları ekleyebilir (to be staged).
-
-```
-git rm -r --cached .
-```
-
-komutu ile git'e eklenmiş olanlar geri alınabilir (rollback/to be unstaged). `-r` seçeneği `recursive` anlamına gelir.
-
-```
-git commit -m "initial commit App.java"
-```
-
-
-```
-git push
-```
-
-komutu ile lokalden remote repository'ye aktarım yapılabilir. Burada remote repository'nin konuşlandığı server'ın konfigürasyonu yapılması gereken bazı ek işlemler olabilir. Bu git doğrudan uygulamasına ilişkin bir konu değildir. 
-
-```
-git pull
-```
-
-komutu ilgili branch'ın son durumu lokale çekilebilir.
-
-
-
 ##### Linux Dizin Yapısı
 
 >`Linux Foundation Group` `UNIX` sistemlerindeki dizin yapısını standardize etmeye çalışmıştır. Bu standarda `File System Hierarchy Standard` denir. Buna göre bazı dizinler ve anlamları şunlardır:
@@ -1442,4 +1360,177 @@ chmod 751 test
 
 **Anahtar Notlar:** Burada anlatılanların dışında pek çok detay bulunmaktadır. Nodejs programcısı açısından gerekenler genel olarak anlatılmıştır.
 
+##### git Versiyon Kontrol Sistemi
 
+git, özellikle yazılım geliştirmede kullanılan bir versiyon takip aracıdır. git, 2005 senesinde `Linus Torvalds` tarafından `Linux çekirdek projesi (Linux Kernel Project)` kapsamında geliştirilmiştir. İlerleyen senelerde pek çok firma ve geliştirici tarafından kullanılır duruma gelmiştir. git'in önemli iki özelliği `dağıtık (distributed)` olması ve güvenli bir biçimde yapılan işlemlerin geçmişini (history) tutabilmesidir. Dağıtık demekle, git ile çalışan bir proje bulunduğu ana bilgisayarın dışında başka bilgisayarlara da kopyalanıp aynı anda geliştirme yapılabilmektedir. Kendi lokalinde çalışan yazılımcılar aynı zamanda yaptıklarını ana bilgisayara aktarabilirler ve bütün bu yapılanların geçmişi git tarafından tutulur ve kopyalayan da kendi lokalinde bu geçmişe sahip olabilir. git üzerinde burada anlatılanların ve diğer detaylar için bir terminolojisi bulunur. git günümüzde pek çok IDE veya benzeri uygulamalar tarafında görsel olarak da desteklenmektedir.
+###### git Kurulumu
+
+git komut satırından çalışan bir uygulamadır. Tipik olarak tüm sistemler için geliştirilmiştir. Unix/Linux sistemleri ve Mac OS X sistemleri için ilgili paket yöneticisi kullanılarak kurulabilmektedir. Windows için [git download](https://git-scm.com/downloads/win) bağlantısından kurulum detayları incelenebilir.
+###### Temel Kavramlar
+
+**1. Repository:** Proje dosyalarının bulunduğu yerdir (storage space). git'de repository ikiye ayrılır:
+- Local Repository: Proje dosyalarının yerel makinedeki kopyalarıdır.
+- Remote Repository: Projenin ana dosyalarının bulunduğu yerdir. 
+**2. Commits:** Projenin belirli bir zamandaki anlık durumudur (snapshot). Her commit işlemi unique olarak bir hash bilgisine sahiptir ve yapılan değişiklerinin belirlenebildiği bir mesaj bilgisine sahiptir. Bu sayede proje geçmişi izlenebilir.
+**3: Branches:** Geliştirme aşamasında ayrı bir yolu belirtir. Default branch `main` ya da `master` olarak adlandırılır. Programcı kendisi de branch'lar oluşturabilmektedir.
+
+**4. Merge:** Bir branch'daki değişiklikleri bir araya getirme yani entegre etme işlemidir. Bu anlamda bazı conflict durumları olabilir. Merge işlemi sırasında confilict'ler çözülür.
+**5. Clone:** Bir remote repository'nin yerel bir kopyasının oluşturulması işlemidir. Bu kopya tüm branch'ları ve commit geçmişini içerir. 
+
+**6. Pull:** Remote repository'ki güncellemeleri almak ve yerel repository'ye eklemek anlamında kullanır.
+**7. Push:** Yerel değişikliklerin remote repository'ye gönderilerek diğer kişilerin de kullanımına açılmasıdır. 
+
+Bir repository'nin lokalde kopyası aşağıdaki komut ile yapılabilir:
+
+```
+git clone https://github.com/oguzkaran/JavaApp1-Aug-2025-case-study.git
+```
+
+```
+git branch
+```
+
+komutu ile o repository içerisindeki tüm branch'lar listelenir. Aktif branch'n (checkout) başında `*` karakteri bulunur.  Bir branch yaratıp o branch'a checkout yapılması için `git checkout` komutu `-b` seçeneği ile kullanılmalıdır. 
+
+```
+git checkout -b feature/tcpconnection/okrn
+```
+
+Varolan bir branch'a checkout yapılması için `-b` seçeneği kullanılmaz
+
+```
+git checkout feature/tcpconnection/okrn
+
+```
+
+```
+git status
+```
+
+komutu ile repository'nin o anki durumu incelenebilir. Yapılmış olan bir değişiklik 
+
+```
+git add .
+```
+
+komutu ile eklenebilir. Burada `.` tüm değişiklikler anlamında isterse programcı ilgili dosyaları yazarak istediği dosyaları ekleyebilir (to be staged).
+
+```
+git rm -r --cached .
+```
+
+komutu ile git'e eklenmiş olanlar geri alınabilir (rollback/to be unstaged). `-r` seçeneği `recursive` anlamına gelir.
+
+```
+git commit -m "initial commit server.js"
+```
+
+
+```
+git push
+```
+
+komutu ile lokalden remote repository'ye aktarım yapılabilir. Burada remote repository'nin konuşlandığı server'ın konfigürasyonu yapılması gereken bazı ek işlemler olabilir. Bu git doğrudan uygulamasına ilişkin bir konu değildir. 
+
+```
+git pull
+```
+
+komutu ilgili branch'ın son durumu lokale çekilebilir.
+
+##### npm Paket Yöneticisi
+
+`npm` Nodejs dünyasında (aslında Javascript ve/veya Typescript dünyasında) standart olarak kullanılan bir paket yöneticidir. Genel olarak Nodejs geliştirme ortamı ile birlikte otomatik olarak kurulur. İsterse programcı ayrı bir paket olarak da kurabilir. `npm` paket yöneticisine alternatif olarak `yarn` ya da `pnpm` de kullanılabilmektedir. `yarn`, `pnpm'e` göre daha çok kullanılmaktadır.
+
+`npm` ile bir paketi install etmek için `install` seçeneği kullanılır. 
+
+```bash
+npm install
+```
+
+biçiminde kullanıldığında proje içerisindeki tüm gereklilikleri install eder. Eğer specific olarak bir paket yüklemek istenirse
+
+```bash
+npm install <paket ismi>
+```
+
+biçiminde kullanılır. Örneğin:
+
+```bash
+npm install mocha
+```
+
+Burada `mocha` paketi npm'in ana repsitory'sinden install edilir. Bu kullanımda install proje düzeyinde yapılır. `npm 5` sürümüne kadar, u komut aşağıdaki gibi kullanılırdı:
+
+```bash
+npm install mocha --save
+```
+
+`npm 5+` için --save seçeneği default seçenektir. 
+
+`npm`, update seçeneği ile var olan paketlerin son sürümleri güncellenebilir:
+
+```bash
+npm update
+```
+
+Eğer bir paketin özellikle versiyonu belirtilecekse şu genel biçimde çalıştırılabilir:
+
+```bash
+npm install <paket ismi>@<versiyon>
+```
+
+Örneğin,
+
+```bash
+
+npm install mocha@10.0.0
+```
+
+Bir paket global düzeyde install edilmek isteniyorsa `-g` seçeneği ile çalıştırılabilir:
+
+```bash
+npm install mocha -g
+```
+
+##### Yazılımda Test Süreçleri
+
+Yazılımda test süreçleri ürün geliştirmenin önemli bir aşamasını oluşturmaktadır. Bazı yazılımlarda, ürünün her şeyiyle doğru olması kritik öneme sahip olabilmektedir. Bazı yazılımlarda hata toleransları olabilir. Gerektiğinde düzeltilebilir.
+
+Eskiden yazılım geliştirmede test süreçleri lüks olarak değerlendiriliyordu. Bu nedenle yalnızca büyük firmalar test bölümleri barındırıyorlardı. Ancak günümüzde yazılımda kalite (software quality) bilinci daha fazla artmış ve test süreçleri daha bilinir ve kullanılır hale gelmiştir. Geliştirilen araçların da bu konuda etkisi büyüktür.
+
+Yazılımda test süreçleri için çeşitli stratejiler kullanılabilmektedir. Test işlemi en aşağı düzeyde programcının kendi yazdığı kodları test etmesi ile başlar. Buna **birim testi (unit testing)** denir. Programcı genel olarak, yazmış olduğu bir fonksiyonun doğru çalışıp çalışmadığını test eder (duruma göre "etmelidir"). İşte burada bir fonksiyon bir **birim (unit)** olarak düşünülür. Bir yazılımda aslında parçalar bir araya getirilir. Yani fonksiyonlar çağrılarak yazılım geliştirilir. Bu bir araya getirme işlemi sonucunda genellikle parçalar yeniden test edilir. Buna da **entegrasyon testi (integration testing)** denilmektedir. Yazılımın önemli parçalarına **modül (module)** denir. Modüller de ayrı ayrı test edilebilir. Buna da **modül testi (module testing)** denir. Nihayet ürün oluşturulur ve bir bütün olarak test edilir. Genellikle bu testlere **kabul testleri (acceptance testing)** denir. Ürün bir bütün olarak önce kurum içerisinde test bölümleri tarafından test edilir. Genellikle bu testlere **alfa testi (alpha testing)** denir. Sonra ürün seçilmiş bazı son kullanıcılara dağıtılır ve gerçek hayat testine sokulur. Buna genellikle **beta testi (beta testing)** denir.
+
+Birim testi için pratikte şu 3 yaklaşımdan biri uygulanır:
+
+- Hiç birim testi yapmamak: Bu durum yazılım geliştirmede tavsiye edilmese de bir takım özel sebeplerden dolayı firmalar tarafından uygulanabilmektedir. Örneğin geliştirici ekibin sayı olarak azlığı, projenin deadline'ının kısa olması, rakip firmalardan önce ürünü çıkarma kaygısı vb. durumlarda karşılaşılabilmektedir. Buradaki yaklaşım programcının hiç test yapmaması değil, programcıdan bir test beklentisi olmaması ya da özellikle test yapmasının istenmemesi gibi düşünülebilir. Şüphesiz programcı geliştirme sürecinde belirli ölçüde test yapacaktır.
+
+- Katı katıya birim testi yapmak: Bu durumda neredeyse her birim test edilir. Örneğin bir fonksiyonun basit ya da karmaşık olmasına bakılmaksızın birim testi yapılır. Bu durumda zaman kaybı olmaması için birim testi yapan programcıların ayrı olması ideal bir durumdur. Şüphesiz herhangi bir zaman kısıtı yoksa ya da zaman çok uzunsa da uygulanabilir.
+
+- Gereken birimler için birim testi yapmak: Aslında görünürde en ideal durum budur. Görece basit birimler test edilmez ya da detaylı olarak test edilmez. Bu durumda hangi birimlerin test edileceğinin, hangi birimlerin belirli ölçüde test edileceğinin, hangi birimlerin test edilmeyeceğinin belirlenmesi önemlidir. Bu da geliştiriciler ve yöneticiler açısından tecrübe gerektirebilir.
+
+Birim testleri genel olarak iki şekilde yapılır: **manuel birim testleri, bazı araçlar ile otomatik olarak yapılan birim testleri**. Pratikte duruma göre ikisi de tercih edilebilse de otomatik araçlar ile yapılan testler belirli ölçüde testi yapan programcının gereksiz kodları yazmasını engellediğinden daha çok tercih edilir. Hatta bazı firmalar kendi birim testi araçlarını da yazabilirler.
+
+Nodejs'de birimleri testleri için çok kullanılan framework'ler şunlardır: **Mocha, Jest, AVA, Jasmine.** Bu framework'ler nmp ile doğrudan install edilebilir. Birim testleri IDE'ler gibi bazı araçlarla çok daha kullanışlı hale gelirler Aslında bu araçların temel amacı birim testini yapan programcının test işlemini mümkün olduğunca otomatize etmesidir. Bu araçlar ile çoğu durumda, her zaman yazılması gereken kodlar programcıya bırakılmaz. Bu durumda programcı için önemli olan, yani odaklanması gereken, test senaryolarını belirlemek ve yazmaktır. Bu senaryolar için her zaman genel olan durumlar söylenemez. Test edilecek birimin ne olduğuna göre, nasıl test edileceğine göre vb. durumlar için değişiklik gösterebilir.
+
+Birim test araçlarının çoğunda kullanılan genel bazı terimler vardır: **setup, teardown, input, expected, actual vb.**
+
+**setup:** Test fonksiyonun çağrılmasından önce yapılması gereken ilk işlemlerdir.
+**teardown:** Test fonksiyonunun çağrılmasından sonra yapılması gereken son işlemlerdir.
+**input:** Test yapılacak birimin girdisidir.
+**expected:** Test yapılacak birimin beklenen sonucudur.
+**actual:** Test yapılmış birimden elde edilen sonuçtur.
+
+Şüphesiz her birim için bu kavramların kullanılması gerekmez.
+
+**Anahtar Notlar:** Test işlemlerinde karşılaştığımız önemli iki terim vardır: **Verification & Validation (V&V)**. Verification, yazılmış olan kodun doğru çalışmasıdır. Validation ise kodun doğru işi yapmasıdır.
+
+###### Mocha
+
+Mocha, aşağıdaki biçimde sistem düzeyinde install edilebilir.
+
+```bash
+npm install mocha -g
+```
+
+Birim testi için tipik olarak `assert` modülü kullanılır. 
