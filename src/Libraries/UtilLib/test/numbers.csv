@@ -1,0 +1,6 @@
+input,expected
+19,true
+0,false
+-1,false
+71,true
+100003,true

@@ -1,5 +1,9 @@
 {
   "scripts": {
     "test": "mocha --recursive --exit"
+  },
+  "dependencies": {
+    "chai": "^6.0.1",
+    "mocha-param": "^2.0.1"
   }
 }

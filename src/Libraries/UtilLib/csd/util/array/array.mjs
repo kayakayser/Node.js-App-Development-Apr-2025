@@ -1,4 +1,4 @@
-import {randomInt, randomNumber} from "../random/random.js";
+import {randomInt, randomNumber} from "../random/random.mjs";
 
 const join = (a, sep) => a.reduce((s, e) => s + sep + e)
 

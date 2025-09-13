@@ -1,4 +1,4 @@
-import {randomInt} from "../random/random.js";
+import {randomInt} from "../random/random.mjs";
 
 const LETTERS_TR = "abcçdefgğhıijklmnoöprsştuüvyz"
 const UPPERCASE_TR = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ"

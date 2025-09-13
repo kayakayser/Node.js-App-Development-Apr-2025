@@ -1,4 +1,4 @@
-import {randomInt} from "../random/random.js";
+import {randomInt} from "../random/random.mjs";
 
 const daysOfMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 const monthsTR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
