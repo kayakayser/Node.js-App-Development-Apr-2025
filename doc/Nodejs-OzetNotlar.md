@@ -1571,3 +1571,422 @@ OSI'nin en aşağı katmanına **Fiziksel Katman (Physical Layer)** denilmektedi
 
 Bilgisayarları birbirlerine bağlamak ilk kez 60'lı yıllarda insanların aklına gelmiştir. Soğuk savaş yıllarında Amerika Savunma Bakanlığına bağlı olan DARPA (Defense Advanced Research Project Agency) kurumu birkaç üniversite ile 1969 yılında **ARPANET** isimli bir proje başlattı. ARPANET ilk kez 1969 yılında uzak mesafeden dört üniversitenin birbirlerine bağlanmasıyla hayata geçirilmiş oldu. ARPANET'e daha sonra bazı devlet kurumları ve üniversiteler katılmaya başlamıştır. 70'lı yılların sonlarına doğru ARPANET Amerika'da gelişmeye başlamıştır. 1983 yılında ARPANET NCP (Network Control Protocol) protokolünü bırakarak IP ailesine ailesine geçmiştir. Ve artık ağ **Internet** ismiyle yayılmaya devam etmiştir. Internet 80'li yıllarda Avrupa'ya ve Türkiye\'ye de geldi. Ancak tabi kişisel bilgisayarlar daha yeniydi ve Internet\'e ancak üniversitelerden ve bazı devlet kurumlarından, özel sektörden bağlanılabiliyordu. 1990-91 yıllarında HTTP protokolü tasarlandı ve ilk Web sayfaları oluşturulmaya başlandı. 90'lı yılların ortalarına doğru tüm dünyada kişisel bilgisayarlarla servis sağlayıcılar sayesinde Internet'e girmek mümkün hale gelmiştir. Daha sonraları modern **modem/router** cihazlarla yüksek hızlarla evden erişimler sağlanmıştır. **Internet** ismli **internetworking** sözcüğünden gelmektedir. Internetworking yerel ağların birbirlerine **router** isimli cihazlarla bağlanmalarıyla oluşturulmaktadır. Internetworking temel bir terimdir ve IP protokol ailesinin ismi buradan gelmektedir. Bugün **Internet** denildiğinde herkesin bağlandığı ARPANET'ten evrimleşen dev ağ aklımıza gelir. (**Internet** yazarken I büyük yazılırsa veya **The Internet** yazılırsa bu ağ anlaşılır.) Şüphesiz mevcut protokoller sayesinde herkes kendi internetini kurabilir. Örneğin biz de birkaç arkadaşımızla ayrı bir Internet dünyası oluşturabiliriz. Hatta bazı ülkelerin bu biçimde kendilerine özgü Internet'leri vardır.  
 
+###### IP Protokol Ailesi
+
+IP açık (open) bir protokol ailesidir. Burada açık demekle hiçbir şirketin malının olmadığı bağımsız konsorsiyumlar tarafından yönetildiği anlamına gelmektedir. Ayrıca dokümanlar herkes tarafından paylaşılmakta ve isteyen kişiler önerilerde bulunabilmektedir. IP protokolü Vint Cerf ve Bob Kahn tarafından 1974 yılında önce TCP sonra IP biçiminde tasarlanmıştır. Sonra aileye diğer üyeler katılmıştır. İlk ciddi gerçekleştirimi ***BSD*** sistemlerinde yapılmıştır. 1983 yılında ARPANET'in IP ailesine geçmesiyle popülaritesi çok artmıştır.  
+
+IP protokol ailesinin temel protokolleri dört katmandan oluşmaktadır:  
+![](./media/image2.png)
+
+
+IP protokol ailesi aslında geniş bir ailedir. Ailede pek çok yardımcı protokol vardır. Yukarıdaki şekil yalnızca bir fikir vermek amacıyla oluşturulmuştur.  
+
+Ailenin en önemli taban protokolü ***IP (Internetworking Protocol)*** protokolüdür. Zaten aileye ismini bu protokol vermiştir. IP protokolü ***paket anahtarlamalı (packet switching)*** bir protokoldür. Yani bilgiler paket denilen öbeklere ayrılarak gönderilip alınır. IP protokolünde adresleme artık fiziksel değil mantıksaldır. IP protokol ailesinde ağa bağlı her birime **host** denilmektedir. IP protokolünde her host\'un, ismine ilişkin ***IP adresi (IP address)*** denilen mantıksal bir adresi vardır. Mantıksal adres bunun donanımsal olarak belirlenmediği yazılımsal olarak atandığı anlamına gelmektedir. Fakat örneğin Ethernet protokolünün kullandığı ***MAC*** adresi fiziksel bir adrestir. Fiziksel adres bunun donanımsal olarak kartın üzerine çakılı olduğu ya da donanımın kendisinin bunu tespit edip işlem yaptığı adres demektir. Dolayısıyla mantıksal adresler dinamiktir, fiziksel adresler statiktir. Mantıksal adresler biz ağa dahil olduğumuzda bize atanmaktadır. Tabi biz de istediğimiz adresin atanması konusunda ısrarcı olabiliriz. IP protokolünün de versiyonları vardır: IPV4, IPV6. Şu anda hala ağırlıklı olarak kullanılan versiyon IPV4'tür. Ancak IPV6 yavaş yavaş daha yaygın kullanılır hale gelmiştir. IPV4te IP adresleri 4 byte uzunluktadır. Ancak IPV6'da IP adresleri 16 byte\'tır. 4 byte'lık IP adresleri şu an için artık çok yetersiz kalmaktadır. 
+
+XXXXXXXXXXXXXXXXXXXXX
+
+Bugün bilgisayarlarımızda fiziksel ve data link katmanı olarak
+
+***Ethernet ve Wireless Protokolleri*** kullanılmaktadır. Ethernet
+
+protokolü ethernet kartına gereksinim duyar. Bu kart fiziksel olarak
+
+bilgileri bilgisayarımızdan dışarı gönderip almakta kullanılır. Ethernet
+
+protokolü de paket anahtarlamalı bir protokoldür. Yani bilgiler paket
+
+paket gönderilip alınır. Paket anahtarlama hattın etkin kullanımını
+
+sağlar. Biz Ethernet kartlarını bir hub\'la biribirine bağlayarak
+
+***yerel bir ağ (local area network/LAN)*** oluşturabiliriz. Bugün
+
+evlerimizdeki ağ da yerel bir ağdır. Yerel ağları birbirlerine bağlamak
+
+için ***\"router\"*** denilen aygıtlar kullanılır. Ethernet kartı (yani
+
+network kartı) aynı ağdaki bir bilgisayardan diğerine paket haberleşmesi
+
+için kullanılmaktadır. Ancak router farklı ağlar arasında paket
+
+haberleşmesi için kullanılır. Bugün evlerimizdeki ADSL ve benzeri
+
+modemler aynı zamanda birer router görevindedir.
+
+  
+
+![](./media/image3.png){
+
+  
+
+Bizim evimizdeki yerel ağ Internet isimli dev ağa router aracılığıyla
+
+tek bir host gibi bağlanmaktadır. Dolayısıyla bizim Internet için
+
+dışarıdan kullanılacak tek bir IP adresimiz vardır (Tabi tek bir router
+
+ve hattımızın bulunduğunu varsayıyoruz). Bizim evimizdeki yerel ağ ayrı
+
+bir IP ağıdır. Yani ayrı bir dünyadır. Biz istersek hiç Internet\'e
+
+çıkmadan kendi yerel ağımızda tüm Internet uygulamalarını (Yani IP
+
+protokol uygulamalarını) çalıştırabiliriz. Buna genellikle
+
+***\"Intranet\"*** denilmektedir. O halde bizim evimizdeki bir
+
+bilgisayarın bir yerel IP adresi vardır bir de router\'ımızın
+
+Internet\'ten görülen bir IP adresi vardır. Router dış dünyadan gelen
+
+paketleri yerel ağda uygun bilgisayara dağıtmaktadır. Yerel ağdaki
+
+paketleri de dış dünyaya ilişkinse dış dünyaya yollamaktadır. Biz yerel
+
+ağımızdaki bir host\'tan diğerine bilgi gönderirken router devreye
+
+girmez.
+
+  
+
+IP protokolünde gönderilen bir paketin başında \"IP header\" isimli bir
+
+başlık kısmı vardır. Burada pakete ilişkin metadata bilgileri bulunur.
+
+Örneğin paket hangi IP adresine gönderilmektedir? Checksum bilgisi
+
+nedir? Hangi IP versiyonu kullanılmaktadır? vs. Aslında tabi (böyle
+
+olmak zorunda değil ama) bilgiler neticede ethernet kartı ile gönderilip
+
+alındığı için IP paketi aslında Ethernet protokolünün ethernet paketinin
+
+data bölümünde kodlanır. Ethernet protokolünün de ayrı bir header bölümü
+
+vardır. Örneğin:
+
+  
+
+![](./media/image4.png)
+
+  
+  
+
+Ethernet protokolü ***IEEE 802.3*** numaralı standardıyla
+
+belirlenmiştir. Wireless protokolü de aynı ailedendir. O da ***IEEE
+
+802.11*** numaralı standarttır.
+
+  
+
+IP protokolü ile birden fazla paketten oluşan bilgi gönderilebilir mi?
+
+Evet fakat bunun için paketlere numara vererek bizim de adeta ayrı bir
+
+protokol oluşturmamız gerekir. Zaten TCP protokolü buna benzer bir
+
+protokoldür.
+
+  
+
+***TCP (Transmission Control Protocol)*** protokolü güvenilir (reliable)
+
+bir protokoldür. Burada güvenilir demek alışverişin yolda bozulmasının
+
+telafi edilmesi ve paketlerin düzgün aktarılması anlamına gelir. Çünkü
+
+TCP\'de bir ***akış kontrolü (flow control)*** vardır. Gönderen tarafla
+
+alan taraf karşılıklı konuşarak hatalı giden paketlerin telafisini
+
+sağlayabilmektedir. TCP, ***stream tabanlı (stream oriented)*** bir
+
+protokoldür. Stream tabanlı demekle byte byte okumaya kaldığı yerden
+
+devam edebilmek anlaşılır. TCP ile biz daha büyük bilgiler gönderilip
+
+alınabilir. TCP bu durumda bu bilgiyi IP paketlerine böler. Onlara
+
+numara verir ve onların karşı tarafa güvenli ulaşmasını denetler. Karşı
+
+taraf gelen bilgiyi sanki borudan (pipe) okuma yapıyormuş gibi byte byte
+
+elde edebilir.
+
+  
+
+***UDP (User Datagram Protocol)*** güvenilir olmayan ***datagram***
+
+***tabanlı*** bir haberleşme sunar. Yani UDP\'de bilgiler IP\'deki gibi
+
+bağımsız paketler halinde gönderilip alınır. UDP\'de bir paket ya alınır
+
+ya alınmaz. Byte byte okuma mümkün değildir. Paketin alındığına dair bir
+
+geri bildirim yapılmaz. Tabi bu özelliğinden dolayı UDP daha hızlıdır.
+
+UDP özellikle periyodik veri gönderimlerinde, televizyon yayını gibi
+
+işlemlerde tercih edilmektedir. UDP yerel ağlarda ***broadcast***
+
+yapılabilmesini de sağlar.
+
+  
+
+TCP ***bağlantılı (connection oriented)*** bir protokoldür, UDP
+
+***bağlantısızdır (connectionless)***. Bağlantılı protokol demek iki
+
+taraf haberleşmeden önce birbirlerine bağlanıp karşılıklı konuşma için
+
+birbirlerini tanımaları demektir. TCP tipik olarak ***client-server***
+
+tarzda bir çalışmayı akla getirmektedir. Client-server haberleşmede bir
+
+taraf client bir taraf server olur. Client taraf server tarafa bağlanır,
+
+haberleşme bundan sonra yapılır.
+
+  
+  
+  
+
+| **TCP** | UDP |
+
+| -------------- | ---------------- |
+
+| Bağlantılı | Bağlatısız |
+
+| Stream Tabanlı | Datagram Tabanlı |
+
+| Güvenilir | Güvenilir değil |
+
+| Yavaş | Hızlı |
+
+  
+  
+
+Port numarası aynı host\'taki uygulamaları birbirlerinden ayırmak için
+
+düşünülmüştür. Adeta şirketlerdeki içsel (internal) telefon numaralarına
+
+benzetilebilir. TCP ve UDP protokollerinde bilgi göndermek için yalnızca
+
+gönderilecek host\'un IP\'sinin bilinmesi yeterli değildir. Aynı zamanda
+
+oradaki uygulamanın hangi port ile ilgilendiğinin de bilinmesi gerekir.
+
+Genellikle gösterimde ip adresi ve port numarası aralarına \':\'
+
+karakteri getirilerek ***\"ip:port\"*** biçiminde belirtilmektedir.
+
+IPV4\'te toplam 65536 port numarası vardır (yani port numarası için iki
+
+byte yer ayrılır). IPV6\'da ise port numaraları 4 byte uzunluğundadır.
+
+IPV4\'te ilk 1024 port numarası Internet\'in kendi uygulama protokelleri
+
+için ayrılmıştır. Bunlara ***\"well known\"*** portlar da denilmektedir.
+
+Örneğin FTP 21, SSH 22, Telnet 23, HTTP 80 numaralı portları
+
+kullanmaktadır. Biz kendi uygulamalarımız için port numarası
+
+belirleyeceksek ilk 1024 portu kullanmamalıyız.
+
+  
+
+**Client-Server Çalışma Modeli**
+
+  
+
+Yukarıda da belirtildiği gibi TCP tipik olarak ***client-server*** bir
+
+çalışmayı akla getirmektedir. Client-Server modelde ismine ***client***
+
+ve ***server*** denilen iki ayrı program vardır. Asıl işi server program
+
+yapar. Client yalnızca ***istekte (request)*** bulunur. Server işi yapar
+
+ve ***sonuçları (response)*** client\'a gönderir. Yazılışına göre bir
+
+server "aynı anda" birden fazla client\'a hizmet verebilmektedir.
+
+  
+
+***Anahtar Notlar:** Server bir client' a hizmet verirken aynı anda
+
+başka bir client hizmet alamıyorsa bu tarz server'lara **"single-client
+
+server "** veya **"iterative server"** denilmektedir. Tersine bir
+
+client'ın hizmeti devam ederken başka bir client da hizmet alabiliyorsa
+
+bu tarz server'lara **"multi-client server"** veya "**concurrent
+
+server"**denilmektedir.*
+
+  
+
+![](./media/image5.png){width="2.8027777777777776in"
+
+height="1.9319444444444445in"}
+
+  
+
+Client-Server modelde önce client server\'a bağlanır. Bu kavrama genel
+
+olarak ***"el sıkışma (hand shaking)"*** denir. Haberleşme ondan sonra
+
+başlar. Client-Server uygulamalar her ne kadar TCP\'yi çağrıştırıyorsa
+
+da aslında bu bir haberleşme mimarisidir. Yani aslında client-server
+
+çalışma için IP ailesinin kullanılması gerekmez. Bu çalışma örneğin aynı
+
+makinadaki prosesler arasında ***borularla (pipes)*** ya da ***mesaj
+
+kuyruklarıyla (message queues)*** da sağlanabilir.
+
+  
+
+**Client-Server çalışmanın şu avantajları vardır:**
+
+  
+
+1\) Server programın çalıştığı makine güçlü olabilir. Biz de onun
+
+gücünden yararlanmak istiyor olabiliriz. Örneğin uzun zaman alan bir
+
+işlemi bir mobil cihazdan yapmak yerine mobil cihazı client olarak
+
+kullanıp asıl işi server\'a yaptırmak uygun olabilir.
+
+  
+
+2\) Server program kaynak paylaşımı sağlayabilir. Örneğin yazıcı tek bir
+
+bilgisayara bağlıdır. Başka bilgisayardaki *print* programları client
+
+gibi çalışarak yazıcının bağlı olduğu makinadaki server programa isteği
+
+iletir. Server da print işlemini client için yapar. Ya da örneğin
+
+server\'a bir veritabanı bağlıdır. Client ondan istekte bulunur. Örneğin
+
+banka ATM\'lerinde veritabanı, ATM makinasının içerisinde değildir.
+
+ATM\'deki program client program gibi davranmaktadır.
+
+  
+
+3\) Server program client\'lar arasında iş birliği sağlayabilir. Onlar
+
+arasındaki iletişime aracılık edebilir. Örneğin bir chat programında
+
+client\'lar birbirini tanımamaktadır. Herkes yalnızca server\'ı tanır.
+
+Her client server\'a bağlanır. Server, client'lar arasındaki
+
+haberleşmeye aracılık eder.
+
+  
+
+4\) Client-Server çalışma dağıtık (distributed) uygulamalarda da
+
+karşımıza çıkabilmektedir. Yani bir işin belirli parçalarını başka
+
+bilgisayarlarda yapıp sonra onu birleştirmek isteyebiliriz.
+
+  
+
+**Soket Kavramı**
+
+  
+
+Farklı makinadaki processler ararasındaki haberleşmede kullanılacak
+
+protokollerin işletim sistemi tarafından desteklenmesi gerekir. Bugün
+
+işletim sistemleri bazı yaygın protokolleri destekler durumdadır.
+
+Windows, Mac OS X, Linux gibi işletim sistemleri IP protokol ailesini
+
+uzun süredir desteklemektedir. İşletim sistemlerinde bir protokol ailesi
+
+kullanılarak uygulama programlarının yazılabilmesi için bir kütüphanenin
+
+de bulunması gerekir. İşte bu kütüphaneye "***soket kütüphanesi (socket
+
+library)"*** denir. Windows, Mac OS X, Linux gibi sistemler soket
+
+kütüphanesini birbirine çok benzer bir biçimde desteklemektedir. Bu
+
+soket kütüphanesi aslında C programlama dilinden kullanılmak üzere
+
+tasarlanmıştır. Ancak pek çok ortamda buradan hareketle benzer
+
+kütüphaneler de oluşturulmuştur. Java ve Go gibi daha yüksek seviyeli
+
+ortamlarda soket işlemleri için işletim sisteminden bağımsız olarak kod
+
+yazılabilmesini sağlayan sınıflar ve yapılar bulunmaktadır.
+
+  
+
+Soket kütüphanesi yalnızca IP ailesi için tasarlanmış bir kütüphane
+
+değildir. Soket fonksiyonları pek çok protokol ailesinin ortak
+
+fonksiyonlarıdır. Yani, diğer protokolleri de kapsayan genel bir
+
+arayüzdür. Bu nedenle fonksiyonların parametrik yapıları biraz daha
+
+karmaşık olma eğilimindedir.
+
+  
+
+Soket kütüphanesi ilk kez 1983 yılında BSD sistemlerinde
+
+gerçekleştirilmiştir. Daha sonra başka sistemlere uygulanmıştır.
+
+Microsoft\'un soket arayüzü BSD soketlerinden alınmıştır. Buna
+
+***Winsock*** kütüphanesi denilmektedir. Windows\'ta iki grup soket
+
+API\'si vardır. Bunlardan birincisi tamamen BSD uyumlu API\'lerdir.
+
+(Burada fonksiyon isimleri BSD\'deki ile aynıdır.) İkinci olarak başı
+
+WSA ile başlayan Windows\'a özgü soket API\'leridir. Biz Windows\'ta da
+
+BSD uyumlu soket fonksiyonlarını kullanırsak UNIX/Linux uyumunu da
+
+sağlamış oluruz. Daha yüksek seviyeli programlama ortamlarında bu
+
+işlemler daha taşınbilir olarak yapılabilmektedir.
+
+  
+
+TCP ile gerliştirilen bir server uygulamanın tipik organizasyonu
+
+şöyledir:
+
+  
+
+Socket açılır -\> IP ve port işnd edilir. Listen ile dinlemeye geçilir
+
+-\> Accept ile client'ın socket'i elde edilir -\> Send receive -\>
+
+socket kapatılır.
+
+  
+
+TCP ile gerliştirilen bir client ugulamanın tipikl organizasyonu
+
+şöyledir:
+
+  
+
+Socket açılır -\> connect -\> sennd receive -\> socket kapatılır.
