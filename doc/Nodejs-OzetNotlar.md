@@ -1583,87 +1583,14 @@ IP protokol ailesi aslında geniş bir ailedir. Ailede pek çok yardımcı proto
 
 Ailenin en önemli taban protokolü ***IP (Internetworking Protocol)*** protokolüdür. Zaten aileye ismini bu protokol vermiştir. IP protokolü ***paket anahtarlamalı (packet switching)*** bir protokoldür. Yani bilgiler paket denilen öbeklere ayrılarak gönderilip alınır. IP protokolünde adresleme artık fiziksel değil mantıksaldır. IP protokol ailesinde ağa bağlı her birime **host** denilmektedir. IP protokolünde her host\'un, ismine ilişkin ***IP adresi (IP address)*** denilen mantıksal bir adresi vardır. Mantıksal adres bunun donanımsal olarak belirlenmediği yazılımsal olarak atandığı anlamına gelmektedir. Fakat örneğin Ethernet protokolünün kullandığı ***MAC*** adresi fiziksel bir adrestir. Fiziksel adres bunun donanımsal olarak kartın üzerine çakılı olduğu ya da donanımın kendisinin bunu tespit edip işlem yaptığı adres demektir. Dolayısıyla mantıksal adresler dinamiktir, fiziksel adresler statiktir. Mantıksal adresler biz ağa dahil olduğumuzda bize atanmaktadır. Tabi biz de istediğimiz adresin atanması konusunda ısrarcı olabiliriz. IP protokolünün de versiyonları vardır: IPV4, IPV6. Şu anda hala ağırlıklı olarak kullanılan versiyon IPV4'tür. Ancak IPV6 yavaş yavaş daha yaygın kullanılır hale gelmiştir. IPV4te IP adresleri 4 byte uzunluktadır. Ancak IPV6'da IP adresleri 16 byte\'tır. 4 byte'lık IP adresleri şu an için artık çok yetersiz kalmaktadır. 
 
-XXXXXXXXXXXXXXXXXXXXX
-
-Bugün bilgisayarlarımızda fiziksel ve data link katmanı olarak
-
-***Ethernet ve Wireless Protokolleri*** kullanılmaktadır. Ethernet
-
-protokolü ethernet kartına gereksinim duyar. Bu kart fiziksel olarak
-
-bilgileri bilgisayarımızdan dışarı gönderip almakta kullanılır. Ethernet
-
-protokolü de paket anahtarlamalı bir protokoldür. Yani bilgiler paket
-
-paket gönderilip alınır. Paket anahtarlama hattın etkin kullanımını
-
-sağlar. Biz Ethernet kartlarını bir hub\'la biribirine bağlayarak
-
-***yerel bir ağ (local area network/LAN)*** oluşturabiliriz. Bugün
-
-evlerimizdeki ağ da yerel bir ağdır. Yerel ağları birbirlerine bağlamak
-
-için ***\"router\"*** denilen aygıtlar kullanılır. Ethernet kartı (yani
-
-network kartı) aynı ağdaki bir bilgisayardan diğerine paket haberleşmesi
-
-için kullanılmaktadır. Ancak router farklı ağlar arasında paket
-
-haberleşmesi için kullanılır. Bugün evlerimizdeki ADSL ve benzeri
-
-modemler aynı zamanda birer router görevindedir.
-
+Bugün bilgisayarlarımızda fiziksel ve data link katmanı olarak ***Ethernet ve Wireless Protokolleri*** kullanılmaktadır. Ethernet protokolü ethernet kartına gereksinim duyar. Bu kart fiziksel olarak bilgileri bilgisayarımızdan dışarı gönderip almakta kullanılır. Ethernet protokolü de paket anahtarlamalı bir protokoldür. Yani bilgiler paket paket gönderilip alınır. Paket anahtarlama hattın etkin kullanımını sağlar. Biz Ethernet kartlarını bir hub kullanarak birbirine bağlayarak ***yerel bir ağ (Local Area Network/LAN)*** oluşturabiliriz. Bugün evlerimizdeki ağ da yerel bir ağdır. Yerel ağları birbirlerine bağlamak için **router** denilen aygıtlar kullanılır. Ethernet kartı (yani network kartı) aynı ağdaki bir bilgisayardan diğerine paket haberleşmesi için kullanılmaktadır. Ancak router farklı ağlar arasında paket haberleşmesi için kullanılır. Bugün evlerimizdeki ADSL ve benzeri modemler aynı zamanda birer router görevindedir.
   
 
 ![](./media/image3.png){
 
   
 
-Bizim evimizdeki yerel ağ Internet isimli dev ağa router aracılığıyla
-
-tek bir host gibi bağlanmaktadır. Dolayısıyla bizim Internet için
-
-dışarıdan kullanılacak tek bir IP adresimiz vardır (Tabi tek bir router
-
-ve hattımızın bulunduğunu varsayıyoruz). Bizim evimizdeki yerel ağ ayrı
-
-bir IP ağıdır. Yani ayrı bir dünyadır. Biz istersek hiç Internet\'e
-
-çıkmadan kendi yerel ağımızda tüm Internet uygulamalarını (Yani IP
-
-protokol uygulamalarını) çalıştırabiliriz. Buna genellikle
-
-***\"Intranet\"*** denilmektedir. O halde bizim evimizdeki bir
-
-bilgisayarın bir yerel IP adresi vardır bir de router\'ımızın
-
-Internet\'ten görülen bir IP adresi vardır. Router dış dünyadan gelen
-
-paketleri yerel ağda uygun bilgisayara dağıtmaktadır. Yerel ağdaki
-
-paketleri de dış dünyaya ilişkinse dış dünyaya yollamaktadır. Biz yerel
-
-ağımızdaki bir host\'tan diğerine bilgi gönderirken router devreye
-
-girmez.
-
-  
-
-IP protokolünde gönderilen bir paketin başında \"IP header\" isimli bir
-
-başlık kısmı vardır. Burada pakete ilişkin metadata bilgileri bulunur.
-
-Örneğin paket hangi IP adresine gönderilmektedir? Checksum bilgisi
-
-nedir? Hangi IP versiyonu kullanılmaktadır? vs. Aslında tabi (böyle
-
-olmak zorunda değil ama) bilgiler neticede ethernet kartı ile gönderilip
-
-alındığı için IP paketi aslında Ethernet protokolünün ethernet paketinin
-
-data bölümünde kodlanır. Ethernet protokolünün de ayrı bir header bölümü
-
-vardır. Örneğin:
+Bizim evimizdeki yerel ağ, Internet (The Internet) isimli dev ağa router aracılığıyla tek bir host gibi bağlanmaktadır. Dolayısıyla bizim Internet için dışarıdan kullanılacak tek bir IP adresimiz vardır (Tabi tek bir router ve hattımızın bulunduğunu varsayıyoruz). Bizim evimizdeki yerel ağ ayrı bir IP ağıdır. Yani ayrı bir dünyadır. Biz istersek hiç Internet'e çıkmadan kendi yerel ağımızda tüm Internet uygulamalarını (Yani IP protokol uygulamalarını) çalıştırabiliriz. Buna genellikle **Intranet** denilmektedir. O halde bizim evimizdeki bir bilgisayarın bir yerel IP adresi vardır bir de router'ımızın Internet'ten görülen bir IP adresi vardır. Router dış dünyadan gelen paketleri yerel ağda uygun bilgisayara dağıtmaktadır. Yerel ağdaki paketleri de dış dünyaya ilişkinse dış dünyaya yollamaktadır. Biz yerel ağımızdaki bir host'tan diğerine bilgi gönderirken router devreye girmez. IP protokolünde gönderilen bir paketin başında **IP header** isimli bir başlık kısmı vardır. Burada pakete ilişkin metadata bilgileri bulunur. Örneğin paket hangi IP adresine gönderilmektedir? Checksum bilgisi nedir? Hangi IP versiyonu kullanılmaktadır? vs. Aslında tabi (böyle olmak zorunda değil ama) bilgiler neticede ethernet kartı ile gönderilip alındığı için IP paketi aslında Ethernet protokolünün ethernet paketinin data bölümünde kodlanır. Ethernet protokolünün de ayrı bir header bölümü vardır. Örneğin:
 
   
 
@@ -1672,238 +1599,50 @@ vardır. Örneğin:
   
   
 
-Ethernet protokolü ***IEEE 802.3*** numaralı standardıyla
+Ethernet protokolü ***IEEE 802.3*** numaralı standardıyla belirlenmiştir. Wireless protokolü de aynı ailedendir. O da ***IEEE 802.11*** numaralı standarttır. IP protokolü ile birden fazla paketten oluşan bilgi gönderilebilir mi? Evet fakat bunun için paketlere numara vererek bizim de adeta ayrı bir protokol oluşturmamız gerekir. Zaten TCP protokolü buna benzer bir protokoldür.  
 
-belirlenmiştir. Wireless protokolü de aynı ailedendir. O da ***IEEE
+###### TCP (Transmission Control Protocol) 
 
-802.11*** numaralı standarttır.
+TCP protokolü güvenilir (reliable/safe) bir protokoldür. Burada güvenilir demek alışverişin yolda bozulmasının telafi edilmesi ve paketlerin düzgün aktarılması anlamına gelir. Çünkü TCP'de bir ***akış kontrolü (flow control)*** vardır. Gönderen tarafla alan taraf karşılıklı konuşarak hatalı giden paketlerin telafisini sağlayabilmektedir. TCP, ***stream tabanlı (stream oriented)*** bir protokoldür. Stream tabanlı demekle byte byte okumaya kaldığı yerden devam edebilmek anlaşılır. TCP ile daha büyük bilgiler gönderilip alınabilir. TCP bu durumda bu bilgiyi IP paketlerine böler. Onlara numara verir ve onların karşı tarafa güvenli ulaşmasını denetler. Karşı taraf gelen bilgiyi sanki borudan (pipe) okuma yapıyormuş gibi byte byte elde edebilir.  TCP ***bağlantılı (connection oriented)*** bir protokoldür. Bağlantılı protokol demek iki taraf haberleşmeden önce birbirlerine bağlanıp karşılıklı konuşma için birbirlerini tanımaları demektir. TCP tipik olarak ***client-server*** tarzda bir çalışmayı akla getirmektedir. Client-server haberleşmede bir taraf client bir taraf server olur. Client taraf server tarafa bağlanır, haberleşme bundan sonra yapılır.
+###### UDP (User Datagram Protocol) 
 
-  
+UDP güvenilir olmayan ***datagram tabanlı*** bir haberleşme sunar. Yani UDP'de bilgiler IP'deki gibi bağımsız paketler halinde gönderilip alınır. UDP'de bir paket ya alınır ya alınmaz. Byte byte okuma mümkün değildir. Paketin alındığına dair bir geri bildirim yapılmaz. Tabi bu özelliğinden dolayı UDP daha hızlıdır. UDP özellikle periyodik veri gönderimlerinde, televizyon yayını gibi işlemlerde tercih edilmektedir. UDP yerel ağlarda ***broadcast*** yapılabilmesini de sağlar.  UDP ***bağlantısızdır (connectionless)***. 
 
-IP protokolü ile birden fazla paketten oluşan bilgi gönderilebilir mi?
+TCP ve UDP arasındaki farklar aşağıdaki tablo ile özetlenebilir:
 
-Evet fakat bunun için paketlere numara vererek bizim de adeta ayrı bir
-
-protokol oluşturmamız gerekir. Zaten TCP protokolü buna benzer bir
-
-protokoldür.
-
-  
-
-***TCP (Transmission Control Protocol)*** protokolü güvenilir (reliable)
-
-bir protokoldür. Burada güvenilir demek alışverişin yolda bozulmasının
-
-telafi edilmesi ve paketlerin düzgün aktarılması anlamına gelir. Çünkü
-
-TCP\'de bir ***akış kontrolü (flow control)*** vardır. Gönderen tarafla
-
-alan taraf karşılıklı konuşarak hatalı giden paketlerin telafisini
-
-sağlayabilmektedir. TCP, ***stream tabanlı (stream oriented)*** bir
-
-protokoldür. Stream tabanlı demekle byte byte okumaya kaldığı yerden
-
-devam edebilmek anlaşılır. TCP ile biz daha büyük bilgiler gönderilip
-
-alınabilir. TCP bu durumda bu bilgiyi IP paketlerine böler. Onlara
-
-numara verir ve onların karşı tarafa güvenli ulaşmasını denetler. Karşı
-
-taraf gelen bilgiyi sanki borudan (pipe) okuma yapıyormuş gibi byte byte
-
-elde edebilir.
-
-  
-
-***UDP (User Datagram Protocol)*** güvenilir olmayan ***datagram***
-
-***tabanlı*** bir haberleşme sunar. Yani UDP\'de bilgiler IP\'deki gibi
-
-bağımsız paketler halinde gönderilip alınır. UDP\'de bir paket ya alınır
-
-ya alınmaz. Byte byte okuma mümkün değildir. Paketin alındığına dair bir
-
-geri bildirim yapılmaz. Tabi bu özelliğinden dolayı UDP daha hızlıdır.
-
-UDP özellikle periyodik veri gönderimlerinde, televizyon yayını gibi
-
-işlemlerde tercih edilmektedir. UDP yerel ağlarda ***broadcast***
-
-yapılabilmesini de sağlar.
-
-  
-
-TCP ***bağlantılı (connection oriented)*** bir protokoldür, UDP
-
-***bağlantısızdır (connectionless)***. Bağlantılı protokol demek iki
-
-taraf haberleşmeden önce birbirlerine bağlanıp karşılıklı konuşma için
-
-birbirlerini tanımaları demektir. TCP tipik olarak ***client-server***
-
-tarzda bir çalışmayı akla getirmektedir. Client-server haberleşmede bir
-
-taraf client bir taraf server olur. Client taraf server tarafa bağlanır,
-
-haberleşme bundan sonra yapılır.
-
-  
-  
-  
-
-| **TCP** | UDP |
-
+| TCP            | UDP              |
 | -------------- | ---------------- |
-
-| Bağlantılı | Bağlatısız |
-
+| Bağlantılı     | Bağlantısız      |
 | Stream Tabanlı | Datagram Tabanlı |
+| Güvenilir      | Güvenilir değil  |
+| Yavaş          | Hızlı            |
 
-| Güvenilir | Güvenilir değil |
+Port numarası aynı host\'taki uygulamaları birbirlerinden ayırmak için düşünülmüştür. Adeta şirketlerdeki içsel (internal) telefon numaralarına benzetilebilir. TCP ve UDP protokollerinde bilgi göndermek için yalnızca gönderilecek host'un IP'sinin bilinmesi yeterli değildir. Aynı zamanda oradaki uygulamanın hangi port ile ilgilendiğinin de bilinmesi gerekir. Genellikle gösterimde ip adresi ve port numarası aralarına `:`karakteri getirilerek **ip:port** biçiminde belirtilmektedir. IPv4'te toplam 65536 port numarası vardır (yani port numarası için iki byte yer ayrılır). IPV6'da ise port numaraları 4 byte uzunluğundadır. IPV4'te ilk 1024 port numarası Internet'in kendi uygulama protokolleri için ayrılmıştır. Bunlara **well known** portlar da denilmektedir. Örneğin FTP 21, SSH 22, Telnet 23, HTTP 80 numaralı portları kullanmaktadır. Biz kendi uygulamalarımız için port numarası belirleyeceksek ilk 1024 portu kullanmamalıyız.
 
-| Yavaş | Hızlı |
+##### Client-Server Çalışma Modeli
 
-  
-  
+Yukarıda da belirtildiği gibi TCP tipik olarak ***client-server*** bir çalışmayı akla getirmektedir. Client-Server modelde ismine ***client*** ve ***server*** denilen iki ayrı program vardır. Asıl işi server program yapar. Client yalnızca ***istekte (request)*** bulunur. Server işi yapar ve ***sonuçları (response)*** client'a gönderir. Yazılışına göre bir server `aynı anda` birden fazla client'a hizmet verebilmektedir.  
 
-Port numarası aynı host\'taki uygulamaları birbirlerinden ayırmak için
-
-düşünülmüştür. Adeta şirketlerdeki içsel (internal) telefon numaralarına
-
-benzetilebilir. TCP ve UDP protokollerinde bilgi göndermek için yalnızca
-
-gönderilecek host\'un IP\'sinin bilinmesi yeterli değildir. Aynı zamanda
-
-oradaki uygulamanın hangi port ile ilgilendiğinin de bilinmesi gerekir.
-
-Genellikle gösterimde ip adresi ve port numarası aralarına \':\'
-
-karakteri getirilerek ***\"ip:port\"*** biçiminde belirtilmektedir.
-
-IPV4\'te toplam 65536 port numarası vardır (yani port numarası için iki
-
-byte yer ayrılır). IPV6\'da ise port numaraları 4 byte uzunluğundadır.
-
-IPV4\'te ilk 1024 port numarası Internet\'in kendi uygulama protokelleri
-
-için ayrılmıştır. Bunlara ***\"well known\"*** portlar da denilmektedir.
-
-Örneğin FTP 21, SSH 22, Telnet 23, HTTP 80 numaralı portları
-
-kullanmaktadır. Biz kendi uygulamalarımız için port numarası
-
-belirleyeceksek ilk 1024 portu kullanmamalıyız.
+**Anahtar Notlar:** Server bir client' a hizmet verirken aynı anda başka bir client hizmet alamıyorsa bu tarz server'lara **single-client server** veya **iterative server** denilmektedir. Tersine bir client'ın hizmeti devam ederken başka bir client da hizmet alabiliyorsa bu tarz server'lara **multi-client server** veya **concurrent server** denilmektedir.
 
   
 
-**Client-Server Çalışma Modeli**
-
+![](./media/image5.png)
   
 
-Yukarıda da belirtildiği gibi TCP tipik olarak ***client-server*** bir
+Client-Server modelde önce client server\'a bağlanır. Bu kavrama genel olarak ***"el sıkışma (hand shaking)"*** denir. Haberleşme ondan sonra başlar. Client-Server uygulamalar her ne kadar TCP'yi çağrıştırıyorsa da aslında bu bir haberleşme mimarisidir. Yani aslında client-server çalışma için IP ailesinin kullanılması gerekmez. Bu çalışma örneğin aynı makinadaki prosesler arasında ***borularla (pipes)*** ya da ***mesaj kuyruklarıyla (message queues)*** da sağlanabilir.
+###### Client-Server çalışmanın şu avantajları vardır:
 
-çalışmayı akla getirmektedir. Client-Server modelde ismine ***client***
+1) Server programın çalıştığı makine güçlü olabilir. Biz de onun gücünden yararlanmak istiyor olabiliriz. Örneğin uzun zaman alan bir işlemi bir mobil cihazdan yapmak yerine mobil cihazı client olarak kullanıp asıl işi server\'a yaptırmak uygun olabilir.  
 
-ve ***server*** denilen iki ayrı program vardır. Asıl işi server program
+2) Server program kaynak paylaşımı sağlayabilir. Örneğin yazıcı tek bir bilgisayara bağlıdır. Başka bilgisayardaki *print* programları client gibi çalışarak yazıcının bağlı olduğu makinadaki server programa isteği iletir. Server da print işlemini client için yapar. Ya da örneğin server'a bir veritabanı bağlıdır. Client ondan istekte bulunur. Örneğin banka ATM'lerinde veritabanı, ATM makinasının içerisinde değildir. ATM'deki program client program gibi davranmaktadır. 
 
-yapar. Client yalnızca ***istekte (request)*** bulunur. Server işi yapar
+3) Server program client'lar arasında iş birliği sağlayabilir. Onlar arasındaki iletişime aracılık edebilir. Örneğin bir chat programında client'lar birbirini tanımamaktadır. Herkes yalnızca server'ı tanır. Her client server'a bağlanır. Server, client'lar arasındaki haberleşmeye aracılık eder.
 
-ve ***sonuçları (response)*** client\'a gönderir. Yazılışına göre bir
+4) Client-Server çalışma dağıtık (distributed) uygulamalarda da karşımıza çıkabilmektedir. Yani bir işin belirli parçalarını başka bilgisayarlarda yapıp sonra onu birleştirmek isteyebiliriz.  
 
-server "aynı anda" birden fazla client\'a hizmet verebilmektedir.
-
-  
-
-***Anahtar Notlar:** Server bir client' a hizmet verirken aynı anda
-
-başka bir client hizmet alamıyorsa bu tarz server'lara **"single-client
-
-server "** veya **"iterative server"** denilmektedir. Tersine bir
-
-client'ın hizmeti devam ederken başka bir client da hizmet alabiliyorsa
-
-bu tarz server'lara **"multi-client server"** veya "**concurrent
-
-server"**denilmektedir.*
-
-  
-
-![](./media/image5.png){width="2.8027777777777776in"
-
-height="1.9319444444444445in"}
-
-  
-
-Client-Server modelde önce client server\'a bağlanır. Bu kavrama genel
-
-olarak ***"el sıkışma (hand shaking)"*** denir. Haberleşme ondan sonra
-
-başlar. Client-Server uygulamalar her ne kadar TCP\'yi çağrıştırıyorsa
-
-da aslında bu bir haberleşme mimarisidir. Yani aslında client-server
-
-çalışma için IP ailesinin kullanılması gerekmez. Bu çalışma örneğin aynı
-
-makinadaki prosesler arasında ***borularla (pipes)*** ya da ***mesaj
-
-kuyruklarıyla (message queues)*** da sağlanabilir.
-
-  
-
-**Client-Server çalışmanın şu avantajları vardır:**
-
-  
-
-1\) Server programın çalıştığı makine güçlü olabilir. Biz de onun
-
-gücünden yararlanmak istiyor olabiliriz. Örneğin uzun zaman alan bir
-
-işlemi bir mobil cihazdan yapmak yerine mobil cihazı client olarak
-
-kullanıp asıl işi server\'a yaptırmak uygun olabilir.
-
-  
-
-2\) Server program kaynak paylaşımı sağlayabilir. Örneğin yazıcı tek bir
-
-bilgisayara bağlıdır. Başka bilgisayardaki *print* programları client
-
-gibi çalışarak yazıcının bağlı olduğu makinadaki server programa isteği
-
-iletir. Server da print işlemini client için yapar. Ya da örneğin
-
-server\'a bir veritabanı bağlıdır. Client ondan istekte bulunur. Örneğin
-
-banka ATM\'lerinde veritabanı, ATM makinasının içerisinde değildir.
-
-ATM\'deki program client program gibi davranmaktadır.
-
-  
-
-3\) Server program client\'lar arasında iş birliği sağlayabilir. Onlar
-
-arasındaki iletişime aracılık edebilir. Örneğin bir chat programında
-
-client\'lar birbirini tanımamaktadır. Herkes yalnızca server\'ı tanır.
-
-Her client server\'a bağlanır. Server, client'lar arasındaki
-
-haberleşmeye aracılık eder.
-
-  
-
-4\) Client-Server çalışma dağıtık (distributed) uygulamalarda da
-
-karşımıza çıkabilmektedir. Yani bir işin belirli parçalarını başka
-
-bilgisayarlarda yapıp sonra onu birleştirmek isteyebiliriz.
-
-  
-
-**Soket Kavramı**
-
-  
+XXXXXXXXXXXXXXXXXX
+###### Soket Kavramı
 
 Farklı makinadaki processler ararasındaki haberleşmede kullanılacak
 
