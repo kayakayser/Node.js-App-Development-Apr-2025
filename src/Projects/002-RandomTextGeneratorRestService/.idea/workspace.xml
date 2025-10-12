@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PropertiesComponent">{}</component>
+  <component name="RunManager">
+    <configuration name="app.mjs" type="NodeJSConfigurationType" temporary="true" application-parameters="50501 1000 10" nameIsGenerated="true" path-to-js-file="app.mjs" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.app.mjs" />
+      </list>
+    </recent_temporary>
+  </component>
+</project>

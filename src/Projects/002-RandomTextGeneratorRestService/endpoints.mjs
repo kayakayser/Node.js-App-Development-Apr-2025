@@ -22,10 +22,7 @@ const randomTextEN = count => randomText(count, ALL_LETTERS_EN)
 
 const parseRemoteAddress = address => address.substring("::ffff:".length) // will be used from remote library later
 // will be used from remote library later
-const sendJsonWithStatusCode = (res, code, json) => {
-    res.status(code)
-    res.json(json)
-}
+const sendJsonWithStatusCode = (res, code, json) => res.status(code).json(json)
 
 const sendJsonBadRequest = (res, json) => sendJsonWithStatusCode(res, 400, json)
 
