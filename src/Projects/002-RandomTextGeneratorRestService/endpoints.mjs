@@ -11,7 +11,7 @@ const ALL_LETTERS_EN = LETTERS_EN + UPPERCASE_EN
 const randomInt = (min, bound) => Math.floor(Math.random() * (bound - min) + min)
 const randomText = (count, source) => {
     let result = ""
-
+    
     for (let i = 0; i < count; ++i)
         result += source.charAt(randomInt(0, source.length))
 
