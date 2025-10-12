@@ -1730,91 +1730,37 @@ TCP ile gerliştirilen bir client ugulamanın tipikl organizasyonu
 
 Socket açılır -\> connect -\> sennd receive -\> socket kapatılır.
 
-
 ##### Veritabanı Kavramı
 
-Bilgilerin saklanması ve geri alınması için organize edilmiş dosyalara
-***veritabanı*** denilmektedir. Veritabanları tek bir dosya olarak
-organize edilebildiği gibi bir grup dosya biçiminde de organize
-edilebilir. Genellikle bu organizasyon istenen bilgilerin hızlı bir
-biçimde elde edilmesi amacıyla gerçekleştirilmektedir. Günümüzde
-uygulamaların pek çoğu küçük ya da büyük birtakım veritabanlarını
-kullanmaktadır.
+Bilgilerin saklanması ve geri alınması için organize edilmiş dosyalara ***veritabanı (database)*** denilmektedir. Veritabanları tek bir dosya olarak organize edilebildiği gibi bir grup dosya biçiminde de organize edilebilir. Genellikle bu organizasyon istenen bilgilerin hızlı bir biçimde elde edilmesi amacıyla gerçekleştirilmektedir. Günümüzde uygulamaların pek çoğu küçük ya da büyük birtakım veritabanlarını kullanmaktadır.
 
-Veritabanlarının organizasyonu için birtakım ***modeller (paradigms)***
-kullanılmaktadır. Günümüzde çok tercih edilenlerden biri ***"ilişkisel
-(relational)"*** veritabanı modelidir. Ancak farklı uygulamalarda farklı
-modellerin çeşitli avantajları vardır. Örneğin ***"büyük veri (big
-data)"*** analizi gibi konularda kullanılabilen ***"NoSQL (Not Only
-SQL)"*** de bir veritabanı modelidir.
-
+Veritabanlarının organizasyonu için birtakım ***modeller (paradigms)*** kullanılmaktadır. Günümüzde çok tercih edilenlerden biri ***ilişkisel (relational)*** veritabanı modelidir. Ancak farklı uygulamalarda farklı modellerin çeşitli dezavantajları vardır. Örneğin ***büyük veri analizi (big data analytics)*** gibi konularda kullanılabilen ***NoSQL (Not Only SQL)*** de bir veritabanı modelidir.
 ###### Veritabanı Yönetim Sistemleri (Database Management Systems - DBMS)
 
-Veritabanı işlemleri ticari uygulamalarda uygulamanın performansı
-üzerinde en etkili olan öğelerdendir. Bu nedenle geliştiriciler
-veritabanı işlemlerini mümkün olduğunca hızlı yapan araçlar kullanmak
-isterler. Eskiden veritabanı işlemleri kütüphaneler kullanılarak
-yapılıyordu. Yani bu konuda uzmanlaşmış kişilerin ya da şirketlerin
-yazmış olduğu kütüphanelerdeki fonksiyonlarla veritabanlarına kayıt
-eklenip, sorgulamalar yapılıyordu. Ancak bu kütüphanelerin oldukça aşağı
-seviyeli bir yapısı vardı. Bunlarla çalışma genel olarak zordu. İşte ilk
-kez 70'li yılların sonlarına doğru ***"Veritabanı Yönetim Sistemi
-(VTYS)"*** ismi altında veritabanı işlemlerini yapan özel uygulamalar
-(yazılımlar) geliştirildi. Bu yazılımlar veritabanı işlemlerinden
-sorumlu oldular.
+Veritabanı işlemleri ticari uygulamalarda uygulamanın performansı üzerinde en etkili olan öğelerdendir. Bu nedenle geliştiriciler veritabanı işlemlerini mümkün olduğunca hızlı yapan araçlar kullanmak isterler. Eskiden veritabanı işlemleri kütüphaneler kullanılarak yapılıyordu. Yani bu konuda uzmanlaşmış kişilerin ya da şirketlerin yazmış olduğu kütüphanelerdeki fonksiyonlarla veritabanlarına kayıt eklenip, sorgulamalar yapılıyordu. Ancak bu kütüphanelerin oldukça aşağı
+seviyeli bir yapısı vardı. Bunlarla çalışma genel olarak zordu. İşte ilk kez 70'li yılların sonlarına doğru ***Veritabanı Yönetim Sistemi (VTYS)*** ismi altında veritabanı işlemlerini yapan özel uygulamalar (yazılımlar) geliştirildi. Bu yazılımlar veritabanı işlemlerinden sorumlu oldular.
 
-Bir yazılıma VTYS denebilmesi için onun bazı özelliklere sahip olması
-gerekmektedir. Bunlardan bazıları şunlardır:
+Bir yazılıma VTYS denebilmesi için onun bazı özelliklere sahip olması gerekmektedir. Bunlardan bazıları şunlardır:
 
-1\) Aşağı Seviyeli Dosya Formatlarıyla Kullanıcının İlişkisinin Kesilmiş
-Olması: VTYS'lerde kullanıcıların, bilgilerin hangi dosyalarda ve nasıl
-organize edildiğini bilmelerine gerek kalmamaktadır. Yani adeta
-veritabanı kullanıcıya bir kara kutu biçiminde gösterilmektedir.
-Kullanıcı yalnızca ne yapacağını VTYS'ye iletir. İşlemleri VTYS yapar.
+1\) Aşağı Seviyeli Dosya Formatlarıyla Kullanıcının İlişkisinin Kesilmiş Olması: VTYS'lerde kullanıcıların, bilgilerin hangi dosyalarda ve nasıl organize edildiğini bilmelerine gerek kalmamaktadır. Yani adeta veritabanı kullanıcıya bir kara kutu biçiminde gösterilmektedir. Kullanıcı yalnızca ne yapacağını VTYS'ye iletir. İşlemleri VTYS yapar.
 
-2\) VTYS'ler yüksek seviyeli dekleratif dillerle kullanıcı isteklerini
-yerine getirmektedir. Bu dillerden en yaygın olanı ***"SQL (Structured
-Query Language)"***'dir. SQL, asıl sorgulama işlemlerini yapan
-programların dili değildir. SQL kullanıcının VTYS'ye isteğini anlatmak
-için kullanılan bir dildir. VTYS bu isteği alır, motor kısmındaki genel
-olarak C/C++ ile yazılmış kodlar yoluyla sonuçları elde eder ve
-kullanıcıya verir.
+2\) VTYS'ler yüksek seviyeli dekleratif dillerle kullanıcı isteklerini yerine getirmektedir. Bu dillerden en yaygın olanı ***SQL (Structured Query Language)***'dir. SQL, asıl sorgulama işlemlerini yapan dil değildir. SQL kullanıcının VTYS'ye isteğini anlatmak
+için kullanılan bir dildir. VTYS bu isteği alır, motor kısmındaki genel olarak C/C++ ile yazılmış kodlar yoluyla sonuçları elde eder ve kullanıcıya verir.
 
-3\) VTYS'ler genel olarak ***client-server*** çalışma modeline sahiptir.
-Yani birden fazla kullanıcı VTYS'ye istekte bulunabilir. VTYS bu
-istekleri karşılar. Yani biz bir VTYS'yi bilgisayarımıza kurduğumuzda
-aynı zamanda bir server da kurmuş oluruz.
+3\) VTYS'ler genel olarak ***client-server*** çalışma modeline sahiptir. Yani birden fazla kullanıcı VTYS'ye istekte bulunabilir. VTYS bu istekleri karşılar. Yani biz bir VTYS'yi bilgisayarımıza kurduğumuzda aynı zamanda bir server da kurmuş oluruz.
 
-4\) VTYS'lerde belli düzeylerde güvenlik ve güvenilirlik (security and
-reliability/safety) mekanizması oluşturulmuştur. Yani bilgiler bu
-sistemlerde kolayca çalınmazlar ve bozulmazlar.
+4\) VTYS'lerde belli düzeylerde güvenlik ve güvenilirlik (security and reliability/safety) mekanizması oluşturulmuştur. Yani bilgiler bu sistemlerde kolayca çalınmazlar ve bozulmazlar.
 
-5\) VTYS'lerin çoğu yardımcı birtakım araçlar içermektedir. Örneğin
-backup-restore programları, yönetici programlar, kütüphaneler vs.
+5\) VTYS'lerin çoğu yardımcı birtakım araçlar içermektedir. Örneğin backup-restore programları, yönetici programlar, kütüphaneler vs.
 
 Peki günümüzde en çok tercih edilen VTYS'ler nelerdir? Oracle firmasının
-***Oracle*** isimli ürünü büyük veritabanları için kurumların en çok
-tercih ettiği ücretli VTYS'lerden biridir. Microsoft'un ***SQL Server***
-isimli ürünü doğrudan Oracle ile rakip durumdadır. Pek çok kurum Sql
-Server'ı tercih etmektedir. Bunun dışında ücretli başka VTYS'ler de
-vardır. Ancak ücretsiz ve açık kaynak kodlu da pek çok VTYS
-geliştirilmiştir. ***MySql*** açık kaynak kodlu bir projedir. Ancak bazı
-haklarını daha sonra Oracle satın almıştır. Büyük ölçüde açık kaynak
-kodlu olarak devam etmektedir. ***PostgreSQL*** diğer bir bedava, açık
-kaynak kodlu ve güçlü bir VTYS'dir. Son dönemlerde gittikçe popülaritesi
-artmaktadır.
+***Oracle*** isimli ürünü büyük veritabanları için kurumların en çok tercih ettiği ücretli VTYS'lerden biridir. Microsoft'un ***SQL Server*** isimli ürünü doğrudan Oracle ile rakip durumdadır. Pek çok kurum Sql Server'ı tercih etmektedir. Bunun dışında ücretli başka VTYS'ler de vardır. Ancak ücretsiz ve açık kaynak kodlu da pek çok VTYS geliştirilmiştir. ***MySql*** açık kaynak kodlu bir projedir. Ancak bazı haklarını daha sonra Oracle satın almıştır. Büyük ölçüde açık kaynak
+kodlu olarak devam etmektedir. ***PostgreSQL*** diğer bir bedava, açık kaynak kodlu ve güçlü bir VTYS'dir. Son dönemlerde gittikçe popülaritesi artmaktadır.
 
-Bir grup VTYS aslında VTYS'lerin pek çok özelliğini barındırmasa da SQL
-kullanımına izin vermektedir. Bunların kurulum sorunları yoktur. Bunlar
-adeta bir veritabanı kütüphanesi gibi genel olarak tek bir kütüphane
-dosyasından oluşmuşlardır. Özellikle gömülü sistemlerde tercih
-edilmelerinden dolayı bunlara ***"Gömülü VTYS (Embedded DBMS)"*** de
-denilmektedir. Bunların en yaygın olanı şu günlerde ***SQLite***'tır.
-SQLite hem Windows, hem Linux, hem MAC OS X hem de mobil işletim
-sistemlerinde aynı biçimde kullanılabilmektedir. Örneğin Android
-sistemlerinde pek çok bilgi SQLite ile saklanmaktadır. Örneğin, arama
-bilgileri, contact list bilgileri vb. SQLite dışında da gömülü VTYS'ler
-bulunmaktadır.
+Bir grup VTYS, aslında VTYS'lerin pek çok özelliğini barındırmasa da SQL kullanımına izin vermektedir. Bunların kurulum sorunları yoktur. Bunlar adeta bir veritabanı kütüphanesi gibi genel olarak tek bir kütüphane dosyasından oluşmuşlardır. Özellikle gömülü sistemlerde tercih
+edilmelerinden dolayı bunlara ***Gömülü VTYS (Embedded DBMS)*** de denilmektedir. Bunların en yaygın olanı şu günlerde ***SQLite***'tır. SQLite hem Windows, hem Linux, hem MAC OS X hem de mobil işletim sistemlerinde aynı biçimde kullanılabilmektedir. Örneğin Android sistemlerinde pek çok bilgi SQLite ile saklanmaktadır. Örneğin, arama bilgileri, contact list bilgileri vb. SQLite dışında da gömülü VTYS'ler bulunmaktadır.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 **İlişkisel Veritabanları (Relational Databases)**
 
