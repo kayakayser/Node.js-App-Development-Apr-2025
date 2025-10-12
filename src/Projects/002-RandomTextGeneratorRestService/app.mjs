@@ -1,13 +1,13 @@
 import express from "express";
-import {doEndPoints, startService} from "./endpoints.mjs";
+import {createEndPoints, startService} from "./endpoints.mjs";
 
-if (process.argv.length !== 4) {
+if (process.argv.length !== 5) {
     console.log("Wrong number of arguments")
     process.exit(1)
 }
 
 const app = express()
 
-doEndPoints(app, parseInt(process.argv[3]))
+createEndPoints(app, parseInt(process.argv[3]), parseInt(process.argv[4]))
 
 startService(app, parseInt(process.argv[2]))

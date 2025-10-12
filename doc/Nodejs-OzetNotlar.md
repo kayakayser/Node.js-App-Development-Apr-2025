@@ -1729,3 +1729,449 @@ TCP ile gerliştirilen bir client ugulamanın tipikl organizasyonu
   
 
 Socket açılır -\> connect -\> sennd receive -\> socket kapatılır.
+
+
+##### Veritabanı Kavramı
+
+Bilgilerin saklanması ve geri alınması için organize edilmiş dosyalara
+***veritabanı*** denilmektedir. Veritabanları tek bir dosya olarak
+organize edilebildiği gibi bir grup dosya biçiminde de organize
+edilebilir. Genellikle bu organizasyon istenen bilgilerin hızlı bir
+biçimde elde edilmesi amacıyla gerçekleştirilmektedir. Günümüzde
+uygulamaların pek çoğu küçük ya da büyük birtakım veritabanlarını
+kullanmaktadır.
+
+Veritabanlarının organizasyonu için birtakım ***modeller (paradigms)***
+kullanılmaktadır. Günümüzde çok tercih edilenlerden biri ***"ilişkisel
+(relational)"*** veritabanı modelidir. Ancak farklı uygulamalarda farklı
+modellerin çeşitli avantajları vardır. Örneğin ***"büyük veri (big
+data)"*** analizi gibi konularda kullanılabilen ***"NoSQL (Not Only
+SQL)"*** de bir veritabanı modelidir.
+
+###### Veritabanı Yönetim Sistemleri (Database Management Systems - DBMS)
+
+Veritabanı işlemleri ticari uygulamalarda uygulamanın performansı
+üzerinde en etkili olan öğelerdendir. Bu nedenle geliştiriciler
+veritabanı işlemlerini mümkün olduğunca hızlı yapan araçlar kullanmak
+isterler. Eskiden veritabanı işlemleri kütüphaneler kullanılarak
+yapılıyordu. Yani bu konuda uzmanlaşmış kişilerin ya da şirketlerin
+yazmış olduğu kütüphanelerdeki fonksiyonlarla veritabanlarına kayıt
+eklenip, sorgulamalar yapılıyordu. Ancak bu kütüphanelerin oldukça aşağı
+seviyeli bir yapısı vardı. Bunlarla çalışma genel olarak zordu. İşte ilk
+kez 70'li yılların sonlarına doğru ***"Veritabanı Yönetim Sistemi
+(VTYS)"*** ismi altında veritabanı işlemlerini yapan özel uygulamalar
+(yazılımlar) geliştirildi. Bu yazılımlar veritabanı işlemlerinden
+sorumlu oldular.
+
+Bir yazılıma VTYS denebilmesi için onun bazı özelliklere sahip olması
+gerekmektedir. Bunlardan bazıları şunlardır:
+
+1\) Aşağı Seviyeli Dosya Formatlarıyla Kullanıcının İlişkisinin Kesilmiş
+Olması: VTYS'lerde kullanıcıların, bilgilerin hangi dosyalarda ve nasıl
+organize edildiğini bilmelerine gerek kalmamaktadır. Yani adeta
+veritabanı kullanıcıya bir kara kutu biçiminde gösterilmektedir.
+Kullanıcı yalnızca ne yapacağını VTYS'ye iletir. İşlemleri VTYS yapar.
+
+2\) VTYS'ler yüksek seviyeli dekleratif dillerle kullanıcı isteklerini
+yerine getirmektedir. Bu dillerden en yaygın olanı ***"SQL (Structured
+Query Language)"***'dir. SQL, asıl sorgulama işlemlerini yapan
+programların dili değildir. SQL kullanıcının VTYS'ye isteğini anlatmak
+için kullanılan bir dildir. VTYS bu isteği alır, motor kısmındaki genel
+olarak C/C++ ile yazılmış kodlar yoluyla sonuçları elde eder ve
+kullanıcıya verir.
+
+3\) VTYS'ler genel olarak ***client-server*** çalışma modeline sahiptir.
+Yani birden fazla kullanıcı VTYS'ye istekte bulunabilir. VTYS bu
+istekleri karşılar. Yani biz bir VTYS'yi bilgisayarımıza kurduğumuzda
+aynı zamanda bir server da kurmuş oluruz.
+
+4\) VTYS'lerde belli düzeylerde güvenlik ve güvenilirlik (security and
+reliability/safety) mekanizması oluşturulmuştur. Yani bilgiler bu
+sistemlerde kolayca çalınmazlar ve bozulmazlar.
+
+5\) VTYS'lerin çoğu yardımcı birtakım araçlar içermektedir. Örneğin
+backup-restore programları, yönetici programlar, kütüphaneler vs.
+
+Peki günümüzde en çok tercih edilen VTYS'ler nelerdir? Oracle firmasının
+***Oracle*** isimli ürünü büyük veritabanları için kurumların en çok
+tercih ettiği ücretli VTYS'lerden biridir. Microsoft'un ***SQL Server***
+isimli ürünü doğrudan Oracle ile rakip durumdadır. Pek çok kurum Sql
+Server'ı tercih etmektedir. Bunun dışında ücretli başka VTYS'ler de
+vardır. Ancak ücretsiz ve açık kaynak kodlu da pek çok VTYS
+geliştirilmiştir. ***MySql*** açık kaynak kodlu bir projedir. Ancak bazı
+haklarını daha sonra Oracle satın almıştır. Büyük ölçüde açık kaynak
+kodlu olarak devam etmektedir. ***PostgreSQL*** diğer bir bedava, açık
+kaynak kodlu ve güçlü bir VTYS'dir. Son dönemlerde gittikçe popülaritesi
+artmaktadır.
+
+Bir grup VTYS aslında VTYS'lerin pek çok özelliğini barındırmasa da SQL
+kullanımına izin vermektedir. Bunların kurulum sorunları yoktur. Bunlar
+adeta bir veritabanı kütüphanesi gibi genel olarak tek bir kütüphane
+dosyasından oluşmuşlardır. Özellikle gömülü sistemlerde tercih
+edilmelerinden dolayı bunlara ***"Gömülü VTYS (Embedded DBMS)"*** de
+denilmektedir. Bunların en yaygın olanı şu günlerde ***SQLite***'tır.
+SQLite hem Windows, hem Linux, hem MAC OS X hem de mobil işletim
+sistemlerinde aynı biçimde kullanılabilmektedir. Örneğin Android
+sistemlerinde pek çok bilgi SQLite ile saklanmaktadır. Örneğin, arama
+bilgileri, contact list bilgileri vb. SQLite dışında da gömülü VTYS'ler
+bulunmaktadır.
+
+**İlişkisel Veritabanları (Relational Databases)**
+
+İlişkisel veritabanları genel olarak tablolardan (tables), tablolar da
+sütunlardan (fields) ve satırlardan (records) oluşmaktadır.
+
+![](./media/media/image1.png){width="3.3847222222222224in"
+height="1.4534722222222223in"}
+
+Tablolarda yinelenmeme garantisi verilen sütunlara ***"birincil anahtar
+(primary key)"*** denilmektedir. Veritabanı içerisindeki her tablonun
+bir tane birincil anahtara sahip olması tavsiye edilir. Birincil anahtar
+olmayan ancak tekrarlamama garantisi verilen alanlar da olabilmektedir
+(unique).
+
+İlişkisel veritabanlarında bilgiler birden fazla tabloda bulunuyor
+olabilir. Böylece bilgi elde edilirken birden fazla tablodan alınabilir.
+Örneğin:
+
+![](./media/media/image2.png){width="6.531944444444444in"
+height="1.4701388888888889in"}
+
+İdeal olarak veritabanı tabloları tekrar bilgisi içermemelidir. Örneğin
+Bir öğrencinin adı ve soyadı birden fazla tabloda gereksiz bir biçimde
+bulundurulmamalıdır. Tabii tablolar arasında geçiş yapmak için ortak bir
+anahtara gereksinim duyulur. Bunun için oluşturulan sütunlara (alanlara)
+***"yabancı anahtar (foreign key)"*** denilmektedir. Yukarıdaki
+veritabanında öğrencinin numarası onun hangi dersleri aldığı bilgisini
+elde etmek için kullanılmaktadır. Benzer biçimde derslerin id numaraları
+da o derslerin diğer bilgilerine erişmekte kullanılmaktadır. İşte büyük
+veritabanlarında böyle binlerce tablo bulunabilmektedir. Uygun bilginin
+elde edilmesi bir sürü tablo gezinerek yapılabilmektedir. Tabloların
+tekrarı engelleyecek biçimde düzenlenmesine veritabanı terminolojisinde
+***"normalizasyon (normalization)"*** denilmektedir. Veritabanı
+tablolarını tasarlamakta kullanılan yazılımsal araçlar da vardır. Bu
+araçlar yalnızca veritabanı tasarlamakta kullanılmaz.
+
+**Temel SQL Bilgisi**
+
+SQL büyük harf küçük harf duyarlılığı olan bir dil değildir. Dolayısıyla
+SQL komutlarının büyük harf ya da küçük harfli yazılmaları sorun
+oluşturmaz. Bazı programcılar bir yazım stili olarak SQL komutlarını
+büyük harflerle belirtmektedir. Ayrıca SQL komutları genel olarak ';'
+ile sonlandırılmaktadır. Ancak pek çok VTYS, komutlar ';' ile
+sonlandırılmasa bile bir sorun oluşturmamaktadır.
+
+**Veritabanın Yaratılması**
+
+Şüphesiz ilk iş bir veritabanının sıfırdan yaratılmasıdır. Bu işleme bir
+kez gereksinim duyulacağı için VTYS'lerin yönetim ekranından
+yapılabilir. SQL'de veritabanı yaratmak için CREATE DATABASE komutu
+kullanılmaktadır. Komutun genel biçimi şöyledir:
+
+CREATE DATABASE \<isim\>;
+
+**Veritabanı Tablolarının Yaratılması**
+
+Veritabanı yaratıldıktan sonra sıra tabloların yaratılmasına gelir. Yine tabloları biz bazı ***Graphical User Interface (GUI)*** araçlarla ya da
+doğrudan SQL cümleleriyle yaratabiliriz. Tabloların yaratımı sırasında
+tabloların isimleri, onların sütunlarının isimleri ve türleri tek tek
+belirtilir. Sütun türleri SQL standartlarında belirtilmiştir. Ancak
+farklı VTYS'ler kendine özgü türler de kullanmaktadır. Tipik sütun
+türleri (alanlara ilişkin türler) şunlardır:
+
+  -------------- ---------------------------------------------------------
+  CHARACTER(n)   En fazla n karakterlik yazıların tutulacağı alan için
+                 kullanılır. Genellikle VTYS yazı n karakterden küçük olsa
+                 bile n karakterlik yeri ayırmaktadır.
+
+  VARCHAR(n)     En fazla n karakterli yazıların tutulabileceği alan için
+                 kullanılır Ancak n'den az karakterli yazılar için n
+                 karakterlik yer ayrılmaz.
+
+  SMALLINT       Bu tür genellikle 2 byte uzunluğunda olan tamsayıları
+                 belirtmektedir. Ancak VTYS'den VTYS'ye değişebilir.
+
+  INTEGER        Bu tür genellikle 4 byte uzunluğunda olan tamsayıları
+                 belirtmektedir. Ancak VTYS'den VTYS'ye değişebilir.
+
+  BIGINT         Bu tür genellikle 8 byte uzunluğunda olan tamsayıları
+                 belirtmektedir. Ancak VTYS'den VTYS'ye değişebilir.
+
+  FLOAT          Genellikle 8 byte'lık gerçek sayı türünü turmak için
+                 kullanılmaktadır.
+
+  REAL           Genellikle 4 byte'lık gerçek sayı türünü turmak için
+                 kullanılmaktadır.
+
+  DOUBLE         Genellikle 8 byte'lık gerçek sayı türünü turmak için
+                 kullanılmaktadır.
+
+  DATE           Tarih bilgisi tutmak için kullanılır
+
+  TIME           Zaman bilgisi tutmak için kullanılır
+
+  BLOB           En fazla 2 byte uzunluğunda (65526) binary alan.
+
+  TINYBLOB       En fazla 1 byte uzunluğunda (256) binary alan
+
+  MEDIUMBLOB     En fazla 3 byte uzunluğunda (16777216) binary alan.
+
+  LONGBLOB       En fazla 4 byte uzunluğunda (4294967296) binary alan.
+
+  TINYTEXT       En fazla 1 karakter uzunluğunda (256) text alan
+
+  MEDIUMTEXT     En fazla 3 byte uzunluğunda (16777216) text alan.
+
+  TEXT           En fazla 2 byte uzunluğunda (65526) text alan.
+  -------------- ---------------------------------------------------------
+
+Pek çok VTYS'de yukarıdaki türlerden başka pek çok tür de bulunur.
+Örneğin MySQL'de işaretsiz tamsayı türleri de vardır. Bazı gömülü
+VTYS'lerde bazı türler bulunmaz. Örneğin SQLite'da tarih-zamana ilişkin
+türler doğrudan yoktur. Tarih-zaman bilgileri çeşitli türlerle
+tutulmaktadır. Ancak SQLite'da tarih-zaman işlemlerine ilişkin
+fonksiyonlar bulundurulmuştur.
+
+Tablo yaratmak için CREATE TABLE Sql komutu kullanılır. Komutun yalın
+genel biçimi şöyledir:
+
+CREATE TABLE \<*table_name\>*\
+(
+
+*\<column_name1\> \<data_type\>*(*size*),
+
+*\<column_name2\> \<data_type\>*(*size*),
+
+\<*column_name3\> \<data_type\>*(*size*),\
+\....
+
+);
+
+Komutun ayrıntıları için Sql kaynaklarına başvurulabilir. Örneğin:
+
+CREATE TABLE student_info(student_id INTEGER PRIMARY KEY AUTO,
+student_name VARCHAR(45), student_bdate DATE);
+
+Şüphesiz bazı VTYS'ye göre komutun sentaksı değişiklik
+gösterebilmektedir.
+
+**Veritabanı üzerinde temel işlemler**
+
+Konu (domain) ne olursa olsun veriler üzerinde şu işlemler yapılabilir:
+
+1\. Create: Ekleme
+
+2\. Read: Sorgulama
+
+3\. Update: Güncelleme
+
+4\. Delete: Silme
+
+Bu işlemler için ***CRUD*** kısaltması yaygın olarak kullanılmaktadır.
+
+**Tabloya Kayıt Ekleme İşlemi**
+
+Tabloya kayıt eklemek için ***INSERT INTO*** Sql komutu kullanılır.
+Komutun genel biçimi şöyledir:
+
+INSERT INTO \<*table_name\>* (*column1*,*column2*,*column3*,\...)VALUES
+(*value1*,*value2*,*value3*,\...);
+
+Bir çok VTYS' de kayıt eklerken yazısal sütunlar ile tarih ve zaman
+sütunları tek tırnak içerisine alınmalıdır. Bunun dışında sayısal sütun
+bilgileri doğrudan yazılır. Örneğin:
+
+INSERT INTO student_info(student_name, student_bdate) VALUES (\'John
+Lennon\', \'1940/10/09\');
+
+Insert işlemi sırasında biz bazı sütunları belirtmeyebiliriz. Ancak
+belirtmediğimiz sütunlar için default değer tanımlamasının yapılmış
+olması gerekir. Bazı sütunlar ***"Auto Increment"*** olabilmektedir. Bu
+durumda VTYS kayıt ekleme sırasında önceki değerin bir fazlasını bu
+sütuna değer olarak verir. Bazı sütünlar boş geçilebilir (nullable)
+olabilir. Bu durumda insert işleminde bu sütunlar belirtilmezse null
+değerini alırlar. Tablo yaratırken bazı alanlar için default değerler de
+CREATE TABLE cümlesinde belirtilebilmektedir. Boş geçilemeyen (not null)
+ve default değer almayan alanlara insert cümlesinde ekleme yapılmalıdır.
+
+**WHERE Cümleciği**
+
+WHERE cümleciği (where clause) Sql'de bir komut değildir. Bazı
+komutların içerisinde kullanılan bir kalıptır. Örneğin DELETE FROM
+komutunun, SELECT komutunun WHERE cümleciği kısımları vardır. WHERE
+cümleciği koşul belirtmektedir. Koşul belirtilirken sütun isimleri ve
+temel karşılaştırma operatörleri kullanılabilir. Örneğin:
+
+WHERE student_id \> 1250
+
+Koşullarda mantıksal AND, OR ve NOT operatörleri kullanılabilir.
+Örneğin:
+
+WHERE student_name = 'Kaan Aslan' AND student_id \> 2450
+
+LIKE opereratörü yazısal bir sütunun belli bir kalıba uygunluk koşulu
+için kullanılır. % joker karakteri "bundan sonra çeşitli karakterler
+gelebilir" anlamındadır.
+
+Örneğin:
+
+WHERE student_name LIKE \'S%\'
+
+Burada ismi S ile başlayan öğrenciler için koşul verilmiştir.
+
+**Kayıt Silme İşlemi**
+
+Belli koşulları sağlayan kayıtların silinmesi ***DELETE FROM***
+komutuyla yapılmaktadır. Komutun genel biçimi şöyledir:
+
+DELETE FROM \<tablo ismi\> \[WHERE cümleciği\]
+
+Örneğin:
+
+DELETE FROM student_info WHERE student_name = 'Ali Serçe'
+
+Bu komutla ismi Ali Serçe olan tüm kayıtlar silinmektedir. Örneğin:
+
+DELETE FROM student_info WHERE student_id \> 100
+
+Burada id'si 100'den büyük tüm kayıtlar silinmektedir.
+
+DELETE FROM student_info WHERE student_name LIKE 'A%e'
+
+**Koşulu Sağlayan Kayıtların Elde Edilmesi**
+
+Koşulu sağlayan kayıtların elde edilmesi için ***SELECT*** komutu
+kullanılmaktadır. SELECT komutunun genel biçimi oldukça ayrıntılıdır.
+Pek çok cümlecik (örneğin WHERE cümleciği) komut içerisinde
+bulundurulabilmektedir.
+
+SELECT komutun tipik kullanımı şöyledir:
+
+SELECT \<sütun listesi\> FROM \<tablo ismi\> \[WHERE cümleciği\]
+
+Sütun listesi yerine '\*' karakteri getirilirse tüm sütunlar anlaşılır.
+WHERE cümleciği kullanılmazsa tüm kayıtlar anlaşılır. Örneğin,
+
+SELECT Code FROM country WHERE Name LIKE \'T%\'
+
+Bu komutla ilk harfi T ile başlayan tüm ülkelerin ülke kodları elde
+edilecektir.
+
+SELECT komutunda VTYS'nin hazır bazı fonksiyonları kullanılabilmektedir.
+Her VTYS'nin birtakım hazır fonksiyonları vardır. Ancak bu konuda bir
+standart bulunmamaktadır. Örneğin PostgreSQL'de DATE_PART isimli
+fonksiyon bir tarihin çeşitli bileşenlerini ayrıştırıp verebilmektedir.
+Biz de bu sayede aşağıdaki gibi bir SELECT komutu oluşturabiliriz:
+
+SELECT \* FROM student_info WHERE DATE_PART('day', student_bdate) =
+date_part('day', current_date)
+
+Burada doğum tarihinden gün bilgisi elde edilmiş ve o gün doğan
+öğrencilerin tüm bilgileri elde edilmiştir.
+
+VTYS'lerin fonksiyon listelerine onların dokümanlarından erişilebilir.
+Ancak bu fonksiyonların standart olmadığını yani her VTYS
+fonksiyonlarının birbirlerinden farklılık gösterebildiğini anımsatalım.
+
+SELECT ile birden fazla tablodan bilgi alınabilir. Bu işleme genel
+olarak ***"join (birleştirme)"*** işlemi denilmektedir. Join işleminin
+INNER, LEFT, RIGHT ve FULL biçiminde türevleri vardır. Ancak bu join
+türevleri tüm VTYS'ler tarafından tam olarak desteklenmeyebilmektedir.
+Join işlemi denildiğinde default olarak INNER JOIN anlaşılmaktadır.
+
+Join işlemi kartezyen çarpım işlemi biçiminde ele alınarak mantıksal
+olarak açıklanabilir. Bilindiği gibi iki kümenin kartezyen çarpımı
+sıralı ikililerden oluşmaktadır. Bu sıralı ikililerin ilk terimleri
+soldaki kümeden, ikinci terimleri sağdaki kümeden oluşturulur:
+
+A X B = {(a, b) \| a € A ve b € B}
+
+İşte biz iki tabloyu bu biçimde kartezyen çarpım işlemine sokarsak iki
+tablonun eleman sayılarının çarpımı kadar kayıt elde etmiş oluruz. Sonra
+bu kayıtlardan WHERE cümlesi ile belirtilen koşulu sağlayanlar seçilirse
+bu işleme INNER JOIN denilmektedir. INNER JOIN sentaksı şöyledir:
+
+SELECT *\<sütun listesi\>* FROM *table1* INNER JOIN *table2* ON
+*\<koşul\>*
+
+Sütun ve koşul kısımlarında her iki tablonun sütunları
+bulundurulabileceğinden dolayı bir çakışma söz konusu olabilir. Çakışma
+durumunda sütun isimleri tablo isimleriyle araya '.' karakteri konularak
+niteliklendirilebilir. Aslında SQL kullanıcıları çakışma olmasa da
+sütunları hep tablo isimleriyle niteliklendirmektedir. Örneğin
+
+SELECT city.Name, country.Name FROM city INNER JOIN country ON
+city.CountryCode = country.Code
+
+Burada biz sonuç olarak city tablosundaki isimleri ile country
+tablosoundaki isimleri beraber görüntülemek istemekteyiz. Ancak bu iki
+tablonun kartezyen çarpımındaki tüm satırlar için bu işlemler
+yapılmayacak. Yalnızca ON kısmında belirtilen koşulların sağlandığı
+satırlar elde edilecek. Bu işlemin sonucunda da biz tüm şehirlerin hangi
+ülkeye ait olduğuna ilişkin bir liste elde ederiz.
+
+![](./media/media/image3.png){width="4.159722222222222in"
+height="2.0416666666666665in"}
+
+Örneğin:
+
+SELECT country.Name, countrylanguage.Language,
+countrylanguage.Percentage FROM country INNER JOIN countrylanguage ON
+country.Code = countrylanguage.CountryCode
+
+![](./media/media/image4.png){width="4.978472222222222in"
+height="1.648611111111111in"}
+
+INNER JOIN işlemi için alternatif bir sentaks daha vardır. Bu sentaks
+doğrudan birden fazla tablonun isminin geçtiği SELECT cümlesi
+sentaksıdır. Örneğin:
+
+SELECT city.Name, country.Name FROM city INNER JOIN country ON
+city.CountryCode = country.Code
+
+INER JOIN işleminin eşdeğeri şöyle de yazılabilir:
+
+SELECT city.Name, country.Name FROM city, country WHERE city.CountryCode
+= country.Code
+
+Örneğin:
+
+SELECT country.Name, countrylanguage.Language,
+countrylanguage.Percentage FROM country INNER JOIN countrylanguage ON
+country.Code = countrylanguage.CountryCode
+
+INNER JOIN işleminin de eşdeğeri şöyle yazılabilir:
+
+SELECT country.Name, countrylanguage.Language,
+countrylanguage.Percentage FROM country, countrylanguage WHERE
+country.Code = countrylanguage.CountryCode
+
+LEFT JOIN işleminde sol taraftaki tablonun tüm satırları ve ON koşulunu
+sağlayan satırlar alınır. Sol taraftaki tablonun ON koşulunu sağlamayan
+satırlarının sağ taraf sütunları boş (NULL) biçimdedir. Örneğin:
+
+SELECT city.Name, country.Name FROM city LEFT JOIN country ON
+city.CountryCode = country.Code AND country.Population \> 50000000
+
+![](./media/media/image5.png){width="4.534722222222222in"
+height="2.0347222222222223in"}
+
+RIGHT JOIN ise LEFT JOIN işleminin tersidir. Yani sağ taraftaki tablonun
+tüm satırları ve ON koşulunu sağlayan satırlar alınır. Sağ taraftaki
+tablonun ON koşulunu sağlamayan satırlarının sol taraf sütunları boş
+(NULL) biçimdedir. Örneğin:
+
+SELECT city.Name, country.Name FROM city RIGHT JOIN country ON
+city.CountryCode = country.Code AND country.Population \> 50000000
+
+![](./media/media/image6.png){width="3.9097222222222223in"
+height="1.5972222222222223in"}
+
+FULL JOIN pek çok VTYS tarafından desteklenmemektedir. Bu işlemde sol
+taraftaki ve sağ taraftaki tabloların bütün satırları ile koşulu
+sağlayan satırlar elde edilir. Ancak koşulu sağlamayan satırların diğer
+tablo karşılıkları boş (NULL) olarak elde edilir.
+
+Aslında SQL burada anlatılanlardan daha ayrıntılı bir dildir. Ancak
+kursumuzda bu kadar bilgi yeterli görülmüştür. Fakat ne olursa olsun ne
+kadar çok SQL bilinirse o kadar etkin işlemler yapılabilmektedir.
