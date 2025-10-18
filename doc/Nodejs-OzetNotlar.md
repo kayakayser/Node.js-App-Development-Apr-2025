@@ -1759,21 +1759,14 @@ kodlu olarak devam etmektedir. ***PostgreSQL*** diğer bir bedava, açık kaynak
 
 Bir grup VTYS, aslında VTYS'lerin pek çok özelliğini barındırmasa da SQL kullanımına izin vermektedir. Bunların kurulum sorunları yoktur. Bunlar adeta bir veritabanı kütüphanesi gibi genel olarak tek bir kütüphane dosyasından oluşmuşlardır. Özellikle gömülü sistemlerde tercih
 edilmelerinden dolayı bunlara ***Gömülü VTYS (Embedded DBMS)*** de denilmektedir. Bunların en yaygın olanı şu günlerde ***SQLite***'tır. SQLite hem Windows, hem Linux, hem MAC OS X hem de mobil işletim sistemlerinde aynı biçimde kullanılabilmektedir. Örneğin Android sistemlerinde pek çok bilgi SQLite ile saklanmaktadır. Örneğin, arama bilgileri, contact list bilgileri vb. SQLite dışında da gömülü VTYS'ler bulunmaktadır.
+###### İlişkisel Veritabanları (Relational Databases)
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+İlişkisel veritabanları genel olarak tablolardan (tables), tablolar da sütunlardan (fields) ve satırlardan (records) oluşmaktadır.
 
-**İlişkisel Veritabanları (Relational Databases)**
-
-İlişkisel veritabanları genel olarak tablolardan (tables), tablolar da
-sütunlardan (fields) ve satırlardan (records) oluşmaktadır.
-
-![](./media/media/image1.png){width="3.3847222222222224in"
+![image1](./media/media/image1.png){width="3.3847222222222224in"
 height="1.4534722222222223in"}
 
-Tablolarda yinelenmeme garantisi verilen sütunlara ***"birincil anahtar
-(primary key)"*** denilmektedir. Veritabanı içerisindeki her tablonun
-bir tane birincil anahtara sahip olması tavsiye edilir. Birincil anahtar
-olmayan ancak tekrarlamama garantisi verilen alanlar da olabilmektedir
+Tablolarda yinelenmeme garantisi verilen sütunlara ***birincil anahtar (primary key)*** denilmektedir. Veritabanı içerisindeki her tablonun bir tane birincil anahtara sahip olması tavsiye edilir. Birincil anahtar olmayan ancak tekrarlamama garantisi verilen alanlar da olabilmektedir
 (unique).
 
 İlişkisel veritabanlarında bilgiler birden fazla tabloda bulunuyor

@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="59c7bec1-841a-4d30-8eba-cdd116eeb7e6" name="Changes" comment="update" />
+    <list default="true" id="59c7bec1-841a-4d30-8eba-cdd116eeb7e6" name="Changes" comment="update">
+      <change afterPath="$PROJECT_DIR$/../003-DemoFetchGeonamesWikiSeacrh/app.mjs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../003-DemoFetchGeonamesWikiSeacrh/endpoints.mjs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../003-DemoFetchGeonamesWikiSeacrh/geonamesWikisearch.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../doc/Nodejs-OzetNotlar.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../../doc/Nodejs-OzetNotlar.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/002-RandomTextGeneratorRestService.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/002-DemoRandomTextGeneratorRestService.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,9 +21,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="33xxLrgzDE3RGxKbdzXP96sgHTL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -26,6 +37,10 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/oguzkaran/Documents/GitHub/Node.js-App-Development-Apr-2025/src/Projects/002-RandomTextGeneratorRestService",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -60,6 +75,7 @@
       <option name="presentableId" value="Default" />
       <updated>1760272472093</updated>
       <workItem from="1760272473162" duration="244000" />
+      <workItem from="1760786695428" duration="1352000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
