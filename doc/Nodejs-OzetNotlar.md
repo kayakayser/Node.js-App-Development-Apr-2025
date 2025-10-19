@@ -1763,60 +1763,36 @@ edilmelerinden dolayı bunlara ***Gömülü VTYS (Embedded DBMS)*** de denilmekt
 
 İlişkisel veritabanları genel olarak tablolardan (tables), tablolar da sütunlardan (fields) ve satırlardan (records) oluşmaktadır.
 
-![image1](./media/media/image1.png){width="3.3847222222222224in"
-height="1.4534722222222223in"}
+![image1](./media/media/image1.png)
 
-Tablolarda yinelenmeme garantisi verilen sütunlara ***birincil anahtar (primary key)*** denilmektedir. Veritabanı içerisindeki her tablonun bir tane birincil anahtara sahip olması tavsiye edilir. Birincil anahtar olmayan ancak tekrarlamama garantisi verilen alanlar da olabilmektedir
-(unique).
+Tablolarda yinelenmeme garantisi verilen sütunlara **birincil anahtar (primary key)** denilmektedir. Veritabanı içerisindeki her tablonun bir tane birincil anahtara sahip olması tavsiye edilir. Birincil anahtar olmayan ancak tekrarlamama garantisi verilen alanlar da olabilmektedir
+(unique). İlişkisel veritabanlarında bilgiler birden fazla tabloda bulunuyor olabilir. Böylece bilgi elde edilirken birden fazla tablodan alınabilir. Örneğin: 
 
-İlişkisel veritabanlarında bilgiler birden fazla tabloda bulunuyor
-olabilir. Böylece bilgi elde edilirken birden fazla tablodan alınabilir.
+![image2](./media/media/image2.png)
+İdeal olarak veritabanı tabloları tekrar bilgisi içermemelidir. Örneğin Bir öğrencinin adı ve soyadı birden fazla tabloda gereksiz bir biçimde bulundurulmamalıdır. Tabii tablolar arasında geçiş yapmak için ortak bir anahtara gereksinim duyulur. Bunun için oluşturulan sütunlara (alanlara)
+**yabancı anahtar (foreign key)** denilmektedir. Yukarıdaki veritabanında öğrencinin numarası onun hangi dersleri aldığı bilgisini elde etmek için kullanılmaktadır. Benzer biçimde derslerin id numaraları da o derslerin diğer bilgilerine erişmekte kullanılmaktadır. İşte büyük veritabanlarında böyle binlerce tablo bulunabilmektedir. Uygun bilginin elde edilmesi bir sürü tablo gezinerek yapılabilmektedir. Tabloların tekrarı engelleyecek biçimde düzenlenmesine veritabanı terrminolojisinde **normalizasyon (normalization)** denilmektedir. Veritabanı tablolarını tasarlamakta kullanılan yazılımsal araçlar da vardır. Bu araçlar yalnızca veritabanı tasarlamakta kullanılmaz.
+
+##### Temel SQL Bilgisi
+
+SQL büyük harf küçük harf duyarlılığı olan bir dil değildir. Dolayısıyla SQL komutlarının büyük harf ya da küçük harfli yazılmaları sorun oluşturmaz. Bazı programcılar bir yazım stili olarak SQL komutlarını büyük harflerle belirtmektedir. Ayrıca SQL komutları genel olarak `;` ile sonlandırılmaktadır. Ancak pek çok VTYS'de,  komutlar `;` ile sonlandırılmasa bile bir sorun oluşturmamaktadır.
+
+###### Veritabanın Yaratılması
+
+Şüphesiz ilk iş bir veritabanının sıfırdan yaratılmasıdır. Bu işleme bir kez gereksinim duyulacağı için VTYS'lerin yönetim ekranından yapılabilir. SQL'de veritabanı yaratmak için CREATE DATABASE komutu kullanılmaktadır. Komutun genel biçimi şöyledir:
+
+```sql
+CREATE DATABASE <isim>;
+```
+
 Örneğin:
 
-![](./media/media/image2.png){width="6.531944444444444in"
-height="1.4701388888888889in"}
+```sql
+CREATE DATABASE shoppingsdb;
+```
 
-İdeal olarak veritabanı tabloları tekrar bilgisi içermemelidir. Örneğin
-Bir öğrencinin adı ve soyadı birden fazla tabloda gereksiz bir biçimde
-bulundurulmamalıdır. Tabii tablolar arasında geçiş yapmak için ortak bir
-anahtara gereksinim duyulur. Bunun için oluşturulan sütunlara (alanlara)
-***"yabancı anahtar (foreign key)"*** denilmektedir. Yukarıdaki
-veritabanında öğrencinin numarası onun hangi dersleri aldığı bilgisini
-elde etmek için kullanılmaktadır. Benzer biçimde derslerin id numaraları
-da o derslerin diğer bilgilerine erişmekte kullanılmaktadır. İşte büyük
-veritabanlarında böyle binlerce tablo bulunabilmektedir. Uygun bilginin
-elde edilmesi bir sürü tablo gezinerek yapılabilmektedir. Tabloların
-tekrarı engelleyecek biçimde düzenlenmesine veritabanı terminolojisinde
-***"normalizasyon (normalization)"*** denilmektedir. Veritabanı
-tablolarını tasarlamakta kullanılan yazılımsal araçlar da vardır. Bu
-araçlar yalnızca veritabanı tasarlamakta kullanılmaz.
+###### Veritabanı Tablolarının Yaratılması
 
-**Temel SQL Bilgisi**
-
-SQL büyük harf küçük harf duyarlılığı olan bir dil değildir. Dolayısıyla
-SQL komutlarının büyük harf ya da küçük harfli yazılmaları sorun
-oluşturmaz. Bazı programcılar bir yazım stili olarak SQL komutlarını
-büyük harflerle belirtmektedir. Ayrıca SQL komutları genel olarak ';'
-ile sonlandırılmaktadır. Ancak pek çok VTYS, komutlar ';' ile
-sonlandırılmasa bile bir sorun oluşturmamaktadır.
-
-**Veritabanın Yaratılması**
-
-Şüphesiz ilk iş bir veritabanının sıfırdan yaratılmasıdır. Bu işleme bir
-kez gereksinim duyulacağı için VTYS'lerin yönetim ekranından
-yapılabilir. SQL'de veritabanı yaratmak için CREATE DATABASE komutu
-kullanılmaktadır. Komutun genel biçimi şöyledir:
-
-CREATE DATABASE \<isim\>;
-
-**Veritabanı Tablolarının Yaratılması**
-
-Veritabanı yaratıldıktan sonra sıra tabloların yaratılmasına gelir. Yine tabloları biz bazı ***Graphical User Interface (GUI)*** araçlarla ya da
-doğrudan SQL cümleleriyle yaratabiliriz. Tabloların yaratımı sırasında
-tabloların isimleri, onların sütunlarının isimleri ve türleri tek tek
-belirtilir. Sütun türleri SQL standartlarında belirtilmiştir. Ancak
-farklı VTYS'ler kendine özgü türler de kullanmaktadır. Tipik sütun
-türleri (alanlara ilişkin türler) şunlardır:
+Veritabanı yaratıldıktan sonra sıra tabloların yaratılmasına gelir. Yine tabloları biz bazı **Graphical User Interface (GUI)** araçlarla ya da doğrudan SQL cümleleriyle yaratabiliriz. Tabloların yaratımı sırasında tabloların isimleri, onların sütunlarının isimleri ve türleri tek tek belirtilir. Sütun türleri SQL standartlarında belirtilmiştir. Ancak farklı VTYS'ler kendine özgü türler de kullanmaktadır. Tipik sütun türleri (alanlara ilişkin türler) şunlardır:
 
   -------------- ---------------------------------------------------------
   CHARACTER(n)   En fazla n karakterlik yazıların tutulacağı alan için
@@ -1865,17 +1841,14 @@ türleri (alanlara ilişkin türler) şunlardır:
   -------------- ---------------------------------------------------------
 
 Pek çok VTYS'de yukarıdaki türlerden başka pek çok tür de bulunur.
-Örneğin MySQL'de işaretsiz tamsayı türleri de vardır. Bazı gömülü
-VTYS'lerde bazı türler bulunmaz. Örneğin SQLite'da tarih-zamana ilişkin
-türler doğrudan yoktur. Tarih-zaman bilgileri çeşitli türlerle
-tutulmaktadır. Ancak SQLite'da tarih-zaman işlemlerine ilişkin
-fonksiyonlar bulundurulmuştur.
+Örneğin MySQL'de işaretsiz tamsayı türleri de vardır. Bazı gömülü VTYS'lerde bazı türler bulunmaz. Örneğin SQLite'da tarih-zamana ilişkin türler doğrudan yoktur. Tarih-zaman bilgileri çeşitli türlerle tutulmaktadır. Ancak SQLite'da tarih-zaman işlemlerine ilişkin fonksiyonlar bulundurulmuştur.
 
 Tablo yaratmak için CREATE TABLE Sql komutu kullanılır. Komutun yalın
 genel biçimi şöyledir:
 
-CREATE TABLE \<*table_name\>*\
-(
+```sql
+
+CREATE TABLE \<*table_name\>*\(
 
 *\<column_name1\> \<data_type\>*(*size*),
 
@@ -1885,14 +1858,45 @@ CREATE TABLE \<*table_name\>*\
 \....
 
 );
+```
 
 Komutun ayrıntıları için Sql kaynaklarına başvurulabilir. Örneğin:
 
-CREATE TABLE student_info(student_id INTEGER PRIMARY KEY AUTO,
-student_name VARCHAR(45), student_bdate DATE);
+```sql
+CREATE TABLE products (
+	code char(11) primary key,
+	name varchar(300) not null,
+	stock int default(0),
+	cost money check(cost < 0::money) not null,
+	unit_price money check(cost < 0::money) not null
+);
 
-Şüphesiz bazı VTYS'ye göre komutun sentaksı değişiklik
-gösterebilmektedir.
+
+CREATE TABLE customers (
+	customer_id serial primary key,
+	citizen_id char(11) not null unique,
+	first_name varchar(100) not null,
+	middle_name varchar(100),
+	last_name varchar(100) not null,
+	birth_date date not null,
+	register_date timestamp default(current_timestamp) not null 
+);
+
+
+CREATE TABLE orders (
+	order_id bigserial primary key,
+	customer_id int references customers(customer_id) not null,
+	product_code char(11) references products(code) not null,
+	quantity int not null,
+	unit_price money not null,
+	date_time timestamp default(current_timestamp) not null
+);
+
+```
+
+Şüphesiz bazı VTYS'ye göre komutun sentaksı değişiklik gösterebilmektedir.
+
+XXXXXXXXXXXXXXXXX
 
 **Veritabanı üzerinde temel işlemler**
 
