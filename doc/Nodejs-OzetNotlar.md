@@ -1893,12 +1893,9 @@ CREATE TABLE orders (
 );
 
 ```
-
 Şüphesiz bazı VTYS'ye göre komutun sentaksı değişiklik gösterebilmektedir.
 
-XXXXXXXXXXXXXXXXX
-
-**Veritabanı üzerinde temel işlemler**
+###### Veritabanı üzerinde temel işlemler
 
 Konu (domain) ne olursa olsun veriler üzerinde şu işlemler yapılabilir:
 
@@ -1910,211 +1907,154 @@ Konu (domain) ne olursa olsun veriler üzerinde şu işlemler yapılabilir:
 
 4\. Delete: Silme
 
-Bu işlemler için ***CRUD*** kısaltması yaygın olarak kullanılmaktadır.
+Bu işlemler için ***CRUD*** kısaltması yaygın olarak kullanılmaktadır. Bu işlemlere de kısaca **CRUD operations** denilmektedir.
 
-**Tabloya Kayıt Ekleme İşlemi**
+###### Tabloya Kayıt Ekleme İşlemi
 
-Tabloya kayıt eklemek için ***INSERT INTO*** Sql komutu kullanılır.
-Komutun genel biçimi şöyledir:
+Tabloya kayıt eklemek için ***INSERT INTO*** Sql komutu kullanılır. Komutun genel biçimi şöyledir:
 
-INSERT INTO \<*table_name\>* (*column1*,*column2*,*column3*,\...)VALUES
-(*value1*,*value2*,*value3*,\...);
+```sql
+INSERT INTO <table_name> (column1, column2, column3 , ...) VALUES
+(value1, value2, value3, ...);
+```
 
 Bir çok VTYS' de kayıt eklerken yazısal sütunlar ile tarih ve zaman
 sütunları tek tırnak içerisine alınmalıdır. Bunun dışında sayısal sütun
 bilgileri doğrudan yazılır. Örneğin:
 
-INSERT INTO student_info(student_name, student_bdate) VALUES (\'John
-Lennon\', \'1940/10/09\');
+```sql
+INSERT INTO customers (citizen_id, first_name, middle_name, last_name, birth_date) VALUES ('12345678912', 'Mehmet', 'Fatih', 'Karabulut', '1999-01-01');
 
-Insert işlemi sırasında biz bazı sütunları belirtmeyebiliriz. Ancak
-belirtmediğimiz sütunlar için default değer tanımlamasının yapılmış
-olması gerekir. Bazı sütunlar ***"Auto Increment"*** olabilmektedir. Bu
-durumda VTYS kayıt ekleme sırasında önceki değerin bir fazlasını bu
-sütuna değer olarak verir. Bazı sütünlar boş geçilebilir (nullable)
-olabilir. Bu durumda insert işleminde bu sütunlar belirtilmezse null
-değerini alırlar. Tablo yaratırken bazı alanlar için default değerler de
-CREATE TABLE cümlesinde belirtilebilmektedir. Boş geçilemeyen (not null)
-ve default değer almayan alanlara insert cümlesinde ekleme yapılmalıdır.
+INSERT INTO customers (citizen_id, first_name, last_name, birth_date) VALUES ('12345678914', 'Ayberk', 'Neşeli', '2004-01-12');
+```
+Insert işlemi sırasında biz bazı sütunları belirtmeyebiliriz. Ancak belirtmediğimiz sütunlar için default değer tanımlamasının yapılmış olması gerekir. Bazı sütunlar ***"Auto Increment"*** olabilmektedir. Bu durumda VTYS kayıt ekleme sırasında önceki değerin bir fazlasını bu
+sütuna değer olarak verir. Bazı sütünlar boş geçilebilir (nullable) olabilir. Bu durumda insert işleminde bu sütunlar belirtilmezse null değerini alırlar. Tablo yaratırken bazı alanlar için default değerler de CREATE TABLE cümlesinde belirtilebilmektedir. Boş geçilemeyen (not null)
+ve default değer almayan alanlara insert cümlesinde bulunmalıdır.
 
-**WHERE Cümleciği**
+###### WHERE Cümleciği
 
-WHERE cümleciği (where clause) Sql'de bir komut değildir. Bazı
-komutların içerisinde kullanılan bir kalıptır. Örneğin DELETE FROM
-komutunun, SELECT komutunun WHERE cümleciği kısımları vardır. WHERE
-cümleciği koşul belirtmektedir. Koşul belirtilirken sütun isimleri ve
+WHERE cümleciği (where clause) Sql'de bir komut değildir. Bazı komutların içerisinde kullanılan bir kalıptır. Örneğin DELETE FROM komutunun, SELECT komutunun WHERE cümleciği kısımları vardır. WHERE cümleciği koşul belirtmektedir. Koşul belirtilirken sütun isimleri ve
 temel karşılaştırma operatörleri kullanılabilir. Örneğin:
 
-WHERE student_id \> 1250
+```sql
+WHERE student_id > 1250
+```
 
-Koşullarda mantıksal AND, OR ve NOT operatörleri kullanılabilir.
-Örneğin:
+Koşullarda mantıksal AND, OR ve NOT operatörleri kullanılabilir. Örneğin:
 
-WHERE student_name = 'Kaan Aslan' AND student_id \> 2450
+```sql
+WHERE student_name = 'Kaan Aslan' AND student_id > 2450
+```
 
-LIKE opereratörü yazısal bir sütunun belli bir kalıba uygunluk koşulu
-için kullanılır. % joker karakteri "bundan sonra çeşitli karakterler
-gelebilir" anlamındadır.
+LIKE operatörü yazısal bir sütunun belli bir kalıba uygunluk koşulu için kullanılır. % joker karakteri `bundan sonra çeşitli karakterler gelebilir` anlamındadır. Örneğin:
 
-Örneğin:
-
-WHERE student_name LIKE \'S%\'
-
+```sql
+WHERE student_name LIKE 'S%'
+```
 Burada ismi S ile başlayan öğrenciler için koşul verilmiştir.
 
-**Kayıt Silme İşlemi**
+###### Kayıt Silme İşlemi
 
-Belli koşulları sağlayan kayıtların silinmesi ***DELETE FROM***
-komutuyla yapılmaktadır. Komutun genel biçimi şöyledir:
+Belli koşulları sağlayan kayıtların silinmesi ***DELETE FROM*** komutuyla yapılmaktadır. Komutun genel biçimi şöyledir:
 
+```sql
 DELETE FROM \<tablo ismi\> \[WHERE cümleciği\]
-
+```
 Örneğin:
 
-DELETE FROM student_info WHERE student_name = 'Ali Serçe'
+```sql
+DELETE FROM customers WHERE citizen_id = '12345678916';
+```
+###### Koşulu Sağlayan Kayıtların Elde Edilmesi
 
-Bu komutla ismi Ali Serçe olan tüm kayıtlar silinmektedir. Örneğin:
-
-DELETE FROM student_info WHERE student_id \> 100
-
-Burada id'si 100'den büyük tüm kayıtlar silinmektedir.
-
-DELETE FROM student_info WHERE student_name LIKE 'A%e'
-
-**Koşulu Sağlayan Kayıtların Elde Edilmesi**
-
-Koşulu sağlayan kayıtların elde edilmesi için ***SELECT*** komutu
-kullanılmaktadır. SELECT komutunun genel biçimi oldukça ayrıntılıdır.
-Pek çok cümlecik (örneğin WHERE cümleciği) komut içerisinde
-bulundurulabilmektedir.
+Koşulu sağlayan kayıtların elde edilmesi için ***SELECT*** komutu kullanılmaktadır. SELECT komutunun genel biçimi oldukça ayrıntılıdır. Pek çok cümlecik (örneğin WHERE cümleciği) komut içerisinde bulundurulabilmektedir.
 
 SELECT komutun tipik kullanımı şöyledir:
 
-SELECT \<sütun listesi\> FROM \<tablo ismi\> \[WHERE cümleciği\]
+```sql
+SELECT <sütun listesi> FROM <tablo ismi> [WHERE cümleciği]
+```
 
-Sütun listesi yerine '\*' karakteri getirilirse tüm sütunlar anlaşılır.
-WHERE cümleciği kullanılmazsa tüm kayıtlar anlaşılır. Örneğin,
+Sütun listesi yerine '\*' karakteri getirilirse tüm sütunlar anlaşılır. WHERE cümleciği kullanılmazsa tüm kayıtlar anlaşılır. Örneğin,
 
+```sql
 SELECT Code FROM country WHERE Name LIKE \'T%\'
+```
 
 Bu komutla ilk harfi T ile başlayan tüm ülkelerin ülke kodları elde
 edilecektir.
 
-SELECT komutunda VTYS'nin hazır bazı fonksiyonları kullanılabilmektedir.
-Her VTYS'nin birtakım hazır fonksiyonları vardır. Ancak bu konuda bir
-standart bulunmamaktadır. Örneğin PostgreSQL'de DATE_PART isimli
-fonksiyon bir tarihin çeşitli bileşenlerini ayrıştırıp verebilmektedir.
-Biz de bu sayede aşağıdaki gibi bir SELECT komutu oluşturabiliriz:
+SELECT komutunda VTYS'nin hazır bazı fonksiyonları kullanılabilmektedir. Her VTYS'nin birtakım hazır fonksiyonları vardır. Ancak bu konuda bir standart bulunmamaktadır. Örneğin  PostgreSQL'de `DATE_PART` isimli fonksiyon bir tarihin çeşitli bileşenlerini ayrıştırıp verebilmektedir. Biz de bu sayede aşağıdaki gibi bir SELECT komutu oluşturabiliriz:
 
-SELECT \* FROM student_info WHERE DATE_PART('day', student_bdate) =
-date_part('day', current_date)
+```sql
+SELECT * FROM customers WHERE DATE_PART('month', birth_date) = 9;
+```
+Burada Eylül ayında doğmuş olan müşterilerin bilgileri elde edilmektedir.
+```sql
+SELECT * from customers WHERE DATE_PART('day', birth_date) = DATE_PART('day', current_date) and DATE_PART('month', birth_date) = DATE_PART('month', current_date)
+```
+VTYS'lerin fonksiyon listelerine onların dokümanlarından erişilebilir. Ancak bu fonksiyonların standart olmadığını yani her VTYS fonksiyonlarının birbirlerinden farklılık gösterebildiğini anımsatalım.
 
-Burada doğum tarihinden gün bilgisi elde edilmiş ve o gün doğan
-öğrencilerin tüm bilgileri elde edilmiştir.
+SELECT ile birden fazla tablodan bilgi alınabilir. Bu işleme genel olarak ***"join (birleştirme)"*** işlemi denilmektedir. Join işleminin INNER, LEFT, RIGHT ve FULL biçiminde türevleri vardır. Ancak bu join türevleri tüm VTYS'ler tarafından tam olarak desteklenmeyebilmektedir. Join işlemi denildiğinde default olarak INNER JOIN anlaşılmaktadır.
 
-VTYS'lerin fonksiyon listelerine onların dokümanlarından erişilebilir.
-Ancak bu fonksiyonların standart olmadığını yani her VTYS
-fonksiyonlarının birbirlerinden farklılık gösterebildiğini anımsatalım.
-
-SELECT ile birden fazla tablodan bilgi alınabilir. Bu işleme genel
-olarak ***"join (birleştirme)"*** işlemi denilmektedir. Join işleminin
-INNER, LEFT, RIGHT ve FULL biçiminde türevleri vardır. Ancak bu join
-türevleri tüm VTYS'ler tarafından tam olarak desteklenmeyebilmektedir.
-Join işlemi denildiğinde default olarak INNER JOIN anlaşılmaktadır.
-
-Join işlemi kartezyen çarpım işlemi biçiminde ele alınarak mantıksal
-olarak açıklanabilir. Bilindiği gibi iki kümenin kartezyen çarpımı
-sıralı ikililerden oluşmaktadır. Bu sıralı ikililerin ilk terimleri
-soldaki kümeden, ikinci terimleri sağdaki kümeden oluşturulur:
+Join işlemi kartezyen çarpım işlemi biçiminde ele alınarak mantıksalolarak açıklanabilir. Bilindiği gibi iki kümenin kartezyen çarpımı sıralı ikililerden oluşmaktadır. Bu sıralı ikililerin ilk terimleri soldaki kümeden, ikinci terimleri sağdaki kümeden oluşturulur:
 
 A X B = {(a, b) \| a € A ve b € B}
 
-İşte biz iki tabloyu bu biçimde kartezyen çarpım işlemine sokarsak iki
-tablonun eleman sayılarının çarpımı kadar kayıt elde etmiş oluruz. Sonra
-bu kayıtlardan WHERE cümlesi ile belirtilen koşulu sağlayanlar seçilirse
-bu işleme INNER JOIN denilmektedir. INNER JOIN sentaksı şöyledir:
+İşte biz iki tabloyu bu biçimde kartezyen çarpım işlemine sokarsak iki tablonun eleman sayılarının çarpımı kadar kayıt elde etmiş oluruz. Sonra bu kayıtlardan WHERE cümlesi ile belirtilen koşulu sağlayanlar seçilirse bu işleme INNER JOIN denilmektedir. INNER JOIN sentaksı şöyledir:
 
-SELECT *\<sütun listesi\>* FROM *table1* INNER JOIN *table2* ON
-*\<koşul\>*
+```sql
+SELECT <sütun listesi> FROM <table1> INNER JOIN <table2> ON <koşul>
+```
+Sütun ve koşul kısımlarında her iki tablonun sütunları bulundurulabileceğinden dolayı bir çakışma söz konusu olabilir. Çakışma durumunda sütun isimleri tablo isimleriyle araya '.' karakteri konularak niteliklendirilebilir. Aslında SQL kullanıcıları çakışma olmasa da
+sütunları hep tablo isimleriyle niteliklendirmektedir. Ayrıca tablo isimleri için takma ad (alias) verilebilir. Örneğin:
 
-Sütun ve koşul kısımlarında her iki tablonun sütunları
-bulundurulabileceğinden dolayı bir çakışma söz konusu olabilir. Çakışma
-durumunda sütun isimleri tablo isimleriyle araya '.' karakteri konularak
-niteliklendirilebilir. Aslında SQL kullanıcıları çakışma olmasa da
-sütunları hep tablo isimleriyle niteliklendirmektedir. Örneğin
+```sql
+SELECT 
+p.name AS product_name, 
+o.quantity, 
+o.unit_price, 
+o.quantity * o.unit_price AS total 
+FROM 
+products p INNER JOIN orders o ON p.code = o.product_code 
+WHERE o.customer_id = 6
 
-SELECT city.Name, country.Name FROM city INNER JOIN country ON
-city.CountryCode = country.Code
-
-Burada biz sonuç olarak city tablosundaki isimleri ile country
-tablosoundaki isimleri beraber görüntülemek istemekteyiz. Ancak bu iki
-tablonun kartezyen çarpımındaki tüm satırlar için bu işlemler
-yapılmayacak. Yalnızca ON kısmında belirtilen koşulların sağlandığı
-satırlar elde edilecek. Bu işlemin sonucunda da biz tüm şehirlerin hangi
-ülkeye ait olduğuna ilişkin bir liste elde ederiz.
-
-![](./media/media/image3.png){width="4.159722222222222in"
-height="2.0416666666666665in"}
-
-Örneğin:
-
-SELECT country.Name, countrylanguage.Language,
-countrylanguage.Percentage FROM country INNER JOIN countrylanguage ON
-country.Code = countrylanguage.CountryCode
-
-![](./media/media/image4.png){width="4.978472222222222in"
-height="1.648611111111111in"}
+```
+```sql
+SELECT 
+c.first_name || ' ' || c.last_name AS full_name,
+p.name AS product_name, 
+o.quantity, 
+o.unit_price, 
+o.quantity * o.unit_price AS total 
+FROM 
+products p INNER JOIN orders o on p.code = o.product_code 
+inner join customers c on o.customer_id = c.customer_id
+WHERE o.customer_id = 6;
+```
 
 INNER JOIN işlemi için alternatif bir sentaks daha vardır. Bu sentaks
 doğrudan birden fazla tablonun isminin geçtiği SELECT cümlesi
 sentaksıdır. Örneğin:
 
-SELECT city.Name, country.Name FROM city INNER JOIN country ON
-city.CountryCode = country.Code
+```sql
+SELECT 
+p.name AS product_name, 
+o.quantity, 
+o.unit_price, 
+o.quantity * o.unit_price AS total 
+FROM products p, orders o
+WHERE p.code = o.product_code AND o.customer_id = 6;
+```
 
-INER JOIN işleminin eşdeğeri şöyle de yazılabilir:
-
-SELECT city.Name, country.Name FROM city, country WHERE city.CountryCode
-= country.Code
-
-Örneğin:
-
-SELECT country.Name, countrylanguage.Language,
-countrylanguage.Percentage FROM country INNER JOIN countrylanguage ON
-country.Code = countrylanguage.CountryCode
-
-INNER JOIN işleminin de eşdeğeri şöyle yazılabilir:
-
-SELECT country.Name, countrylanguage.Language,
-countrylanguage.Percentage FROM country, countrylanguage WHERE
-country.Code = countrylanguage.CountryCode
-
-LEFT JOIN işleminde sol taraftaki tablonun tüm satırları ve ON koşulunu
-sağlayan satırlar alınır. Sol taraftaki tablonun ON koşulunu sağlamayan
-satırlarının sağ taraf sütunları boş (NULL) biçimdedir. Örneğin:
-
-SELECT city.Name, country.Name FROM city LEFT JOIN country ON
-city.CountryCode = country.Code AND country.Population \> 50000000
-
-![](./media/media/image5.png){width="4.534722222222222in"
-height="2.0347222222222223in"}
-
-RIGHT JOIN ise LEFT JOIN işleminin tersidir. Yani sağ taraftaki tablonun
-tüm satırları ve ON koşulunu sağlayan satırlar alınır. Sağ taraftaki
-tablonun ON koşulunu sağlamayan satırlarının sol taraf sütunları boş
-(NULL) biçimdedir. Örneğin:
-
-SELECT city.Name, country.Name FROM city RIGHT JOIN country ON
-city.CountryCode = country.Code AND country.Population \> 50000000
-
-![](./media/media/image6.png){width="3.9097222222222223in"
-height="1.5972222222222223in"}
-
-FULL JOIN pek çok VTYS tarafından desteklenmemektedir. Bu işlemde sol
-taraftaki ve sağ taraftaki tabloların bütün satırları ile koşulu
-sağlayan satırlar elde edilir. Ancak koşulu sağlamayan satırların diğer
-tablo karşılıkları boş (NULL) olarak elde edilir.
-
-Aslında SQL burada anlatılanlardan daha ayrıntılı bir dildir. Ancak
-kursumuzda bu kadar bilgi yeterli görülmüştür. Fakat ne olursa olsun ne
-kadar çok SQL bilinirse o kadar etkin işlemler yapılabilmektedir.
+```sql
+SELECT 
+c.first_name || ' ' || c.last_name AS full_name,
+p.name AS product_name, 
+o.quantity, 
+o.unit_price, 
+o.quantity * o.unit_price AS total 
+FROM 
+products p, orders o, customers c
+WHERE p.code = o.product_code AND o.customer_id = c.customer_id AND o.customer_id = 6;
+```
