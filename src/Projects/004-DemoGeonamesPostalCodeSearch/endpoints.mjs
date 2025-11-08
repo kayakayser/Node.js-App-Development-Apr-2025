@@ -1,10 +1,10 @@
-import {fetchPostalCodeInfo} from "./geonamesPostalCodeSearch.mjs";
+import {getPostalCode} from "./postalcodeservice.mjs";
 
 const geoPostalCodeCallback = async (req, res) => {
     try {
-        const jsonData = await fetchPostalCodeInfo(req.query.code)
+        const jsonData = await getPostalCode(req.query.code)
 
-        if (jsonData.postalcodes !== undefined)
+        if (jsonData.postalCodes !== undefined)
             res.json(jsonData)
         else
             res.status(400).json(jsonData)
