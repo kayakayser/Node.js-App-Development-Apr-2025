@@ -1,29 +1,20 @@
-import {close, getPostalCodeInfo, insertPostalCodeInfo, open} from "./postalcoderepository.mjs";
+import {exists, getPostalCodeInfo, insertPostalCodeInfo} from "./postalcoderepository.mjs";
 import {fetchPostalCodeInfo} from "./geonamesPostalCodeSearch.mjs";
 
 export const getPostalCode = async (code) => {
-    try {
-        await open()
+    if (await exists(code)) {
         let postalCodes = await getPostalCodeInfo(code)
 
-        if (postalCodes !== undefined && postalCodes.length > 0)
-            return {postalCodes: postalCodes}
-    } finally {
-        await close()
+        return {postalCodes: postalCodes}
     }
 
-    try {
-        await open()
-        let postalCodes = await fetchPostalCodeInfo(code)
+    let postalCodes = await fetchPostalCodeInfo(code)
 
-        if (postalCodes.postalcodes !== undefined) {
-            await insertPostalCodeInfo(code, postalCodes.postalcodes)
+    if (postalCodes.postalcodes !== undefined) {
+        await insertPostalCodeInfo(code, postalCodes.postalcodes)
 
-            return {postalCodes: (await getPostalCodeInfo(code))}
-        }
-
-        return {error: "Problem occurred while getting data"}
-    } finally {
-        await close()
+        return {postalCodes: (await getPostalCodeInfo(code))}
     }
+
+    return {error: "Problem occurred while getting data"}
 }

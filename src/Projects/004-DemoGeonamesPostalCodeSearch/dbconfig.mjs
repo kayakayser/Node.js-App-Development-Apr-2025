@@ -16,7 +16,36 @@ const clientInfo = {
     database: "postalcodesearchdb"
 }
 
-export const clientDev = new Client(clientInfoDev)
-export const client = new Client(clientInfo)
+const connect = async (dbClient) => {
+    try {
+        await dbClient.connect()
+    } catch (e) {
+        console.log(`Connection Error:${e.message}`)
+        throw e
+    }
+}
+
+export const createDevDbClient = async () => {
+    const client = new Client(clientInfoDev)
+
+    await connect(client)
+
+    await client.query("truncate table postal_code_info restart identity")
+    await client.query("truncate table postal_code_query_info restart identity")
+    await client.query("truncate table postal_codes cascade")
+
+    return client;
+}
+
+export const createDbClient = async () => {
+    const client = new Client(clientInfo)
+
+    await connect(client)
+
+    return client
+}
+
+
+
 
 
