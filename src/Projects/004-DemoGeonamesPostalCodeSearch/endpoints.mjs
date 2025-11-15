@@ -16,6 +16,7 @@ const geoPostalCodeCallback = async (req, res) => {
 
 export const createEndPoints = app => {
     app.get("/api/geo/postalcode", async (req, res) => await geoPostalCodeCallback(req, res))
+    app.get("/api/geo/postalcode/count", async (req, res) => {})
 
 }
 

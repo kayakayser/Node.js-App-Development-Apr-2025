@@ -7,9 +7,15 @@ const existsQuery = "select exists (select * from postal_codes  where code = $1)
 const getPostalCodeInfoQuery = "select placeName, adminName1, lat, lng from postal_code_info where postal_code = $1"
 const insertPostalCodesQuery = "insert into postal_codes (code) values ($1)"
 const insertPostalCodeInfoQuery = "insert into postal_code_info (postal_code, adminCode2, adminCode1, adminName2, lng, lat, countryCode, adminName1, placeName) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
+const insertPostalCodeQueryInfoQuery = "insert into postal_code_query_info (postal_code) values ($1)"
+const getQueryCountQuery = "select count(*) from postal_code_query_info where postal_code = $1"
 
 const insertCode = async (postalCode) => {
     await dbClient.query(insertPostalCodesQuery, [postalCode])
+}
+
+const insertQueryInfo = async (postalCode) => {
+    await dbClient.query(insertPostalCodeQueryInfoQuery, [postalCode])
 }
 
 const insertCodeInfo = async (info) => {
@@ -20,6 +26,7 @@ const insertCodeInfo = async (info) => {
 }
 
 export const getPostalCodeInfo = async (postalCode) => {
+    await insertQueryInfo(postalCode)
     return (await dbClient.query(getPostalCodeInfoQuery, [postalCode])).rows
 }
 
