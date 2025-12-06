@@ -1,0 +1,1 @@
+docker run -it -p 60600:60600 geonames-wikisearch:1.0.0

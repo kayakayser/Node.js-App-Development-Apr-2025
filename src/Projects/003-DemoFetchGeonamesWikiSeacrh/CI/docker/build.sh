@@ -1,0 +1,1 @@
+docker build -f ./CI/docker/Dockerfile -t geonames-wikisearch:1.0.0 .
