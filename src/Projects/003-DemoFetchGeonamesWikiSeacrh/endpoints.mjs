@@ -1,4 +1,5 @@
 import {fetchWikiSearchInfo} from "./geonamesWikisearch.mjs";
+import {save} from "./repository.mjs";
 
 const geoWikiCallback = async (req, res) => {
     try {
@@ -13,9 +14,10 @@ const geoWikiCallback = async (req, res) => {
         const jsonData = await fetchWikiSearchInfo(req.query.q, parseInt(req.query.maxRows))
 
         console.log(jsonData)
-        if (jsonData.geonames !== undefined)
+        if (jsonData.geonames !== undefined) {
+            await save(req.query.q, jsonData)
             res.json(jsonData)
-
+        }
         else
             res.status(400).json(jsonData)
     }
