@@ -1,5 +1,4 @@
-import {fetchWikiSearchInfo} from "./geonamesWikisearch.mjs";
-import {save} from "./repository.mjs";
+import {fetchData} from "./dataservice.mjs";
 
 const geoWikiCallback = async (req, res) => {
     try {
@@ -11,11 +10,10 @@ const geoWikiCallback = async (req, res) => {
         if (isNaN(maxRows))
             throw new Error("maxRows must be a number")
 
-        const jsonData = await fetchWikiSearchInfo(req.query.q, parseInt(req.query.maxRows))
+        const jsonData = await fetchData(req.query.q, parseInt(req.query.maxRows))
 
         console.log(jsonData)
         if (jsonData.geonames !== undefined) {
-            await save(req.query.q, jsonData)
             res.json(jsonData)
         }
         else
