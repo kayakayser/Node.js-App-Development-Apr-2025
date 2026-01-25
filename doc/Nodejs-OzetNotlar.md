@@ -1641,94 +1641,26 @@ Client-Server modelde önce client server\'a bağlanır. Bu kavrama genel olarak
 
 4) Client-Server çalışma dağıtık (distributed) uygulamalarda da karşımıza çıkabilmektedir. Yani bir işin belirli parçalarını başka bilgisayarlarda yapıp sonra onu birleştirmek isteyebiliriz.  
 
-XXXXXXXXXXXXXXXXXX
 ###### Soket Kavramı
 
-Farklı makinadaki processler ararasındaki haberleşmede kullanılacak
+Farklı makinadaki processler arasındaki haberleşmede kullanılacak protokollerin işletim sistemi tarafından desteklenmesi gerekir. Bugün işletim sistemleri bazı yaygın protokolleri destekler durumdadır. Windows, Mac OS X, Linux gibi işletim sistemleri IP protokol ailesini uzun süredir desteklemektedir. İşletim sistemlerinde bir protokol ailesi kullanılarak uygulama programlarının yazılabilmesi için bir kütüphanenin de bulunması gerekir. İşte bu kütüphaneye **soket kütüphanesi (socket library)** denir. Windows, Mac OS X, Linux gibi sistemler soket kütüphanesini birbirine çok benzer bir biçimde desteklemektedir. Bu soket kütüphanesi aslında C programlama dilinden kullanılmak üzere tasarlanmıştır. Ancak pek çok ortamda buradan hareketle benzer kütüphaneler de oluşturulmuştur. Java, Go ve NodeJs gibi daha yüksek seviyeli ortamlarda soket işlemleri için işletim sisteminden bağımsız olarak kod yazılabilmesini sağlayan sınıflar ve yapılar bulunmaktadır. Soket kütüphanesi yalnızca IP ailesi için tasarlanmış bir kütüphane değildir. Soket fonksiyonları pek çok protokol ailesinin ortak fonksiyonlarıdır. Yani, diğer protokolleri de kapsayan genel bir arayüzdür. Bu nedenle fonksiyonların parametrik yapıları biraz daha karmaşık olma eğilimindedir. Soket kütüphanesi ilk kez 1983 yılında BSD sistemlerinde gerçekleştirilmiştir. Daha sonra başka sistemlere uygulanmıştır. Microsoft\'un soket arayüzü BSD soketlerinden alınmıştır. Buna `Winsock` kütüphanesi denilmektedir. Windows'ta iki grup soket API'si vardır: **BSD API. Winsock API**. BSD API içerisindeki fonksiyon isimleri aynıdır. Winsock API, tamamen Windows sistemlerine özgüdür ve bazı fonksiyonların isimleri  `WSA` ile başlatılmıştır. Programcı, Windows'ta da BSD uyumlu soket fonksiyonlarını kullanırsa UNIX/Linux uyumunu da sağlamış olur. Ancak Windows sistemlerinin çoğunda Winsock API daha efektif olma eğilimindedir. Daha yüksek seviyeli programlama ortamlarında bu işlemler daha taşınabilir olarak yapılabilmektedir.  
 
-protokollerin işletim sistemi tarafından desteklenmesi gerekir. Bugün
+TCP ile geliştirilen bir server uygulamanın tipik organizasyonu şöyledir:  
 
-işletim sistemleri bazı yaygın protokolleri destekler durumdadır.
+```
+Socket açılır -> IP ve port bind edilir. Listen ile dinlemeye geçilir
 
-Windows, Mac OS X, Linux gibi işletim sistemleri IP protokol ailesini
-
-uzun süredir desteklemektedir. İşletim sistemlerinde bir protokol ailesi
-
-kullanılarak uygulama programlarının yazılabilmesi için bir kütüphanenin
-
-de bulunması gerekir. İşte bu kütüphaneye "***soket kütüphanesi (socket
-
-library)"*** denir. Windows, Mac OS X, Linux gibi sistemler soket
-
-kütüphanesini birbirine çok benzer bir biçimde desteklemektedir. Bu
-
-soket kütüphanesi aslında C programlama dilinden kullanılmak üzere
-
-tasarlanmıştır. Ancak pek çok ortamda buradan hareketle benzer
-
-kütüphaneler de oluşturulmuştur. Java ve Go gibi daha yüksek seviyeli
-
-ortamlarda soket işlemleri için işletim sisteminden bağımsız olarak kod
-
-yazılabilmesini sağlayan sınıflar ve yapılar bulunmaktadır.
-
-  
-
-Soket kütüphanesi yalnızca IP ailesi için tasarlanmış bir kütüphane
-
-değildir. Soket fonksiyonları pek çok protokol ailesinin ortak
-
-fonksiyonlarıdır. Yani, diğer protokolleri de kapsayan genel bir
-
-arayüzdür. Bu nedenle fonksiyonların parametrik yapıları biraz daha
-
-karmaşık olma eğilimindedir.
-
-  
-
-Soket kütüphanesi ilk kez 1983 yılında BSD sistemlerinde
-
-gerçekleştirilmiştir. Daha sonra başka sistemlere uygulanmıştır.
-
-Microsoft\'un soket arayüzü BSD soketlerinden alınmıştır. Buna
-
-***Winsock*** kütüphanesi denilmektedir. Windows\'ta iki grup soket
-
-API\'si vardır. Bunlardan birincisi tamamen BSD uyumlu API\'lerdir.
-
-(Burada fonksiyon isimleri BSD\'deki ile aynıdır.) İkinci olarak başı
-
-WSA ile başlayan Windows\'a özgü soket API\'leridir. Biz Windows\'ta da
-
-BSD uyumlu soket fonksiyonlarını kullanırsak UNIX/Linux uyumunu da
-
-sağlamış oluruz. Daha yüksek seviyeli programlama ortamlarında bu
-
-işlemler daha taşınbilir olarak yapılabilmektedir.
-
-  
-
-TCP ile gerliştirilen bir server uygulamanın tipik organizasyonu
-
-şöyledir:
-
-  
-
-Socket açılır -\> IP ve port işnd edilir. Listen ile dinlemeye geçilir
-
--\> Accept ile client'ın socket'i elde edilir -\> Send receive -\>
+-> Accept ile client'ın socket'i elde edilir -> Send receive ->
 
 socket kapatılır.
+```
 
-  
 
-TCP ile gerliştirilen bir client ugulamanın tipikl organizasyonu
+TCP ile geliştirilen bir client uygulamanın tipik organizasyonu şöyledir:
 
-şöyledir:
-
-  
-
-Socket açılır -\> connect -\> sennd receive -\> socket kapatılır.
+```
+Socket açılır -> connect -> send receive -> socket kapatılır.
+```
 
 ##### Veritabanı Kavramı
 
@@ -2058,3 +1990,291 @@ FROM
 products p, orders o, customers c
 WHERE p.code = o.product_code AND o.customer_id = c.customer_id AND o.customer_id = 6;
 ```
+##### Docker
+
+## 🧱 1. Docker Nedir?
+Docker, uygulamaları ve tüm bağımlılıklarını birlikte paketleyerek **container (kapsayıcı)** adı verilen izole ortamlarda çalıştırmayı sağlayan bir platformdur.
+
+### Neden Docker Kullanılır?
+- "Benim bilgisayarımda çalışıyordu" problemini ortadan kaldırır
+- Aynı image ile farklı ortamlarda (local, test, prod) çalışılabilir
+- Hızlı kurulum ve dağıtım sağlar
+- Modern mikroservis mimarilerinin temelini oluşturur
+
+### Docker vs Virtual Machine
+| Docker | Virtual Machine |
+|------|----------------|
+| Hafif | Ağır |
+| OS paylaşılır | Ayrı OS |
+| Saniyeler içinde başlar | Dakikalar |
+| Daha az kaynak | Daha fazla RAM/CPU |
+
+---
+
+## ⚙️ 2. Temel Kavramlar
+
+### Image
+- Uygulamanın **çalıştırılabilir kalıbıdır**
+- Read-only’dir
+- Katmanlı (layered) yapıdadır
+- Dockerfile’dan üretilir
+
+Örnek:
+```bash
+python:3.12
+nginx:latest
+```
+
+### Container
+- Image’ın **çalışan örneğidir**
+- State tutabilir
+- Durdurulabilir, silinebilir
+- Aynı image’tan birden fazla container çalışabilir
+
+### Registry
+Image’ların tutulduğu depolardır.
+
+Popüler registry’ler:
+- Docker Hub
+- GitHub Container Registry
+- AWS ECR
+- Google GCR
+- Azure ACR
+
+### Dockerfile
+Image oluşturmak için yazılan reçetedir.  
+Her satır yeni bir **layer** oluşturur.
+
+---
+
+## ⏳ 3. Kurulum Kontrolü
+```bash
+docker --version
+docker info
+docker ps
+```
+
+> `docker info` çıktısı Docker daemon’un çalıştığını doğrular.
+
+---
+
+## 📦 4. Temel Docker Komutları
+
+### Image İşlemleri
+```bash
+docker images
+docker pull nginx
+docker rmi nginx
+```
+
+### Container Çalıştırma Modları
+
+**Foreground**
+```bash
+docker run nginx
+```
+
+**Detached**
+```bash
+docker run -d nginx
+```
+
+**İsim vererek**
+```bash
+docker run -d --name web nginx
+```
+
+**Port Mapping**
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+### Container Yönetimi
+```bash
+docker ps
+docker ps -a
+docker stop web
+docker start web
+docker rm web
+```
+
+---
+
+## 🛠️ 5. Dockerfile (Detaylı)
+
+### Dockerfile Temel Komutları
+| Komut | Açıklama |
+|-----|---------|
+| FROM | Base image |
+| WORKDIR | Çalışma dizini |
+| COPY | Dosya kopyalama |
+| RUN | Build sırasında çalışır |
+| CMD | Container çalışınca |
+| EXPOSE | Port bildirimi |
+
+### Node.js Dockerfile
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm","start"]
+```
+
+### Python Flask Dockerfile
+```dockerfile
+FROM python:3.12
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 5000
+CMD ["python","app.py"]
+```
+
+---
+
+## 🧱 6. Image Build Süreci
+```bash
+docker build -t myapp .
+```
+
+### Tag Mantığı
+```bash
+docker build -t myapp:1.0.0 .
+docker tag myapp:1.0.0 myrepo/myapp:latest
+```
+
+---
+
+## 🔄 7. Logs & Exec
+
+### Log İzleme
+```bash
+docker logs container_id
+docker logs -f container_id
+```
+
+### Container İçine Girme
+```bash
+docker exec -it container_id bash
+```
+
+---
+
+## 📚 8. Volume (Kalıcı Veri)
+
+### Volume Türleri
+- Named Volume
+- Bind Mount
+- tmpfs
+
+### Örnekler
+```bash
+docker volume create mydata
+docker run -d -v mydata:/data mysql
+```
+
+Host mount:
+```bash
+docker run -d -v $(pwd):/app nginx
+```
+
+---
+
+## 🌐 9. Docker Network
+
+### Network Türleri
+- bridge (default)
+- host
+- none
+- overlay (swarm)
+
+### Örnek
+```bash
+docker network create mynet
+docker run -d --network=mynet --name=db mysql
+docker run -d --network=mynet --name=api myapi
+```
+
+---
+
+## 🐳 10. Docker Compose (Detaylı)
+
+### Ne Zaman Kullanılır?
+- Birden fazla container
+- Ortam bağımlılıkları
+- Local development
+
+### docker-compose.yml
+```yaml
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
+```
+
+Komutlar:
+```bash
+docker compose up -d
+docker compose down
+docker compose logs
+```
+
+---
+
+## 🚀 11. İleri Seviye Konular
+
+### Multi-stage Build
+- Daha küçük image
+- Sadece runtime bağımlılıkları
+
+### Healthcheck
+```dockerfile
+HEALTHCHECK CMD curl --fail http://localhost || exit 1
+```
+
+### Secrets & Config
+- Şifreler image içine gömülmez
+- ENV veya secret manager kullanılır
+
+### Docker Swarm & Kubernetes
+- Container orkestrasyonu
+- Otomatik ölçekleme
+- Self-healing
+
+---
+
+## 🧹 12. Temizlik ve Bakım
+
+### Kullanılmayan Kaynaklar
+```bash
+docker container prune
+docker image prune -a
+docker volume prune
+docker system prune -a
+```
+
+> ⚠️ `system prune -a` her şeyi siler, dikkatli kullan!
+
+---
+
+## ✅ Özet
+Bu doküman Docker’ı **temelden ileri seviyeye** kadar kapsar ve:
+- Eğitim notu
+- README.md
+- Şirket içi dökümantasyon
+olarak kullanılabilir.
