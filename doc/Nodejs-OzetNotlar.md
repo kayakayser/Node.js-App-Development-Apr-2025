@@ -1990,291 +1990,131 @@ FROM
 products p, orders o, customers c
 WHERE p.code = o.product_code AND o.customer_id = c.customer_id AND o.customer_id = 6;
 ```
-##### Docker
 
-## 🧱 1. Docker Nedir?
-Docker, uygulamaları ve tüm bağımlılıklarını birlikte paketleyerek **container (kapsayıcı)** adı verilen izole ortamlarda çalıştırmayı sağlayan bir platformdur.
+##### gRPC
 
-### Neden Docker Kullanılır?
-- "Benim bilgisayarımda çalışıyordu" problemini ortadan kaldırır
-- Aynı image ile farklı ortamlarda (local, test, prod) çalışılabilir
-- Hızlı kurulum ve dağıtım sağlar
-- Modern mikroservis mimarilerinin temelini oluşturur
+***gRPC*** açık kaynak kodlu ***RPC (Remote Procedure Call)*** framework'üdür. gRPC Google tarafından geliştirilmiştir. gRPC özellikle **HTTP/2** kullanan bir process'ler arası haberleşme tekniğidir. Şüphesiz farklı makinelerdeki process'lerin haberleşmesi için de kullanılabilmektedir. gRPC **protobuf (protocol buffers)** kullanarak **client-server** ve **duplex** haberleşmeyi sağlar.
 
-### Docker vs Virtual Machine
-| Docker | Virtual Machine |
-|------|----------------|
-| Hafif | Ağır |
-| OS paylaşılır | Ayrı OS |
-| Saniyeler içinde başlar | Dakikalar |
-| Daha az kaynak | Daha fazla RAM/CPU |
+`Protobuf` Google tarafından geliştirilmiş, verinin `serialization` yapılabilmesi için kullanılan bir kütüphanedir. Bu kütüphane ile yazılan bir `protobuf` programlama dilinden bağımsızdır. Yani protobuf'ın kendine özgü bir dili vardır. Go, Java, Javascript, C#, C++, Python,
+Swift* gibi popular diller için kodlar üretilebilir. Özellikle **proto3** ile birlikte çok daha fazla dil de desteklenmektedir.
 
----
+**Anahtar Notlar:** RPC genel olarak network üzerinde (olmak zorunda değil) bir process içeerisinde çağrılan bir alt programın (function, procedure, subroutine, method vs denebilir) çağrıldığında asıl işlemin yani fonksiyonun çalışmasının farklı bir process içerisinde yapılmasını
+yani farklı bir adres alanında çalışmasını sağlayan bir standarttır. RPC'nin bir çok gerçekleştirimi vardır. Örneğin: Java dünyasında "RMI (Remote Method Invocation)", .NET dünyasında ".NET Remoting" gibi. gRPC'de bir RPC gerçekleştirimidir. RPC detayları burada ele
+alınmayacaktır.
 
-## ⚙️ 2. Temel Kavramlar
+**Anahtar Notlar:** gRPC Google tarafından geliştirilmiş olsa da gRPC'deki "g" harfinin açılımı sürümden sürüme değişiklik göstermektedir. Bu anlamda `g`'nin sürümler için açılımı
+[g_stands_for](https://github.com/grpc/grpc/blob/master/doc/g_stands_for.md) bağlatısında listelenmiştir.
 
-### Image
-- Uygulamanın **çalıştırılabilir kalıbıdır**
-- Read-only’dir
-- Katmanlı (layered) yapıdadır
-- Dockerfile’dan üretilir
+Protobuf ile mesajlar ve servisler tanımlanır. Protobuf ***"IDL (Interface Definition language)"*** ile yazılır. IDL ile aslında fonksiyonlar, türler ve geri dönüş değerleri gibi bilgiler de tanımlanır.
+Bu anlamda, bir **anlaşma (protocol/contract)** biçiminde de düşünülebilir. Protobuf genel olarak **.proto** uzantılı dosyalarda yazılır. Bir projede istenildiği kadar ".proto" dosyaları olabilir.
 
-Örnek:
-```bash
-python:3.12
-nginx:latest
+###### gRPC Mimarisi**
+
+gRPC genel amaçlı bir RPC framework'üdür. RPC kullandığı için oldukça etkin
+çalışabilmektedir. gRPC kullanımı genel olarak aşağıdaki sırayla gerçekleştirilir:
+
+1.  Çağrılacak fonksiyonları içeren bir **servis arayüzü (service interface)** tanımlanır. Bu arayüzde çağrılacak fonksiyonların yapıları belirlenir. Bu anlamda fonksiyonların kullanacağı **message** denilen tür tanımlamaları da yapılabilir.
+
+2.  gRPC server yazılır. Server içerisinde birinci adımda tanımlanan servisler kullanılır ve ilgili fonksiyonlar implemente edilir.
+
+3.  Client uygulama **stub** denilen üretilmiş (generate) kodları kullanarak serviste tanımlanmış fonksiyonların çağrılmasını sağlayan fonksiyonları çağırır. Örneğin, client tarafta bir product türünü parametre olarak alan ve buna göre ilgili siparişleri döndüren bir fonksiyon çağrılır. Bu fonksiyon aslında server'da bir fonksiyonun çağrılmasına yol açar ve ilgili işlem burada (server tarafta) yapılır ve dönüş (response) client tarafa iletilir. gRPC'nin genel çalışma sistemi aşağıdaki şekil ile özetlenebilir:
+
+![image1](./media/grpc/image1.png)
+
+Burada client'ların veya server'ın hangi dil ve/veya teknoloji ile
+geliştirildiğinin önemi olmadığına dikkat ediniz. gRPC katmalı bir mimariye sahiptir. Buna göre bu işlemin katmanları şunlardır:
+
+**Stub:** IDL'den üretilmiş interface, fonksiyon ve mesaj gibi elemanlara denir.
+
+**Channel:** Stub tarafından kullanılan ara katmandır. Channel ile server haberleşmesi sağlanır. Server haberleşmesi `http/2` kullanılığından yine ***"host:port"*** bilgileriyle sağlanır.
+
+**Transport:** HTTP/2'ye ilişkin en alt katmandır.
+###### REST ve gRPC'nin karşılaştırılması
+
+- gRPC client-server mimariye dayalıdır. REST tamamen böyle değildir.
+
+- gRPC ve REST http protokolünü kullanırlar. gRPC özel olarak HTTP/2
+  kullandığı için **full-duplex** haberleşmeyi destekler. Örneğin gRPC ile `video streaming` yapılabilir.
+
+- REST servislerin parametre aktarımları gRPC'ye göre daha maliyetlidir.
+
+- Bilindiği gibi REST servislerde çeşitli **status** kodları bulunur. Halbuki gRPC için bu işlem farklıdır.
+
+- REST daha esnek bir yapıya sahiptir.
+
+- REST daha yaygın bir kullanıma sahiptir. Bununla birlikte gRPC bazı durumlarda REST'e göre avantajlıdır.
+
+- gRPC, REST'e göre oldukça hızlıdır.
+
+**Anahtar Notlar:** Günümüz uygulamalarında gRPC ve REST bir arada mikroservislerle kullanılmaktadır.
+
+###### Protobuf (Protocol Buffer)
+
+Protobuf 2001 yılında tasarlanmış, 2008 yılında kullanılabilir hale gelmiştir. gRPC, JSON ve birçok format ile de stabil bir biçimde çalışabilmektedir. Aslında protobuf kullanmak performans açısından gRPC'de daha iyidir. Zaten örneğin JSON kullanılacaksa gRPC tercih edilmesi kod yükünü artırabilir. Protobuf gRPC için default format olarak kabul edilir.
+
+Protobuf mesajları **anahtar-değer çiftlerinden (key-value pairs)** oluşur. Mesajlar **mesaj elemanları (field)** ve **türlerinden (type)** oluşur. Örneğin:
+
+```protobuf
+message Product  {
+	int64 id = 1;
+	string name = 2;
+	uint32 stock = 3;
+}
 ```
 
-### Container
-- Image’ın **çalışan örneğidir**
-- State tutabilir
-- Durdurulabilir, silinebilir
-- Aynı image’tan birden fazla container çalışabilir
 
-### Registry
-Image’ların tutulduğu depolardır.
+Buradaki mesaj aşağıdaki gibi bir formatta iletilir. Yani bir mesaj için değerler aşağıdaki gibi tutulur:
 
-Popüler registry’ler:
-- Docker Hub
-- GitHub Container Registry
-- AWS ECR
-- Google GCR
-- Azure ACR
 
-### Dockerfile
-Image oluşturmak için yazılan reçetedir.  
-Her satır yeni bir **layer** oluşturur.
+![image2](./media/grpc/image2.png)
 
----
+Burada kaydın ikinci elemanı ***"wire-type"*** denilen bir sayıdır. Bu sayı tipik olarak ilgili türlere karşılık gelmektedir.
 
-## ⏳ 3. Kurulum Kontrolü
-```bash
-docker --version
-docker info
-docker ps
+".proto" dosyası yazıldıktan sonra protoc isimli derleyici kullanılarak derlenir. "protoc" tüm modern işletim sistemleri için kullanılabilmektedir. Protoc aşağıdaki link'ten ilgili işletim sistemine
+göre indirilebilir:
+
+*<https://github.com/protocolbuffers/protobuf/releases/tag/v3.20.1> 
+
+"protoc " derleyici programın ***Windows*** işletim sistemi için bir kurulumu yoktur. Programcı her yerden kullanabilmek için tipik olarak **PATH** çevre değişkenine "protoc.exe" çalışabilir dosyasının
+bulunduğu dizini ekleyebilir. ***Unix/Linux ve MacOS*** sistemlerinde ilgili paket yönetici programlarla yükleme basit bir biçimde yapılabilir.
+
+Bir .proto dosyasında en önemli değişkenlerden biri **syntax** isimli değişkendir. Bu değişken hangi "protobuf" sürümünün kullanıldığını belirtir. Tipik olarak son sürüm olan "proto3" olarak
+verilmesi uygundur. Anımsanacağı gibi bir protobuf mesajlardan oluşur. Mesajlar belirlendikten sonra tipik olarak bu mesajları kullanan servis belirlenir. Basit bir proto dosyası aşağıdaki gibidir:
+
+```protobuf
+syntax = "proto3";  
+  
+service GreetingService {  
+	rpc helloEN(GreetingRequest) returns (GreetingResponse);  
+	rpc helloTR(GreetingRequest) returns (GreetingResponse);  
+}  
+  
+message GreetingRequest {  
+	string firstName = 1;  
+	string lastName = 2;  
+	bool married = 3;  
+}  
+  
+message GreetingResponse {  
+	string greeting = 1;  
+	string maritalStatus = 2;  
+}
 ```
 
-> `docker info` çıktısı Docker daemon’un çalıştığını doğrular.
+Buradaki dosyada çeşitli dillere göre bazı bildirimler yazılabilmektedir. Mesajara ilişkin alanların türleri geneldir ve desteklediği dillerdeki karşılıkları belirlenmiştir. Bunlara ***"scalar value types"*** da denilmektedir. Türler ve desteklediği dillere ilişkin tablo [Scalar Value Types](https://protobuf.dev/programming-guides/proto3/#scalar) bağlantısında incelenebilir.
 
----
+Türlere ilişkin default değerler şunlardır:
 
-## 📦 4. Temel Docker Komutları
+- string için boş string
 
-### Image İşlemleri
-```bash
-docker images
-docker pull nginx
-docker rmi nginx
+- bool türü için false
+
+- numeric türler için genel olarak türe özgü sıfır değeri.
+
+Proto dosyaları ayrıca import edilebilmektedir. Bunun import bildirimi kullanılır:
+
+```protobuf
+import "product.proto"
 ```
 
-### Container Çalıştırma Modları
-
-**Foreground**
-```bash
-docker run nginx
-```
-
-**Detached**
-```bash
-docker run -d nginx
-```
-
-**İsim vererek**
-```bash
-docker run -d --name web nginx
-```
-
-**Port Mapping**
-```bash
-docker run -d -p 8080:80 nginx
-```
-
-### Container Yönetimi
-```bash
-docker ps
-docker ps -a
-docker stop web
-docker start web
-docker rm web
-```
-
----
-
-## 🛠️ 5. Dockerfile (Detaylı)
-
-### Dockerfile Temel Komutları
-| Komut | Açıklama |
-|-----|---------|
-| FROM | Base image |
-| WORKDIR | Çalışma dizini |
-| COPY | Dosya kopyalama |
-| RUN | Build sırasında çalışır |
-| CMD | Container çalışınca |
-| EXPOSE | Port bildirimi |
-
-### Node.js Dockerfile
-```dockerfile
-FROM node:18
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE 3000
-CMD ["npm","start"]
-```
-
-### Python Flask Dockerfile
-```dockerfile
-FROM python:3.12
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-EXPOSE 5000
-CMD ["python","app.py"]
-```
-
----
-
-## 🧱 6. Image Build Süreci
-```bash
-docker build -t myapp .
-```
-
-### Tag Mantığı
-```bash
-docker build -t myapp:1.0.0 .
-docker tag myapp:1.0.0 myrepo/myapp:latest
-```
-
----
-
-## 🔄 7. Logs & Exec
-
-### Log İzleme
-```bash
-docker logs container_id
-docker logs -f container_id
-```
-
-### Container İçine Girme
-```bash
-docker exec -it container_id bash
-```
-
----
-
-## 📚 8. Volume (Kalıcı Veri)
-
-### Volume Türleri
-- Named Volume
-- Bind Mount
-- tmpfs
-
-### Örnekler
-```bash
-docker volume create mydata
-docker run -d -v mydata:/data mysql
-```
-
-Host mount:
-```bash
-docker run -d -v $(pwd):/app nginx
-```
-
----
-
-## 🌐 9. Docker Network
-
-### Network Türleri
-- bridge (default)
-- host
-- none
-- overlay (swarm)
-
-### Örnek
-```bash
-docker network create mynet
-docker run -d --network=mynet --name=db mysql
-docker run -d --network=mynet --name=api myapi
-```
-
----
-
-## 🐳 10. Docker Compose (Detaylı)
-
-### Ne Zaman Kullanılır?
-- Birden fazla container
-- Ortam bağımlılıkları
-- Local development
-
-### docker-compose.yml
-```yaml
-services:
-  api:
-    build: .
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-
-  mongo:
-    image: mongo
-    volumes:
-      - mongodata:/data/db
-
-volumes:
-  mongodata:
-```
-
-Komutlar:
-```bash
-docker compose up -d
-docker compose down
-docker compose logs
-```
-
----
-
-## 🚀 11. İleri Seviye Konular
-
-### Multi-stage Build
-- Daha küçük image
-- Sadece runtime bağımlılıkları
-
-### Healthcheck
-```dockerfile
-HEALTHCHECK CMD curl --fail http://localhost || exit 1
-```
-
-### Secrets & Config
-- Şifreler image içine gömülmez
-- ENV veya secret manager kullanılır
-
-### Docker Swarm & Kubernetes
-- Container orkestrasyonu
-- Otomatik ölçekleme
-- Self-healing
-
----
-
-## 🧹 12. Temizlik ve Bakım
-
-### Kullanılmayan Kaynaklar
-```bash
-docker container prune
-docker image prune -a
-docker volume prune
-docker system prune -a
-```
-
-> ⚠️ `system prune -a` her şeyi siler, dikkatli kullan!
-
----
-
-## ✅ Özet
-Bu doküman Docker’ı **temelden ileri seviyeye** kadar kapsar ve:
-- Eğitim notu
-- README.md
-- Şirket içi dökümantasyon
-olarak kullanılabilir.
+proto sentaksında sonladırıcı karakter (terminator) tipik olarak noktalı virgüldür ancak bazı özel durumlarda bir sonraki satıra geçmek de (LF) sonlandırıcı olarak kullanılmaktadır.
