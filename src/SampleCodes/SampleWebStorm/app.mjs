@@ -14,6 +14,8 @@ const main = async () => {
 }
 
 
+main()
+
 /*
 import argon2 from 'argon2';
 
@@ -30,9 +32,10 @@ const main = async () => {
     console.log(matched)
 }
 
- */
-
 main()
+
+
+ */
 
 /*
 import bcrypt from 'bcrypt';
