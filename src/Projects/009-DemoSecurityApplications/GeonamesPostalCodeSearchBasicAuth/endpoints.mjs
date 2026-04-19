@@ -1,4 +1,4 @@
-import {getPostalCode} from "./postalcodeservice.mjs";
+import {getPostalCode, isAuthenticated} from "./postalcodeservice.mjs";
 import basicAuth from "basic-auth";
 
 const geoPostalCodeCallback = async (req, res) => {
@@ -16,11 +16,11 @@ const geoPostalCodeCallback = async (req, res) => {
     }
 }
 
-const authenticate = (req, res, next) => {
+const authenticate = async (req, res, next) => {
     const user = basicAuth(req)
 
     if (user) {
-        if (user && user.pass && user.pass === "admin" && user.name && user.name === "admin") {
+        if (await isAuthenticated(user.name, user.pass)) {
             console.log(`user ${user.name}, password: ${user.pass}`)
             next()
         } else {
@@ -36,9 +36,8 @@ const authenticate = (req, res, next) => {
 }
 
 export const createEndPoints = app => {
-
-
     app.use(authenticate)
+    app.post("/api/users", async (req, res) => {}) //Add user authenticate as admin
     app.get("/api/geo/postalcode", async (req, res) => await geoPostalCodeCallback(req, res))
     app.get("/api/geo/postalcode/count", async (req, res) => {})
 

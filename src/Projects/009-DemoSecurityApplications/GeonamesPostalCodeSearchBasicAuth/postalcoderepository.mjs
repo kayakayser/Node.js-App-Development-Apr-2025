@@ -1,8 +1,9 @@
-import {createDbClient, createDevDbClient} from "./dbconfig.mjs";
-import {DEV} from "./profiles.mjs";
+import {createDbClient} from "./dbconfig.mjs";
 
-let dbClient = null //process.argv.length === 3 && process.argv[2] === DEV ? await createDevDbClient() : await createDbClient()
 
+let dbClient = process.argv.length === 3 && process.argv[2] === DEV ? await createDevDbClient() : await createDbClient()
+
+const authUserQuery = "select exists (select username, password, enabled from users  where username = $1 and password = $2 and enabled = true)"
 const existsQuery = "select exists (select * from postal_codes  where code = $1)"
 const getPostalCodeInfoQuery = "select placeName, adminName1, lat, lng from postal_code_info where postal_code = $1"
 const insertPostalCodesQuery = "insert into postal_codes (code) values ($1)"
@@ -30,9 +31,9 @@ export const getPostalCodeInfo = async (postalCode) => {
     return (await dbClient.query(getPostalCodeInfoQuery, [postalCode])).rows
 }
 
-export const exists = async (postalCode) => {
-    return (await dbClient.query(existsQuery, [postalCode])).rows[0].exists
-}
+export const exists = async (postalCode) => (await dbClient.query(existsQuery, [postalCode])).rows[0].exists
+
+export const isAuthenticated = async (username, password) => (await dbClient.query(authUserQuery, [username, password])).rows[0].exists
 
 export const insertPostalCodeInfo = async (postalCode, infoList) => {
     try {

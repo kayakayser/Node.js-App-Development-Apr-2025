@@ -1,0 +1,1 @@
+insert into users (username, password, enabled) values ('admin', 'admin', true);
