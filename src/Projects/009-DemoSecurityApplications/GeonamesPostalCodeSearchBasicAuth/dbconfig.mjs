@@ -4,7 +4,7 @@ const clientInfoDev = {
     host: "localhost",
     port: 5432,
     user: "postgres",
-    password: "csd1993",
+    password: "csystem-1993",
     database: "postalcodesearchdb_dev"
 }
 
@@ -12,7 +12,7 @@ const clientInfo = {
     host: "localhost",
     port: 5432,
     user: "postgres",
-    password: "csd1993",
+    password: "csystem-1993",
     database: "postalcodesearchdb"
 }
 

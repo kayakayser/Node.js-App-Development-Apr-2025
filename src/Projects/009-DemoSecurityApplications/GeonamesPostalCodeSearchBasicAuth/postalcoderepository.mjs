@@ -1,14 +1,21 @@
-import {createDbClient, createDevDbClient} from "./dbconfig.mjs";
-import {DEV} from "./profiles.mjs";
+import bcrypt from 'bcrypt';
 
-let dbClient = null //process.argv.length === 3 && process.argv[2] === DEV ? await createDevDbClient() : await createDbClient()
+import {createDbClient} from "./dbconfig.mjs";
 
+
+let dbClient = process.argv.length === 3 && process.argv[2] === DEV ? await createDevDbClient() : await createDbClient()
+
+//const authExistsUserQuery = "select exists (select username, password, enabled from users  where username = $1 and password = $2 and enabled = true)"
+const authUserQuery = "select username, password, enabled from users  where username = $1 and enabled = true"
 const existsQuery = "select exists (select * from postal_codes  where code = $1)"
 const getPostalCodeInfoQuery = "select placeName, adminName1, lat, lng from postal_code_info where postal_code = $1"
 const insertPostalCodesQuery = "insert into postal_codes (code) values ($1)"
 const insertPostalCodeInfoQuery = "insert into postal_code_info (postal_code, adminCode2, adminCode1, adminName2, lng, lat, countryCode, adminName1, placeName) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
 const insertPostalCodeQueryInfoQuery = "insert into postal_code_query_info (postal_code) values ($1)"
 const getQueryCountQuery = "select count(*) from postal_code_query_info where postal_code = $1"
+
+const bcryptHashPassword = async (password, saltBound) => await bcrypt.hash(password, saltBound)
+const bcryptComparePassword = async (password, hash) => await bcrypt.compare(password, hash)
 
 const insertCode = async (postalCode) => {
     await dbClient.query(insertPostalCodesQuery, [postalCode])
@@ -30,8 +37,12 @@ export const getPostalCodeInfo = async (postalCode) => {
     return (await dbClient.query(getPostalCodeInfoQuery, [postalCode])).rows
 }
 
-export const exists = async (postalCode) => {
-    return (await dbClient.query(existsQuery, [postalCode])).rows[0].exists
+export const exists = async (postalCode) => (await dbClient.query(existsQuery, [postalCode])).rows[0].exists
+
+export const isAuthenticated = async (username, password) => {
+    const row = (await dbClient.query(authUserQuery, [username])).rows[0]
+
+    return row && await bcryptComparePassword(password, row.password)
 }
 
 export const insertPostalCodeInfo = async (postalCode, infoList) => {
