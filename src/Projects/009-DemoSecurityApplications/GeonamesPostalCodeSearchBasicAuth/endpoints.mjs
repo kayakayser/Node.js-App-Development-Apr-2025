@@ -36,11 +36,11 @@ const authenticate = async (req, res, next) => {
 }
 
 export const createEndPoints = app => {
+    app.post("/api/users/register", async (req, res) => {}) //register user with username and password, without authentication
     app.use(authenticate)
     app.post("/api/users", async (req, res) => {}) //Add user authenticate as admin
     app.get("/api/geo/postalcode", async (req, res) => await geoPostalCodeCallback(req, res))
     app.get("/api/geo/postalcode/count", async (req, res) => {})
-
 }
 
 export const startService = (app, port) => {
