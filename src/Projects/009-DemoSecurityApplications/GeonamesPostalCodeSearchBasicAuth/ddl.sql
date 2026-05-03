@@ -5,6 +5,12 @@ create table if not exists users (
     -- ...
 );
 
+create table if not exists authorities (
+    username varchar(100) references users(username) not null,
+    authority varchar(50) not null,
+    primary key (username, authority)
+);
+
 create table if not exists postal_codes (
 	code varchar(100) primary key,
 	record_date_time timestamp default(current_timestamp) not null
