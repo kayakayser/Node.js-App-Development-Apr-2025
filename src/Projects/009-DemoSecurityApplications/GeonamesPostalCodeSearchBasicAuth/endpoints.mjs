@@ -24,19 +24,19 @@ const authenticate = async (req, res, next) => {
             console.log(`user ${user.name}, password: ${user.pass}`)
             next()
         } else {
-            res.set("WWW-Authenticate", "Unauthorized");
+            res.set("WWW-Authenticate", "Forbidden");
 
-            return res.status(401).json({error: "Unauthorized"})
+            return res.status(403).json({error: "Forbidden"})
         }
     } else {
         res.set("WWW-Authenticate", "Basic Auth required");
 
-        return res.status(403).json({error: "Forbidden"})
+        return res.status(401).json({error: "Unauthorized"})
     }
 }
 
 export const createEndPoints = app => {
-    app.post("/api/users/register", async (req, res) => {}) //register user with username and password, without authentication
+    app.post("/api/users/signup", async (req, res) => {}) //register user with username and password, without authentication
     app.use(authenticate)
     app.post("/api/users", async (req, res) => {}) //Add user authenticate as admin
     app.get("/api/geo/postalcode", async (req, res) => await geoPostalCodeCallback(req, res))
